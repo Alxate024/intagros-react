@@ -96,8 +96,6 @@ export default function PredioGuadalito() {
     }
   }, [])
 
-  // (overlay removed) keeping getLngLat for marker placement
-
   // función para convertir coordenadas de croquis a lon/lat (rotación incluida)
   function getLngLat(x, y) {
     const dx = x - IMAGE_WIDTH / 2
@@ -233,8 +231,6 @@ export default function PredioGuadalito() {
               >
                 {isAnclado ? '🔒 Anclado' : '🔓 Anclar Posición'}
               </button>
-
-              {/* croquis overlay removed */}
 
               <div className="zapote-control-group">
                 <label>Editar puntos</label>

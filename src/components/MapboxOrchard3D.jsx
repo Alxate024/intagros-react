@@ -8,6 +8,29 @@ const PUBLIC_MAPBOX_TOKEN = [
   '8KbCtSa4jEVbdEgywT_pMA',
 ].join('.');
 
+const PUBLIC_SATELLITE_STYLE = {
+  version: 8,
+  sources: {
+    satellite: {
+      type: 'raster',
+      tiles: [
+        'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      ],
+      tileSize: 256,
+      attribution: 'Tiles &copy; Esri',
+    },
+  },
+  layers: [
+    {
+      id: 'satellite',
+      type: 'raster',
+      source: 'satellite',
+      minzoom: 0,
+      maxzoom: 22,
+    },
+  ],
+};
+
 const defaultGetLngLat = (x, y) => {
   const baseLng = -76.429972;
   const baseLat = 3.645361;
@@ -36,6 +59,9 @@ export default function MapboxOrchard3D({
   getLngLat,
 }) {
   const token = import.meta.env.VITE_MAPBOX_TOKEN || PUBLIC_MAPBOX_TOKEN;
+  const resolvedMapStyle = typeof mapStyle === 'string' && mapStyle.startsWith('mapbox://')
+    ? PUBLIC_SATELLITE_STYLE
+    : mapStyle;
   
   if (!token) {
     return (
@@ -54,7 +80,7 @@ export default function MapboxOrchard3D({
     <div className="mapbox-orchard-shell" style={{ width: '100%', height: '100%', minHeight: '360px' }}>
       <Map
         initialViewState={initialViewState}
-        mapStyle={mapStyle}
+        mapStyle={resolvedMapStyle}
         mapboxAccessToken={token}
         style={{ width: '100%', height: '100%' }}
         onClick={(e) => {
