@@ -359,79 +359,78 @@ export default function PredioZapote() {
                   latitude: puntoLat - (y - IMAGE_HEIGHT / 2) * puntoEscala,
                 })}
               />
-            </div>
-          </div>
+              <div className="zapote-controls-panel">
+                <button
+                  className={`zapote-anchor-btn ${isAnclado ? 'anclado' : ''}`}
+                  onClick={toggleAnclar}
+                >
+                  {isAnclado ? '🔒 Anclado' : '🔓 Anclar Posición'}
+                </button>
 
-          <div className="zapote-controls-panel">
-            <button
-              className={`zapote-anchor-btn ${isAnclado ? 'anclado' : ''}`}
-              onClick={toggleAnclar}
-            >
-              {isAnclado ? '🔒 Anclado' : '🔓 Anclar Posición'}
-            </button>
+                <div className="zapote-control-group">
+                  <label>Opacidad Croquis</label>
+                  <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.05"
+                    value={croquisOpacity}
+                    onChange={(e) => setCroquisOpacity(Number(e.target.value))}
+                  />
+                </div>
 
-            <div className="zapote-control-group">
-              <label>Opacidad Croquis</label>
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.05"
-                value={croquisOpacity}
-                onChange={(e) => setCroquisOpacity(Number(e.target.value))}
-              />
-            </div>
+                <div className="zapote-control-group">
+                  <label>Rotación ({rotation.toFixed(0)}°)</label>
+                  <input
+                    type="range"
+                    min="-180"
+                    max="180"
+                    step="1"
+                    value={rotation}
+                    onChange={(e) => setRotation(Number(e.target.value))}
+                    disabled={isAnclado}
+                  />
+                </div>
 
-            <div className="zapote-control-group">
-              <label>Rotación ({rotation.toFixed(0)}°)</label>
-              <input
-                type="range"
-                min="-180"
-                max="180"
-                step="1"
-                value={rotation}
-                onChange={(e) => setRotation(Number(e.target.value))}
-                disabled={isAnclado}
-              />
-            </div>
+                <div className="zapote-control-group">
+                  <label>Escala</label>
+                  <input
+                    type="range"
+                    min="0.000001"
+                    max="0.000020"
+                    step="0.0000001"
+                    value={puntoEscala}
+                    onChange={(e) => setPuntoEscala(Number(e.target.value))}
+                    disabled={isAnclado}
+                  />
+                </div>
 
-            <div className="zapote-control-group">
-              <label>Escala</label>
-              <input
-                type="range"
-                min="0.000001"
-                max="0.000020"
-                step="0.0000001"
-                value={puntoEscala}
-                onChange={(e) => setPuntoEscala(Number(e.target.value))}
-                disabled={isAnclado}
-              />
-            </div>
+                <div className="zapote-control-group">
+                  <label>Mover Este-Oeste</label>
+                  <input
+                    type="range"
+                    min="-0.001"
+                    max="0.001"
+                    step="0.00001"
+                    value={puntoLng - (-76.429972)}
+                    onChange={(e) => setPuntoLng(-76.429972 + Number(e.target.value))}
+                    disabled={isAnclado}
+                  />
+                </div>
 
-            <div className="zapote-control-group">
-              <label>Mover Este-Oeste</label>
-              <input
-                type="range"
-                min="-0.001"
-                max="0.001"
-                step="0.00001"
-                value={puntoLng - (-76.429972)}
-                onChange={(e) => setPuntoLng(-76.429972 + Number(e.target.value))}
-                disabled={isAnclado}
-              />
-            </div>
-
-            <div className="zapote-control-group">
-              <label>Mover Norte-Sur</label>
-              <input
-                type="range"
-                min="-0.001"
-                max="0.001"
-                step="0.00001"
-                value={puntoLat - 3.645361}
-                onChange={(e) => setPuntoLat(3.645361 + Number(e.target.value))}
-                disabled={isAnclado}
-              />
+                <div className="zapote-control-group">
+                  <label>Mover Norte-Sur</label>
+                  <input
+                    type="range"
+                    min="-0.001"
+                    max="0.001"
+                    step="0.00001"
+                    value={puntoLat - 3.645361}
+                    onChange={(e) => setPuntoLat(3.645361 + Number(e.target.value))}
+                    disabled={isAnclado}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </section>

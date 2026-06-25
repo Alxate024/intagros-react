@@ -32,13 +32,20 @@ export default function MapboxOrchard3D({
   const token = import.meta.env.VITE_MAPBOX_TOKEN;
   
   if (!token) {
-    console.error('VITE_MAPBOX_TOKEN is not defined in environment variables');
+    return (
+      <div className="mapbox-orchard-shell mapbox-orchard-shell--missing-token">
+        <div>
+          <strong>Mapa no disponible</strong>
+          <span>Configura VITE_MAPBOX_TOKEN para cargar Mapbox.</span>
+        </div>
+      </div>
+    );
   }
   
   const computeLngLat = (tree) => (typeof getLngLat === 'function' ? getLngLat(tree.x, tree.y) : defaultGetLngLat(tree.x, tree.y));
 
   return (
-    <div className="mapbox-orchard-shell">
+    <div className="mapbox-orchard-shell" style={{ width: '100%', height: '100%', minHeight: '360px' }}>
       <Map
         initialViewState={initialViewState}
         mapStyle={mapStyle}
