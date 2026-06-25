@@ -1,0 +1,94 @@
+.agro-verse {
+  position: fixed;
+  right: clamp(1.6rem, 3vw, 3rem);
+  bottom: clamp(5.2rem, 10vh, 7rem);
+  z-index: 20;
+  width: min(24vw, 320px);
+  height: min(24vw, 320px);
+  min-width: 190px;
+  min-height: 190px;
+  pointer-events: none;
+  opacity: 0.52;
+  mix-blend-mode: screen;
+}
+
+.agro-verse__canvas {
+  position: absolute;
+  inset: 0;
+  filter: drop-shadow(0 30px 70px rgba(3, 10, 6, 0.48));
+}
+
+.agro-verse::before,
+.agro-verse::after {
+  content: "";
+  position: absolute;
+  inset: 13%;
+  border: 1px solid rgba(127, 211, 214, 0.22);
+  border-radius: 50%;
+  animation: agroPulse 5s ease-in-out infinite;
+}
+
+.agro-verse::after {
+  inset: 25%;
+  border-color: rgba(198, 216, 141, 0.24);
+  animation-delay: -2.2s;
+}
+
+.agro-verse__hud {
+  position: absolute;
+  right: 4%;
+  bottom: 9%;
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.72rem 0.86rem;
+  border: 1px solid rgba(127, 211, 214, 0.24);
+  border-radius: 8px;
+  background: rgba(8, 19, 11, 0.42);
+  backdrop-filter: blur(14px);
+}
+
+.agro-verse__hud span {
+  color: var(--color-sky-300);
+  font-size: 0.58rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+}
+
+.agro-verse__hud strong {
+  color: var(--color-cream);
+  font-size: 0.78rem;
+}
+
+@keyframes agroPulse {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.92) rotate(0deg);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1.08) rotate(12deg);
+  }
+}
+
+@media (max-width: 980px) {
+  .agro-verse {
+    right: -2.5rem;
+    bottom: 5rem;
+    width: 250px;
+    height: 250px;
+    opacity: 0.34;
+  }
+}
+
+@media (max-width: 640px) {
+  .agro-verse {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agro-verse {
+    display: none;
+  }
+}

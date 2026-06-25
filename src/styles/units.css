@@ -1,0 +1,297 @@
+.ig-units {
+  background-color: #f8f6f1;
+  padding: 6rem 0;
+}
+
+.ig-units .ig-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.ig-units-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.ig-units-header .ig-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #2d5a27;
+}
+
+.ig-units-header h2 {
+  margin-top: 0.75rem;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.75rem, 3.5vw, 3rem);
+  line-height: 1.15;
+  color: #1a2e1a;
+}
+
+.ig-units-header p {
+  max-width: 640px;
+  margin: 1rem auto 0;
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #4a5c4a;
+}
+
+.ig-units-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .ig-units-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .ig-units-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.ig-unit-card {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(26,46,26,0.08);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid transparent;
+  position: relative; /* necesario para el stretched link */
+}
+
+.ig-unit-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(26,46,26,0.18);
+  border-color: rgba(45,90,39,0.15);
+}
+
+/* STRETCHED LINK — cubre toda la card */
+.ig-unit-link {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: block;
+  text-decoration: none;
+}
+
+.ig-unit-image-wrap {
+  position: relative;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+}
+
+.ig-unit-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  display: block;
+}
+
+.ig-unit-card:hover .ig-unit-image-wrap img {
+  transform: scale(1.08);
+}
+
+.ig-unit-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(26,46,26,0.15), rgba(26,46,26,0.5));
+  transition: background 0.35s;
+}
+
+.ig-unit-card:hover .ig-unit-image-overlay {
+  background: linear-gradient(to bottom, rgba(26,46,26,0.1), rgba(26,46,26,0.65));
+}
+
+.ig-unit-number {
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: #f8f6f1;
+  background: rgba(26,46,26,0.55);
+  backdrop-filter: blur(6px);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ig-unit-arrow {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  background: #a3c585;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 11;
+  pointer-events: none;
+}
+
+.ig-unit-card:hover .ig-unit-arrow {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ig-unit-arrow svg {
+  width: 16px;
+  height: 16px;
+  stroke: #1a2e1a;
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ig-unit-body {
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.ig-unit-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(163,197,133,0.2);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.85rem;
+  transition: background 0.3s;
+}
+
+.ig-unit-card:hover .ig-unit-icon {
+  background: rgba(163,197,133,0.35);
+}
+
+.ig-unit-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke: #2d5a27;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ig-unit-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #1a2e1a;
+  margin: 0 0 0.75rem 0;
+  line-height: 1.3;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #f0ede6;
+  transition: color 0.3s;
+}
+
+.ig-unit-card:hover .ig-unit-title {
+  color: #2d5a27;
+}
+
+.ig-unit-services-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #2d5a27;
+  display: block;
+  margin-bottom: 0.6rem;
+}
+
+.ig-unit-services {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.25rem 0;
+  flex: 1;
+}
+
+.ig-unit-services li {
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #3a4a3a;
+  padding: 0.3rem 0 0.3rem 1.1rem;
+  position: relative;
+}
+
+.ig-unit-services li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.65rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #a3c585;
+}
+
+.ig-unit-services li.ig-sub {
+  font-size: 0.82rem;
+  color: #5a6e5a;
+  padding-left: 2rem;
+}
+
+.ig-unit-services li.ig-sub::before {
+  left: 1.1rem;
+  width: 4px;
+  height: 4px;
+  background: #c8ddb0;
+  top: 0.68rem;
+}
+
+.ig-unit-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #2d5a27;
+  letter-spacing: 0.04em;
+  padding-top: 0.75rem;
+  border-top: 1px solid #f0ede6;
+  transition: gap 0.25s;
+  pointer-events: none;
+}
+
+.ig-unit-card:hover .ig-unit-cta {
+  gap: 0.7rem;
+}
+
+.ig-unit-cta svg {
+  width: 14px;
+  height: 14px;
+  stroke: #2d5a27;
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}

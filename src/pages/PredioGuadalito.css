@@ -1,0 +1,895 @@
+:root {
+  --g-bg: #061108;
+  --g-bg-panel: rgba(11, 22, 13, 0.92);
+  --g-bg-input: rgba(255, 248, 234, 0.08);
+  --g-bg-hover: #1e351f;
+  --g-border: rgba(203, 224, 137, 0.14);
+  --g-border-input: rgba(203, 224, 137, 0.18);
+  --g-accent: #c9dc85;
+  --g-text: #f2efd9;
+  --g-text-light: rgba(242, 239, 217, 0.72);
+  --g-text-muted: rgba(242, 239, 217, 0.68);
+  --g-text-label: #667b43;
+  --g-white: #fff8ea;
+  --g-shadow: rgba(0, 0, 0, 0.36);
+  --g-radius: 8px;
+  --g-radius-sm: 6px;
+  --g-gap: 1rem;
+  --g-panel-w: 280px;
+  --g-detail-w: 340px;
+  --g-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --g-dur-fast: 160ms;
+  --g-dur-base: 240ms;
+  --g-dur-slow: 380ms;
+}
+
+.guadalito {
+  min-height: 100vh;
+  background: linear-gradient(180deg, rgba(2, 6, 3, 0.42), rgba(2, 6, 3, 0.92)), var(--g-bg);
+  color: var(--g-text);
+}
+
+.guadalito-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 1rem;
+  color: var(--g-text-muted);
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.guadalito-breadcrumb a,
+.guadalito-breadcrumb strong {
+  color: inherit;
+  text-decoration: none;
+}
+
+.guadalito-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 520px);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: end;
+  padding: calc(var(--header-height) + 3rem) max(1.2rem, 4vw) 2.5rem;
+  background:
+    linear-gradient(135deg, rgba(3, 10, 5, 0.84), rgba(11, 31, 13, 0.42)),
+    var(--g-bg);
+}
+
+.guadalito-hero__copy {
+  display: grid;
+  gap: 1rem;
+}
+
+.guadalito-kicker,
+.guadalito-panel__head span,
+.guadalito-field span,
+.guadalito-wiki__head span {
+  color: var(--g-accent);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.guadalito-hero h1 {
+  max-width: 880px;
+  margin: 0;
+  color: var(--g-white);
+  font-size: clamp(2.8rem, 7vw, 5rem);
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 0.95;
+}
+
+.guadalito-hero p {
+  max-width: 720px;
+  margin: 1rem 0 0;
+  color: var(--g-text-muted);
+  line-height: 1.6;
+}
+
+.guadalito-hero__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.guadalito-hero__stats article {
+  min-height: 120px;
+  display: grid;
+  align-content: end;
+  gap: 0.35rem;
+  padding: 1rem;
+  border: 1px solid rgba(255, 248, 234, 0.16);
+  border-radius: var(--g-radius);
+  background: rgba(17, 27, 17, 0.42);
+  backdrop-filter: blur(12px);
+}
+
+.guadalito-hero__stats strong {
+  color: var(--g-white);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 950;
+  line-height: 0.9;
+}
+
+.guadalito-hero__stats span {
+  color: rgba(255, 248, 234, 0.72);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+}
+
+.guadalito-workbench {
+  display: grid;
+  grid-template-columns: var(--g-panel-w) minmax(0, 1fr) var(--g-detail-w);
+  gap: var(--g-gap);
+  padding: var(--g-gap);
+}
+
+.guadalito-map-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow: hidden;
+}
+
+.guadalito-mapbox-panel {
+  position: relative; /* contenedor para paneles flotantes */
+  /* asegurar altura para Mapbox (responsive) */
+  min-height: 520px;
+  height: 62vh;
+}
+
+/* forzar que el shell de Mapbox llene el contenedor padre */
+.guadalito-mapbox-panel .mapbox-orchard-shell {
+  width: 100%;
+  height: 100%;
+}
+
+.guadalito-controls-panel {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.85rem;
+  width: 320px;
+  border-radius: 10px;
+  background: rgba(11, 22, 13, 0.88);
+  border: 1px solid rgba(203, 224, 137, 0.08);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+  z-index: 40;
+}
+
+.guadalito-panel,
+.guadalito-map-shell {
+  border: 1px solid var(--g-border);
+  border-radius: var(--g-radius);
+  background: var(--g-bg-panel);
+  box-shadow: 0 24px 80px var(--g-shadow);
+}
+
+.guadalito-panel {
+  align-self: start;
+  display: grid;
+  gap: var(--g-gap);
+  padding: var(--g-gap);
+  position: sticky;
+  top: calc(var(--header-height) + var(--g-gap));
+}
+
+.guadalito-panel__head,
+.guadalito-map-toolbar,
+.guadalito-wiki__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--g-gap);
+}
+
+.guadalito-panel__head strong,
+.guadalito-wiki__head strong {
+  color: var(--g-text);
+  font-size: 0.9rem;
+}
+
+.guadalito-field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.guadalito-field span {
+  color: var(--g-text-label);
+  font-weight: 700;
+}
+
+.guadalito-field input,
+.guadalito-field select {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--g-border-input);
+  border-radius: var(--g-radius-sm);
+  background: var(--g-bg-input);
+  color: var(--g-text);
+  padding: 0 0.85rem;
+  font: inherit;
+  transition:
+    border-color var(--g-dur-fast) var(--g-ease),
+    background var(--g-dur-fast) var(--g-ease);
+}
+
+.guadalito-field input:focus,
+.guadalito-field select:focus {
+  outline: none;
+  border-color: var(--g-accent);
+  background: rgba(201, 220, 133, 0.08);
+}
+
+.guadalito-field option {
+  background: #0b160d;
+  color: var(--g-text);
+}
+
+.guadalito-list {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.guadalito-list__item {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.85rem 0.95rem;
+  border-radius: var(--g-radius-sm);
+  background: rgba(255, 248, 234, 0.05);
+  color: var(--g-text);
+  border: 1px solid rgba(203, 224, 137, 0.1);
+  text-decoration: none;
+  transition: background var(--g-dur-fast) var(--g-ease), border-color var(--g-dur-fast) var(--g-ease);
+}
+
+.guadalito-list__item:hover,
+.guadalito-list__item.is-active {
+  background: var(--g-bg-hover);
+  border-color: var(--g-accent);
+}
+
+.guadalito-list__num {
+  min-width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  font-weight: 900;
+}
+
+.guadalito-list__info small {
+  display: block;
+  color: var(--g-text-muted);
+  margin-top: 0.15rem;
+}
+
+.guadalito-map {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--g-border);
+  border-radius: var(--g-radius);
+  background: var(--g-bg-panel);
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
+}
+
+svg.guadalito-map {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.guadalito-map.is-calibrating {
+  cursor: crosshair;
+}
+
+.guadalito-map-shade {
+  fill: rgba(5, 11, 5, 0.22);
+  pointer-events: none;
+}
+
+.guadalito-gis-map image {
+  filter: saturate(0.42) contrast(1.18) brightness(0.48);
+  opacity: 0.76;
+}
+
+.guadalito-gis-night {
+  fill: rgba(3, 9, 5, 0.38);
+}
+
+.guadalito-gis-parcel {
+  fill: rgba(76, 120, 54, 0.2);
+  stroke: none;
+}
+
+.guadalito-gis-boundary {
+  fill: none;
+  stroke: rgba(215, 236, 161, 0.9);
+  stroke-width: 3.5;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 8px rgba(201, 220, 133, 0.28));
+}
+
+.guadalito-gis-buffer {
+  fill: rgba(0, 0, 0, 0.22);
+}
+
+.guadalito-gis-grid {
+  stroke: rgba(222, 237, 190, 0.12);
+  stroke-width: 1;
+}
+
+.guadalito-gis-road {
+  fill: none;
+  stroke: rgba(247, 240, 164, 0.86);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 220 26 12 14;
+}
+
+.guadalito-gis-map text {
+  fill: rgba(255, 248, 234, 0.84);
+  font: 850 12px system-ui, sans-serif;
+  letter-spacing: 0.14em;
+}
+
+.guadalito-gis-title {
+  font-size: 16px !important;
+}
+
+.guadalito-gis-vertical {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: 0.18em;
+}
+
+.guadalito-tree {
+  cursor: pointer;
+  transition:
+    opacity var(--g-dur-base) var(--g-ease),
+    transform var(--g-dur-base) var(--g-ease),
+    filter var(--g-dur-base) var(--g-ease);
+  transform-origin: center center;
+  transform-box: fill-box;
+}
+
+.guadalito-tree circle {
+  opacity: 0.95;
+  transition: fill var(--g-dur-fast) var(--g-ease), stroke var(--g-dur-fast) var(--g-ease);
+}
+
+.guadalito-tree:hover {
+  transform: scale(1.16);
+}
+
+.guadalito-tree.is-selected {
+  transform: scale(1.22);
+  filter: drop-shadow(0 0 6px rgba(247, 240, 164, 0.5));
+}
+
+.guadalito-tree.is-muted {
+  opacity: 0.18;
+  filter: grayscale(1);
+  pointer-events: none;
+}
+
+.guadalito-tree.is-adjusted circle:nth-of-type(2) {
+  stroke: var(--g-accent);
+  stroke-width: 3;
+}
+
+.guadalito-tree path {
+  fill: none;
+  stroke: #f7f0a4;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  opacity: 0.92;
+  pointer-events: none;
+}
+
+.guadalito-tree text {
+  fill: #071108;
+  font: 950 10px system-ui, sans-serif;
+  pointer-events: none;
+}
+
+.guadalito-map-toolbar {
+  flex-wrap: wrap;
+  row-gap: 0.6rem;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid rgba(203, 224, 137, 0.12);
+}
+
+.guadalito-map-toolbar > div {
+  flex: 1 1 160px;
+  min-width: 0;
+}
+
+.guadalito-map-toolbar span {
+  display: block;
+  color: var(--g-text-label);
+  font-size: 0.64rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.guadalito-map-toolbar strong {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--g-text);
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.guadalito-map-toolbar button,
+.guadalito-group-list button,
+.guadalito-next button {
+  min-height: 40px;
+  border: 1px solid rgba(203, 224, 137, 0.16);
+  border-radius: var(--g-radius-sm);
+  background: rgba(255, 248, 234, 0.06);
+  color: var(--g-text);
+  cursor: pointer;
+  font-weight: 850;
+  transition:
+    background var(--g-dur-fast) var(--g-ease),
+    color var(--g-dur-fast) var(--g-ease),
+    border-color var(--g-dur-fast) var(--g-ease),
+    transform var(--g-dur-fast) var(--g-ease);
+}
+
+.guadalito-map-toolbar button {
+  padding: 0 0.85rem;
+  flex-shrink: 0;
+}
+
+.guadalito-group-list {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.guadalito-group-list button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.65rem 0.75rem;
+  text-align: left;
+}
+
+.guadalito-map-toolbar button:hover,
+.guadalito-group-list button:hover,
+.guadalito-next button:hover {
+  background: var(--g-bg-hover);
+  color: var(--g-white);
+}
+
+.guadalito-map-toolbar button:active,
+.guadalito-group-list button:active,
+.guadalito-next button:active {
+  transform: scale(0.97);
+}
+
+.guadalito-group-list button.is-active,
+.guadalito-map-toolbar button.is-active {
+  background: var(--g-accent);
+  color: #071108;
+  border-color: var(--g-accent);
+}
+
+.guadalito-precision-note {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.8rem;
+  border: 1px solid var(--g-border);
+  border-radius: var(--g-radius-sm);
+  background: rgba(255, 248, 234, 0.05);
+}
+
+.guadalito-precision-note strong {
+  color: var(--g-white);
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.guadalito-precision-note span {
+  color: var(--g-text-muted);
+  font-size: 0.74rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.guadalito-panel--detail {
+  max-height: calc(100vh - var(--header-height) - 2 * var(--g-gap));
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--g-border) transparent;
+}
+
+.guadalito-panel--detail::-webkit-scrollbar {
+  width: 4px;
+}
+
+.guadalito-panel--detail::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.guadalito-panel--detail::-webkit-scrollbar-thumb {
+  background: var(--g-border);
+  border-radius: 99px;
+}
+
+.guadalito-detail-top {
+  display: flex;
+  gap: 0.85rem;
+  align-items: center;
+}
+
+.guadalito-detail-top span {
+  width: 54px;
+  height: 54px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 8px rgba(255, 255, 255, 0.28);
+  transition: background var(--g-dur-slow) var(--g-ease);
+}
+
+.guadalito-detail-top small {
+  color: var(--g-accent);
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.guadalito-detail-top h2 {
+  margin: 0.1rem 0;
+  color: var(--g-text);
+  font-size: 1.8rem;
+}
+
+.guadalito-detail-top p {
+  margin: 0;
+  color: var(--g-text-light);
+}
+
+.guadalito-facts {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+}
+
+.guadalito-facts div {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.75rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid rgba(203, 224, 137, 0.11);
+}
+
+.guadalito-facts dt {
+  color: var(--g-text-label);
+  font-size: 0.72rem;
+  font-weight: 850;
+}
+
+.guadalito-facts dd {
+  margin: 0;
+  color: var(--g-text);
+  font-weight: 900;
+  text-align: right;
+}
+
+.guadalito-wiki {
+  display: grid;
+  gap: 0.8rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(203, 224, 137, 0.12);
+}
+
+.guadalito-wiki p {
+  margin: 0;
+  color: rgba(242, 239, 217, 0.74);
+  font-size: 0.94rem;
+}
+
+.guadalito-wiki article {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.guadalito-wiki img {
+  width: 100%;
+  max-height: 180px;
+  border-radius: var(--g-radius-sm);
+  object-fit: cover;
+}
+
+/* Panel flotante de Wikipedia (detalle rápido) */
+.guadalito-wiki-panel {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 340px;
+  max-width: calc(100% - 40px);
+  max-height: 70vh;
+  overflow: auto;
+  padding: 1rem;
+  background: linear-gradient(180deg, rgba(11,22,13,0.96), rgba(6,12,7,0.86));
+  border: 1px solid rgba(203,224,137,0.08);
+  border-radius: 12px;
+  box-shadow: 0 18px 60px rgba(0,0,0,0.5);
+  color: var(--g-text);
+  z-index: 60;
+}
+
+.guadalito-wiki-panel h3 {
+  margin: 0 0 0.5rem 0;
+  color: var(--g-accent);
+  font-size: 1.05rem;
+  font-weight: 900;
+}
+
+.guadalito-wiki-panel p {
+  margin: 0 0 0.65rem 0;
+  color: var(--g-text-light);
+  line-height: 1.45;
+  font-size: 0.95rem;
+}
+
+.guadalito-wiki-panel img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 0.6rem;
+}
+
+.guadalito-wiki-panel a {
+  color: var(--g-accent);
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.guadalito-wiki-panel a:hover {
+  opacity: 0.9;
+}
+
+.guadalito-wiki-panel .wiki-cta {
+  display: inline-block;
+  margin-top: 0.6rem;
+  padding: 0.6rem 0.9rem;
+  border-radius: 10px;
+  background: var(--g-accent);
+  color: #071108;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.guadalito-wiki-panel .wiki-meta {
+  font-size: 0.78rem;
+  color: var(--g-text-muted);
+  margin-top: 0.5rem;
+}
+
+.guadalito-wiki h3 {
+  margin: 0;
+  color: var(--g-text);
+  font-size: 1.2rem;
+}
+
+.guadalito-wiki a {
+  width: fit-content;
+  color: var(--g-accent);
+  font-weight: 900;
+  transition: opacity var(--g-dur-fast) var(--g-ease);
+}
+
+.guadalito-wiki a:hover {
+  opacity: 0.78;
+}
+
+.guadalito-next {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.guadalito-model-section {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.58fr) minmax(420px, 1.42fr);
+  gap: var(--g-gap);
+  padding: 0 var(--g-gap) var(--g-gap);
+}
+
+.guadalito-model-copy,
+.guadalito-3d-shell {
+  border: 1px solid var(--g-border);
+  border-radius: var(--g-radius);
+  background: var(--g-bg-panel);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
+}
+
+.guadalito-model-copy {
+  display: grid;
+  align-content: end;
+  padding: clamp(1.2rem, 3vw, 2rem);
+}
+
+.guadalito-model-copy h2 {
+  margin: 0;
+  color: var(--g-white);
+  font-size: clamp(2rem, 4vw, 4.5rem);
+  font-weight: 950;
+  line-height: 0.9;
+}
+
+.guadalito-model-copy p {
+  max-width: 560px;
+  margin: 1rem 0 0;
+  color: var(--g-text-light);
+}
+
+.guadalito-3d-shell {
+  min-height: 680px;
+  overflow: hidden;
+  position: relative;
+  background:
+    radial-gradient(circle at 42% 10%, rgba(233, 207, 124, 0.16), transparent 20rem),
+    radial-gradient(circle at 55% 34%, rgba(152, 190, 81, 0.2), transparent 30rem),
+    linear-gradient(180deg, rgba(8, 24, 12, 0.98), rgba(2, 7, 4, 1));
+}
+
+.guadalito-3d-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 248, 234, 0.04), transparent 34%),
+    radial-gradient(circle at 50% 78%, transparent 34%, rgba(0, 0, 0, 0.38) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.guadalito-3d-canvas {
+  width: 100%;
+  height: 680px;
+  display: block;
+}
+
+@media (max-width: 1180px) {
+  .guadalito-workbench {
+    grid-template-columns: 260px minmax(0, 1fr);
+  }
+
+  .guadalito-panel--detail {
+    grid-column: 1 / -1;
+    position: relative;
+    top: auto;
+    max-height: none;
+    overflow-y: visible;
+  }
+}
+
+@media (max-width: 880px) {
+  .guadalito-hero,
+  .guadalito-workbench,
+  .guadalito-model-section {
+    grid-template-columns: 1fr;
+  }
+
+  .guadalito-hero__stats {
+    grid-template-columns: 1fr;
+  }
+
+  .guadalito-panel {
+    position: relative;
+    top: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .guadalito-hero,
+  .guadalito-grid,
+  .guadalito-model-section {
+    padding-inline: 1rem;
+  }
+
+  .guadalito-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .guadalito-hero__stats {
+    grid-template-columns: 1fr;
+  }
+
+  .guadalito-workbench {
+    padding: 0.65rem;
+  }
+
+  .guadalito-map {
+    min-height: 420px;
+  }
+
+  .guadalito-map-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .guadalito-map-toolbar > div {
+    flex: none;
+  }
+
+  .guadalito-map-toolbar-buttons {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+
+  .guadalito-map-toolbar-buttons::-webkit-scrollbar {
+    display: none;
+  }
+
+  .guadalito-map-toolbar button {
+    flex-shrink: 0;
+    padding: 0 0.7rem;
+    font-size: 0.8rem;
+  }
+
+  .guadalito-next {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Mapbox Tree Markers ──────────────────────────────────────────────────── */
+.mapbox-tree-objective {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 3px solid;
+  color: #071108;
+  font-weight: 900;
+  font-size: 11px;
+  cursor: pointer;
+  transition:
+    transform var(--g-dur-base) var(--g-ease),
+    box-shadow var(--g-dur-base) var(--g-ease),
+    border-width var(--g-dur-fast) var(--g-ease);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.mapbox-tree-objective:hover {
+  transform: scale(1.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.mapbox-tree-objective.is-selected {
+  transform: scale(1.3);
+  border-width: 4px;
+  box-shadow: 0 0 16px rgba(247, 240, 164, 0.6), 0 4px 16px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+.mapbox-tree-objective span {
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
+}

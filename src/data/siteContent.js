@@ -1,0 +1,186 @@
+import { localImages } from './images';
+
+export const contact = {
+  city: 'Cali, Colombia',
+  phoneLabel: '+57 316 044 5577',
+  phoneHref: 'tel:+573160445577',
+  whatsappHref: 'https://wa.me/573160445577',
+  email: 'comercial@intagros.com.co',
+}
+
+export const company = {
+  name: 'INTAGROS',
+  descriptor: 'Inteligencia Agropecuaria Sostenible',
+  promise: 'Consultoría, ingeniería y gestión de proyectos para operaciones agropecuarias más productivas, sostenibles y medibles.',
+  mission: 'Acompañar a productores, empresas y aliados agroindustriales con criterio técnico, ejecución cercana y soluciones que conectan campo, ambiente, tecnología e infraestructura.',
+  vision: 'Ser un aliado de referencia para el agro colombiano por la calidad de sus diagnósticos, la seriedad de su implementación y la capacidad de convertir información en decisiones.',
+  values: ['Eficiencia', 'Flexibilidad', 'Profesionalismo', 'Sostenibilidad'],
+}
+
+export const heroSlides = [
+  'https://www.intagros.com.co/wp-content/uploads/2026/02/55.jpeg',
+  'https://www.intagros.com.co/wp-content/uploads/2026/02/00.jpeg',
+  'https://www.intagros.com.co/wp-content/uploads/2026/02/11.jpeg',
+  'https://www.intagros.com.co/wp-content/uploads/2020/06/Asesoria11.jpeg',
+]
+
+export const partnerLogos = [
+  { src: 'https://www.intagros.com.co/wp-content/uploads/2025/04/Balsilla-Logo-New.png', alt: 'Balsilla' },
+  { src: 'https://www.intagros.com.co/wp-content/uploads/2025/04/san-francisco.png', alt: 'San Francisco' },
+  { src: 'https://www.intagros.com.co/wp-content/uploads/2025/04/LUCERNA.png', alt: 'Lucerna' },
+  { src: 'https://www.intagros.com.co/wp-content/uploads/2025/04/carmelita-logo.png', alt: 'Carmelita' },
+  { src: 'https://www.intagros.com.co/wp-content/uploads/2025/05/Etiquetas-Haciendas-1.svg', alt: 'Haciendas aliadas' },
+  { src: 'https://www.intagros.com.co/wp-content/uploads/2025/05/Etiquetas-Haciendas-100-x-70-px-2.png', alt: 'Aliado agroindustrial' },
+]
+
+export const units = [
+  {
+    slug: 'asesorias-agroindustriales',
+    label: 'Asesorías',
+    title: 'Asesorías Agroindustriales',
+    eyebrow: 'Unidad 01',
+    category: 'Gestión de campo',
+    image: localImages.asesorias,
+    heroImage: 'https://www.intagros.com.co/wp-content/uploads/2026/02/01.jpeg',
+    intro: 'Acompañamiento técnico especializado en producción, cosecha y comercialización agropecuaria para elevar productividad, calidad y rentabilidad.',
+    detail: 'Integramos diagnóstico agronómico, auditoría de operación y capacitación de equipos para que cada recomendación sea aplicable en campo y medible en resultados.',
+    metrics: ['300+ proyectos ejecutados', '18 departamentos', '25+ años de experiencia'],
+    services: [
+      'Acompañamiento de cosecha',
+      'Auditoría e interventorías de campo, cosecha, transporte y taller',
+      'Diagnóstico de procesos agrícolas',
+      'Capacitación de operadores y supervisores',
+      'Manejo de frutales, hortalizas y zonas verdes',
+    ],
+    process: ['Visita de diagnóstico', 'Análisis técnico y financiero', 'Implementación asistida', 'Seguimiento con indicadores'],
+  },
+  {
+    slug: 'gestion-ambiental',
+    label: 'Ambiental',
+    title: 'Gestión Ambiental',
+    eyebrow: 'Unidad 02',
+    category: 'Sostenibilidad',
+    image: localImages.ambiental,
+    heroImage: localImages.ambiental,
+    intro: 'Soluciones ambientales para predios, cultivos y proyectos agroindustriales que necesitan operar con responsabilidad y visión de largo plazo.',
+    detail: 'Diseñamos planes ambientales accionables, con énfasis en recursos hídricos, reforestación, especies nativas y administración de áreas estratégicas.',
+    metrics: ['Recursos hídricos', 'Especies nativas', 'Reforestación técnica'],
+    services: [
+      'Proyectos ambientales',
+      'Bonos de carbono',
+      'Administración de guaduales',
+      'Reforestaciones y restauración',
+      'Gestión de recursos hídricos',
+    ],
+    process: ['Caracterización del predio', 'Priorización ambiental', 'Ejecución y control', 'Informe técnico de avance'],
+  },
+  {
+    slug: 'tecnologia-innovacion',
+    label: 'Tecnología',
+    title: 'Tecnología e Innovación',
+    eyebrow: 'Unidad 03',
+    category: 'Agricultura inteligente',
+    image: localImages.tecnologia,
+    heroImage: localImages.tecnologia,
+    intro: 'Herramientas de agricultura de precisión, analítica e inteligencia artificial para tomar mejores decisiones en campo.',
+    detail: 'Conectamos datos de operación, monitoreo y productividad para detectar oportunidades y convertirlas en acciones claras.',
+    metrics: ['Agricultura de precisión', 'IA aplicada', 'Datos accionables'],
+    services: [
+      'Agricultura de precisión',
+      'Soluciones de inteligencia artificial para caña y granos',
+      'Tableros de seguimiento',
+      'Diagnóstico tecnológico',
+      'Automatización de reportes de campo',
+    ],
+    process: ['Levantamiento de datos', 'Modelo de indicadores', 'Implementación tecnológica', 'Optimización continua'],
+  },
+  {
+    slug: 'logistica-infraestructura',
+    label: 'Logística',
+    title: 'Logística e Infraestructura',
+    eyebrow: 'Unidad 04',
+    category: 'Operación agroindustrial',
+    image: localImages.logistica,
+    heroImage: localImages.logistica,
+    intro: 'Planeación y optimización de infraestructura vial, logística y operación de soporte para proyectos agroindustriales.',
+    detail: 'Acompañamos decisiones de transporte, vías internas, combustibles, maquinaria e infraestructura asociada al desempeño del cultivo.',
+    metrics: ['Vías internas', 'Transporte agrícola', 'Soporte operativo'],
+    services: [
+      'Infraestructura vial agrícola',
+      'Gestión logística de cosecha',
+      'Control de combustible',
+      'Soporte para maquinaria y taller',
+      'Planeación inmobiliaria agrícola',
+    ],
+    process: ['Mapa operativo', 'Diagnóstico de restricciones', 'Plan de mejora', 'Control de desempeño'],
+  },
+]
+
+export const crops = [
+  {
+    slug: 'cana-de-azucar',
+    label: 'Caña',
+    title: 'Caña de Azúcar',
+    eyebrow: 'Cultivo estratégico',
+    category: 'Agroindustria',
+    image: 'https://www.intagros.com.co/wp-content/uploads/2026/02/53.jpeg',
+    heroImage: 'https://www.intagros.com.co/wp-content/uploads/2026/02/53.jpeg',
+    intro: 'Manejo técnico de caña de azúcar con foco en productividad, riego, cosecha, costos y eficiencia operativa.',
+    detail: 'Trabajamos desde el diagnóstico del lote hasta el acompañamiento de labores, buscando decisiones agronómicas y operativas más rentables.',
+    metrics: ['Riego eficiente', 'Cosecha controlada', 'Productividad por lote'],
+    services: [
+      'Diagnóstico agronómico de lotes',
+      'Manejo de riego y nutrición',
+      'Acompañamiento de cosecha mecanizada',
+      'Control de costos por labor',
+      'Indicadores de rendimiento y calidad',
+    ],
+    process: ['Diagnóstico del cultivo', 'Plan técnico por lote', 'Acompañamiento operativo', 'Medición de productividad'],
+  },
+  {
+    slug: 'frutales-tropicales',
+    label: 'Frutales',
+    title: 'Frutales Tropicales',
+    eyebrow: 'Producción especializada',
+    category: 'Exportación y mercado local',
+    image: 'https://www.intagros.com.co/wp-content/uploads/2026/02/25.jpeg',
+    heroImage: 'https://www.intagros.com.co/wp-content/uploads/2026/02/25.jpeg',
+    intro: 'Asesoría para establecimiento, manejo fitosanitario, nutrición y cosecha de frutales tropicales.',
+    detail: 'Alineamos manejo agronómico, calidad de fruta y logística poscosecha para mejorar consistencia productiva.',
+    metrics: ['Nutrición vegetal', 'Sanidad del cultivo', 'Calidad poscosecha'],
+    services: ['Establecimiento de huertos', 'Manejo fitosanitario', 'Nutrición y riego', 'Cosecha y poscosecha', 'Planes de mejora por variedad'],
+    process: ['Caracterización del cultivo', 'Programa técnico', 'Acompañamiento en campo', 'Evaluación por cosecha'],
+  },
+  {
+    slug: 'cultivos-transitorios',
+    label: 'Transitorios',
+    title: 'Cultivos Transitorios',
+    eyebrow: 'Producción por ciclo',
+    category: 'Planeación agrícola',
+    image: 'https://www.intagros.com.co/wp-content/uploads/2026/02/54.jpeg',
+    heroImage: 'https://www.intagros.com.co/wp-content/uploads/2026/02/54.jpeg',
+    intro: 'Planeación y manejo técnico para cultivos de ciclo corto con control de costos, ventanas climáticas y productividad.',
+    detail: 'Ayudamos a ordenar decisiones de siembra, nutrición, sanidad y cosecha con indicadores claros por ciclo.',
+    metrics: ['Ventanas climáticas', 'Costos por ciclo', 'Rendimiento esperado'],
+    services: ['Planificación de siembra', 'Manejo de suelo y nutrición', 'Control fitosanitario', 'Seguimiento de labores', 'Evaluación de rentabilidad'],
+    process: ['Plan de siembra', 'Programa de manejo', 'Control de ejecución', 'Cierre técnico del ciclo'],
+  },
+  {
+    slug: 'florales',
+    label: 'Florales',
+    title: 'Cultivos Florales',
+    eyebrow: 'Alta calidad',
+    category: 'Producción ornamental',
+    image: 'https://www.intagros.com.co/wp-content/uploads/2026/02/11.jpeg',
+    heroImage: 'https://www.intagros.com.co/wp-content/uploads/2026/02/11.jpeg',
+    intro: 'Manejo técnico de cultivos florales y ornamentales con enfoque en sanidad, calidad visual y consistencia productiva.',
+    detail: 'Diseñamos programas de manejo para sistemas intensivos donde el detalle operativo impacta directamente la calidad comercial.',
+    metrics: ['Calidad visual', 'Sanidad vegetal', 'Manejo intensivo'],
+    services: ['Diagnóstico del sistema productivo', 'Nutrición y fertirriego', 'Manejo sanitario', 'Capacitación de personal', 'Indicadores de calidad'],
+    process: ['Evaluación del cultivo', 'Programa de manejo', 'Capacitación en campo', 'Control de calidad'],
+  },
+]
+
+export const pages = [...units, ...crops]
+
+export const getPageBySlug = (slug) => pages.find((page) => page.slug === slug)

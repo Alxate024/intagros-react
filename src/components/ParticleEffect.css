@@ -1,0 +1,42 @@
+/* ===========================================
+   EFECTO DE PARTÍCULAS ULTRA PREMIUM
+   Toque de lujo sutil para el header
+   =========================================== */
+
+.particle-canvas {
+  filter: blur(0.5px);
+  mix-blend-mode: soft-light;
+}
+
+/* Animación de entrada para las partículas */
+@keyframes particleFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+.particle-canvas {
+  animation: particleFadeIn 2s ease-out 1s both;
+}
+
+/* Efectos de profundidad */
+.particle-canvas {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Optimización para rendimiento */
+.particle-canvas {
+  will-change: transform;
+}
+
+/* Soporte para motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .particle-canvas {
+    display: none;
+  }
+}

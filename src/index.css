@@ -1,0 +1,138 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===========================
+   ESTILOS PERSONALIZADOS BASE
+   =========================== */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white text-gray-900 font-sans;
+    margin: 0;
+  }
+
+  /* Tipografía */
+  h1 {
+    @apply text-4xl md:text-5xl font-bold text-jade-900;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl font-bold text-jade-800;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl font-bold text-jade-700;
+  }
+
+  h4 {
+    @apply text-xl font-semibold text-jade-600;
+  }
+
+  p {
+    @apply text-gray-700 leading-relaxed;
+  }
+
+  a {
+    @apply text-jade-700 hover:text-jade-900 transition-colors duration-200;
+  }
+}
+
+@layer components {
+  /* Botones */
+  .btn-primary {
+    @apply px-6 py-3 bg-jade-700 text-white font-semibold rounded-lg 
+           hover:bg-jade-800 transition-all duration-300 shadow-jade-md 
+           hover:shadow-jade-lg active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 bg-white text-jade-700 font-semibold rounded-lg 
+           border-2 border-jade-700 hover:bg-jade-50 transition-all duration-300
+           shadow-jade-sm hover:shadow-jade-md;
+  }
+
+  .btn-outline {
+    @apply px-6 py-3 border-2 border-jade-700 text-jade-700 font-semibold 
+           rounded-lg hover:bg-jade-50 transition-all duration-200;
+  }
+
+  .btn-gold {
+    @apply px-6 py-3 bg-gold-400 text-white font-semibold rounded-lg 
+           hover:bg-gold-600 transition-all duration-300 shadow-jade-md;
+  }
+
+  /* Cards */
+  .card {
+    @apply bg-white rounded-xl border border-gray-200 
+           shadow-jade-sm hover:shadow-jade-lg transition-shadow duration-300
+           overflow-hidden;
+  }
+
+  .card-hover {
+    @apply card hover:scale-105 hover:-translate-y-2 transition-transform duration-300;
+  }
+
+  /* Container ancho */
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Hero Section */
+  .hero-gradient {
+    @apply bg-gradient-to-br from-jade-900 via-jade-800 to-jade-700;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-block px-3 py-1 bg-jade-100 text-jade-800 
+           text-sm font-semibold rounded-full;
+  }
+
+  .badge-success {
+    @apply bg-green-100 text-green-800;
+  }
+
+  .badge-info {
+    @apply bg-blue-100 text-blue-800;
+  }
+
+  .badge-warning {
+    @apply bg-yellow-100 text-yellow-800;
+  }
+}
+
+/* ===========================
+   ANIMACIONES PERSONALIZADAS
+   =========================== */
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-in forwards;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.6s ease-out forwards;
+  }
+
+  .animate-slide-down {
+    animation: slideDown 0.6s ease-out forwards;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-jade-700 to-jade-900 
+           bg-clip-text text-transparent;
+  }
+
+  .transition-smooth {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  .shadow-jade {
+    @apply shadow-jade-lg;
+  }
+}

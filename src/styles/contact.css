@@ -1,0 +1,419 @@
+.ig-contact {
+  background-color: #f8f6f1;
+  padding: 7rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.ig-contact::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(45,90,39,0.04) 80px),
+    repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(45,90,39,0.04) 80px);
+  pointer-events: none;
+}
+
+.ig-contact .ig-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.ig-ct-wrap {
+  display: grid;
+  grid-template-columns: 1fr;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(26,46,26,0.04), 0 20px 60px rgba(26,46,26,0.12), 0 0 0 1px rgba(26,46,26,0.06);
+}
+
+@media (min-width: 900px) {
+  .ig-ct-wrap {
+    grid-template-columns: 420px 1fr;
+  }
+}
+
+.ig-ct-left {
+  background: #1a2e1a;
+  padding: 3.5rem 3rem;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 500px;
+}
+
+.ig-ct-left::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(ellipse 120% 80% at -20% 110%, rgba(45,90,39,0.9) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 60% at 110% -10%, rgba(163,197,133,0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.ig-ct-left::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(-45deg, transparent 0px, transparent 18px, rgba(163,197,133,0.03) 18px, rgba(163,197,133,0.03) 19px);
+  pointer-events: none;
+}
+
+.ig-ct-left-content {
+  position: relative;
+  z-index: 1;
+}
+
+.ig-ct-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #a3c585;
+  margin-bottom: 1.75rem;
+}
+
+.ig-ct-eyebrow::before {
+  content: '';
+  width: 20px;
+  height: 1.5px;
+  background: #a3c585;
+  display: inline-block;
+}
+
+.ig-ct-left h2 {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.9rem, 3.2vw, 2.8rem);
+  line-height: 1.08;
+  color: #f8f6f1;
+  margin: 0 0 1.5rem 0;
+  letter-spacing: -0.025em;
+}
+
+.ig-ct-left h2 span {
+  color: #a3c585;
+}
+
+.ig-ct-left-content > p {
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: rgba(248,246,241,0.55);
+  margin: 0 0 2.5rem 0;
+}
+
+.ig-ct-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.ig-ct-info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 1rem;
+  background: rgba(248,246,241,0.04);
+  border: 1px solid rgba(248,246,241,0.07);
+  border-radius: 10px;
+  transition: background 0.25s;
+  text-decoration: none;
+}
+
+.ig-ct-info-item:hover {
+  background: rgba(163,197,133,0.08);
+  border-color: rgba(163,197,133,0.2);
+  text-decoration: none;
+}
+
+.ig-ct-info-icon {
+  width: 36px;
+  height: 36px;
+  background: rgba(163,197,133,0.12);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ig-ct-info-icon svg {
+  width: 15px;
+  height: 15px;
+  stroke: #a3c585;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ig-ct-info-text {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(248,246,241,0.75);
+  line-height: 1.3;
+}
+
+.ig-ct-info-label {
+  display: block;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(163,197,133,0.5);
+  margin-bottom: 1px;
+}
+
+.ig-ct-left-footer {
+  position: relative;
+  z-index: 1;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(248,246,241,0.08);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ig-ct-left-footer img {
+  height: 32px;
+  width: auto;
+  filter: brightness(0) invert(1);
+  opacity: 0.5;
+}
+
+.ig-ct-left-footer p {
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 0.85rem;
+  color: rgba(248,246,241,0.3);
+  margin: 0;
+  font-style: italic;
+}
+
+.ig-ct-wa {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(37,211,102,0.08);
+  border: 1px solid rgba(37,211,102,0.2);
+  border-radius: 999px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #1a7a3a;
+  text-decoration: none;
+  transition: all 0.25s;
+  margin-top: 1.25rem;
+  width: fit-content;
+}
+
+.ig-ct-wa:hover {
+  background: rgba(37,211,102,0.14);
+  border-color: rgba(37,211,102,0.35);
+  text-decoration: none;
+  color: #1a7a3a;
+}
+
+.ig-ct-wa svg {
+  width: 16px;
+  height: 16px;
+  fill: #25d366;
+  flex-shrink: 0;
+}
+
+.ig-ct-right {
+  background: #ffffff;
+  padding: 3.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ig-ct-right-header {
+  margin-bottom: 2.5rem;
+}
+
+.ig-ct-right-header h3 {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: #1a2e1a;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.02em;
+}
+
+.ig-ct-right-header p {
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 0.95rem;
+  color: #6b7b6b;
+  margin: 0;
+}
+
+.ig-ct-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.ig-ct-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 500px) {
+  .ig-ct-form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ig-ct-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.ig-ct-field label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a9e8a;
+}
+
+.ig-ct-field input,
+.ig-ct-field textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  border: 1.5px solid #e8ede8;
+  background: #f9faf9;
+  color: #1a2e1a;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.875rem;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.ig-ct-field input::placeholder,
+.ig-ct-field textarea::placeholder {
+  color: #b0bfb0;
+}
+
+.ig-ct-field input:focus,
+.ig-ct-field textarea:focus {
+  border-color: #2d5a27;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(45,90,39,0.08);
+}
+
+.ig-ct-field textarea {
+  resize: none;
+  min-height: 110px;
+  line-height: 1.6;
+}
+
+.ig-ct-interes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+@media (min-width: 600px) {
+  .ig-ct-interes-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.ig-ct-interes-btn {
+  padding: 0.5rem 0.75rem;
+  border: 1.5px solid #e8ede8;
+  border-radius: 7px;
+  background: #f9faf9;
+  color: #4a5c4a;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  user-select: none;
+}
+
+.ig-ct-interes-btn:hover {
+  border-color: #a3c585;
+  color: #2d5a27;
+  background: rgba(163,197,133,0.08);
+}
+
+.ig-ct-interes-btn.selected {
+  border-color: #2d5a27;
+  background: rgba(45,90,39,0.08);
+  color: #2d5a27;
+}
+
+.ig-ct-submit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.ig-ct-submit p {
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 0.82rem;
+  color: #8a9e8a;
+  margin: 0;
+  font-style: italic;
+}
+
+.ig-ct-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 2rem;
+  background: #1a2e1a;
+  color: #f8f6f1;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.ig-ct-btn:hover {
+  background: #2d5a27;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(26,46,26,0.2);
+  gap: 0.9rem;
+}
+
+.ig-ct-btn svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s;
+}
+
+.ig-ct-btn:hover svg {
+  transform: translateX(3px);
+}

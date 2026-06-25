@@ -1,0 +1,746 @@
+/* ============================================================================
+   PREDIO ZAPOTE - CSS MEJORADO
+   ============================================================================
+   Soluciona: Header que tapa el contenido
+   Mejora: Estructura con secciones bien definidas
+   Permite: Imágenes personalizables para cada árbol
+   ========================================================================== */
+
+/* --- Variables --- */
+:root {
+  --zapote-bg: #101f13;
+  --zapote-bg-panel: rgba(20, 40, 24, 0.95);
+  --zapote-accent: #b4c68a;
+  --zapote-accent-soft: rgba(180, 198, 138, 0.24);
+  --zapote-text: #f4f7e7;
+  --zapote-text-light: rgba(244, 247, 231, 0.78);
+  --zapote-border: rgba(180, 198, 138, 0.18);
+  --zapote-radius: 18px;
+  --zapote-gap: 1.85rem;
+}
+
+/* --- Contenedor Principal --- */
+.zapote-page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #0f2514 0%, #111f16 45%, #111f16 100%);
+  color: var(--zapote-text);
+}
+
+/* ============================================================================
+   SECCIÓN HERO
+   ============================================================================ */
+.zapote-hero-section {
+  padding-top: calc(var(--header-height) + 2rem);
+  padding-bottom: 3rem;
+  background: linear-gradient(135deg, rgba(18, 50, 26, 0.98), rgba(13, 34, 18, 0.94));
+}
+
+.zapote-hero-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 4vw, 3rem);
+}
+
+.zapote-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(300px, 1.1fr) minmax(260px, 0.9fr);
+  gap: min(2.5rem, 4vw);
+  align-items: center;
+}
+
+.zapote-hero-copy {
+  max-width: 700px;
+}
+
+.zapote-hero-cards {
+  display: grid;
+  gap: 1rem;
+}
+
+.zapote-hero-card {
+  padding: 1.6rem;
+  border: 1px solid var(--zapote-accent-soft);
+  border-radius: calc(var(--zapote-radius) + 4px);
+  background: rgba(18, 44, 26, 0.85);
+  backdrop-filter: blur(14px);
+  display: grid;
+  gap: 0.75rem;
+}
+
+.zapote-hero-card span {
+  color: var(--zapote-text-light);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.zapote-hero-card strong {
+  color: var(--zapote-accent);
+  font-size: 2.5rem;
+  font-weight: 950;
+}
+
+.zapote-map-container {
+  position: relative;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 680px;
+  display: grid;
+  grid-template-columns: minmax(320px, 440px) minmax(420px, 1fr);
+  gap: 1.5rem;
+  border-radius: var(--zapote-radius);
+  overflow: hidden;
+  background: rgba(18, 40, 24, 0.96);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.45);
+}
+
+.zapote-info-panel {
+  position: static;
+  top: auto;
+  left: auto;
+  width: auto;
+  max-height: none;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.8rem;
+  border-radius: calc(var(--zapote-radius) + 4px);
+  border: 1px solid var(--zapote-accent-soft);
+  background: rgba(18, 40, 24, 0.95);
+  backdrop-filter: blur(24px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  overflow-y: auto;
+}
+
+.zapote-info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.zapote-panel-label {
+  display: inline-block;
+  margin-bottom: 0.25rem;
+  color: var(--zapote-accent-soft);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.zapote-details-section {
+  margin-top: 2.5rem;
+}
+
+.zapote-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(280px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.zapote-card {
+  padding: 2rem;
+  border: 1px solid var(--zapote-border);
+  border-radius: calc(var(--zapote-radius) + 2px);
+  background: rgba(18, 40, 24, 0.84);
+  backdrop-filter: blur(10px);
+  display: grid;
+  gap: 1rem;
+}
+
+.zapote-card-highlight {
+  border-color: var(--zapote-accent);
+  background: rgba(16, 34, 16, 0.96);
+}
+
+.zapote-card h3 {
+  margin: 0;
+  font-size: 1.45rem;
+  color: #fff;
+}
+
+.zapote-card ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: var(--zapote-text-light);
+}
+
+.zapote-card li {
+  margin-bottom: 0.5rem;
+}
+
+.zapote-card li strong {
+  color: var(--zapote-accent);
+}
+
+.zapote-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  color: var(--zapote-text-light);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.zapote-breadcrumb a {
+  color: var(--zapote-accent);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.zapote-breadcrumb a:hover {
+  opacity: 0.8;
+}
+
+.zapote-breadcrumb span {
+  opacity: 0.5;
+}
+
+.zapote-hero-content {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--zapote-gap);
+  align-items: end;
+}
+
+.zapote-hero-text {
+  max-width: 700px;
+}
+
+.zapote-kicker {
+  display: block;
+  margin-bottom: 1rem;
+  color: var(--zapote-accent);
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.zapote-hero-section h1 {
+  margin: 0 0 1rem 0;
+  color: #fff;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 950;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+}
+
+.zapote-hero-section p {
+  margin: 0;
+  color: var(--zapote-text-light);
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.zapote-hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  min-width: 320px;
+}
+
+.zapote-hero-stats article {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.6rem;
+  border: 1px solid var(--zapote-accent-soft);
+  border-radius: calc(var(--zapote-radius) + 4px);
+  background: rgba(18, 44, 26, 0.72);
+  backdrop-filter: blur(14px);
+}
+
+.zapote-hero-stats strong {
+  color: var(--zapote-accent);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 950;
+  line-height: 1;
+}
+
+.zapote-hero-stats span {
+  color: var(--zapote-text-light);
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.zapote-main-content {
+  display: grid;
+  gap: 2.5rem;
+}
+
+.zapote-details-section {
+  margin-top: 0;
+}
+
+/* ============================================================================
+   SECCIÓN DEL MAPA
+   ============================================================================ */
+.zapote-map-section {
+  padding: var(--zapote-gap);
+  min-height: 80vh;
+}
+
+.zapote-map-container {
+  position: relative;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 680px;
+  display: grid;
+  grid-template-columns: minmax(320px, 440px) minmax(420px, 1fr);
+  gap: 1.5rem;
+  border-radius: var(--zapote-radius);
+  overflow: hidden;
+  background: rgba(18, 40, 24, 0.96);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.45);
+}
+
+/* --- Panel de Información --- */
+.zapote-info-panel {
+  position: static;
+  top: auto;
+  left: auto;
+  width: auto;
+  max-height: none;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.8rem;
+  border-radius: calc(var(--zapote-radius) + 4px);
+  border: 1px solid var(--zapote-accent-soft);
+  background: rgba(18, 40, 24, 0.95);
+  backdrop-filter: blur(24px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  overflow-y: auto;
+}
+
+.zapote-info-panel .zapote-info-header {
+  flex-wrap: wrap;
+}
+
+.zapote-empty-panel {
+  background: rgba(16, 38, 20, 0.9);
+}
+
+.zapote-info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.zapote-info-header h2 {
+  margin: 0;
+  color: var(--zapote-accent);
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+.zapote-close-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--zapote-border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--zapote-text);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.zapote-close-btn:hover {
+  background: rgba(180, 198, 138, 0.18);
+  border-color: var(--zapote-accent);
+}
+
+.zapote-tree-info h3 {
+  margin: 0 0 0.5rem 0;
+  color: #fff;
+  font-size: 1.8rem;
+  font-weight: 900;
+}
+
+.zapote-tree-group {
+  margin: 0 0 1rem 0;
+  color: var(--zapote-accent);
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* --- Imagen Personalizable del Árbol --- */
+.zapote-tree-image {
+  width: 100%;
+  margin: 1rem 0;
+  border-radius: 14px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(18, 40, 24, 0.9), rgba(8, 18, 12, 0.9));
+  border: 1px solid var(--zapote-accent-soft);
+}
+
+.zapote-tree-image img {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+/* --- Wikipedia Content --- */
+.zapote-loading,
+.zapote-no-info {
+  color: var(--zapote-text-light);
+  font-style: italic;
+}
+
+.zapote-wiki-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.zapote-wiki-image {
+  width: 100%;
+  border-radius: 8px;
+  max-height: 250px;
+  object-fit: cover;
+}
+
+.zapote-wiki-content p {
+  margin: 0;
+  color: var(--zapote-text-light);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.zapote-wiki-link {
+  display: inline-block;
+  color: #c7d89f;
+  font-weight: 800;
+  text-decoration: none;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.zapote-wiki-link:hover {
+  color: var(--zapote-accent);
+  opacity: 0.92;
+}
+
+.zapote-wiki-link:hover {
+  opacity: 0.8;
+}
+
+/* --- Wrapper del Mapa --- */
+.zapote-map-wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: var(--zapote-radius);
+  overflow: hidden;
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.25);
+}
+
+.mapbox-orchard-shell {
+  width: 100%;
+  height: 100%;
+}
+
+.tree-marker {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+  border: 3px solid;
+}
+
+.tree-marker:hover {
+  transform: scale(1.1);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+}
+
+.tree-marker.selected {
+  transform: scale(1.35);
+  box-shadow: 0 0 24px rgba(255, 255, 255, 0.35);
+}
+
+.zapote-empty-state {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem 0;
+  color: var(--zapote-text-light);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.zapote-empty-state p:first-child {
+  font-weight: 700;
+}
+
+.zapote-empty-panel {
+  background: rgba(6, 17, 8, 0.9);
+}
+
+/* --- Panel de Controles --- */
+.zapote-controls-panel {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  left: auto;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(180px, 1fr));
+  gap: 1rem;
+  padding: 1.2rem 1.4rem;
+  border-radius: calc(var(--zapote-radius) + 4px);
+  border: 1px solid var(--zapote-border);
+  background: rgba(18, 40, 24, 0.96);
+  backdrop-filter: blur(24px);
+  box-shadow: 0 22px 56px rgba(0, 0, 0, 0.45);
+}
+
+.zapote-anchor-btn {
+  grid-column: span 2;
+  min-width: 100%;
+  padding: 0.95rem 1.35rem;
+  border: 2px solid var(--zapote-accent);
+  border-radius: 14px;
+  background: rgba(180, 198, 138, 0.14);
+  color: var(--zapote-accent);
+  font-weight: 900;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.zapote-anchor-btn:hover {
+  background: rgba(180, 198, 138, 0.28);
+  transform: translateY(-1px);
+}
+
+.zapote-anchor-btn.anclado {
+  background: rgba(142, 72, 32, 0.3);
+  border-color: #b64e2d;
+  color: #ffd3b2;
+}
+
+.zapote-control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 140px;
+}
+
+.zapote-control-group label {
+  color: var(--zapote-accent);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.zapote-control-group input[type="range"] {
+  width: 100%;
+  cursor: pointer;
+}
+
+.zapote-control-group input[type="range"]:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ============================================================================
+   SECCIÓN DE INSTRUCCIONES
+   ============================================================================ */
+.zapote-instructions-section {
+  padding: 4rem var(--zapote-gap);
+  background: linear-gradient(180deg, var(--zapote-bg) 0%, rgba(16, 40, 24, 0.65) 100%);
+}
+
+.zapote-instructions-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.zapote-instructions-section h2 {
+  margin: 0 0 3rem 0;
+  color: #f3faff;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 950;
+  text-align: center;
+}
+
+.zapote-instructions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+}
+
+.zapote-instructions-grid article {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2rem;
+  border: 1px solid var(--zapote-border);
+  border-radius: calc(var(--zapote-radius) + 2px);
+  background: rgba(18, 40, 26, 0.84);
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+}
+
+.zapote-instructions-grid article:hover {
+  background: rgba(16, 40, 24, 0.94);
+  border-color: var(--zapote-accent);
+  transform: translateY(-4px);
+}
+
+.zapote-instruction-icon {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.zapote-instructions-grid h3 {
+  margin: 0;
+  color: var(--zapote-accent);
+  font-size: 1.3rem;
+  font-weight: 900;
+}
+
+.zapote-instructions-grid p {
+  margin: 0;
+  color: var(--zapote-text-light);
+  line-height: 1.6;
+}
+
+/* ============================================================================
+   RESPONSIVE
+   ============================================================================ */
+@media (max-width: 1024px) {
+  .zapote-hero-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .zapote-hero-stats {
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+  }
+  
+  .zapote-map-container {
+    height: 70vh;
+  }
+}
+
+@media (max-width: 768px) {
+  .zapote-hero-section {
+    padding-top: calc(var(--header-height) + 1rem);
+    padding-bottom: 2rem;
+  }
+  
+  .zapote-hero-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .zapote-map-section {
+    padding: 1rem;
+  }
+  
+  .zapote-map-container {
+    height: 60vh;
+    min-height: 500px;
+  }
+  
+  .zapote-info-panel {
+    top: 1rem;
+    left: 1rem;
+    right: 1rem;
+    width: auto;
+    max-height: calc(100% - 180px);
+  }
+  
+  .zapote-controls-panel {
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    transform: none;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .zapote-control-group {
+    width: 100%;
+  }
+  
+  .zapote-instructions-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .zapote-hero-section h1 {
+    font-size: 2rem;
+  }
+  
+  .zapote-map-container {
+    height: 50vh;
+    min-height: 400px;
+  }
+  
+  .zapote-info-panel {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-height: 60vh;
+    border-radius: var(--zapote-radius) var(--zapote-radius) 0 0;
+  }
+  
+  .zapote-controls-panel {
+    position: relative;
+    bottom: auto;
+    margin-top: 1rem;
+  }
+}
+
+/* ============================================================================
+   SCROLLBAR PERSONALIZADO
+   ============================================================================ */
+.zapote-info-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.zapote-info-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.zapote-info-panel::-webkit-scrollbar-thumb {
+  background: var(--zapote-border);
+  border-radius: 99px;
+}
+
+.zapote-info-panel::-webkit-scrollbar-thumb:hover {
+  background: var(--zapote-accent);
+}
