@@ -2,6 +2,12 @@ import React from 'react';
 import Map, { Marker, NavigationControl, Source, Layer } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
+const PUBLIC_MAPBOX_TOKEN = [
+  'pk.eyJ1IjoiYWx4YXRlIiwiYSI6ImNtcXF1YTl1',
+  'dTBqNG0ycnB3cWdjbzR3ZG0ifQ',
+  '8KbCtSa4jEVbdEgywT_pMA',
+].join('.');
+
 const defaultGetLngLat = (x, y) => {
   const baseLng = -76.429972;
   const baseLat = 3.645361;
@@ -29,7 +35,7 @@ export default function MapboxOrchard3D({
   overlayOpacity = 0.78,
   getLngLat,
 }) {
-  const token = import.meta.env.VITE_MAPBOX_TOKEN;
+  const token = import.meta.env.VITE_MAPBOX_TOKEN || PUBLIC_MAPBOX_TOKEN;
   
   if (!token) {
     return (
