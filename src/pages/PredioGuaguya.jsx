@@ -70,7 +70,7 @@ const normalizeText = (value) =>
 // Croquis constants and overlay (compatible with Zapote controls)
 const IMAGE_WIDTH = 1102
 const IMAGE_HEIGHT = 787
-const CROQUIS_IMAGE_URL = '/media/predio-guaguya-mapa.jpg'
+const CROQUIS_IMAGE_URL = '/media/predio-guaguya-mapa.png'
 
 const GUAGUYA_BASE_LNG = -76.4311
 const GUAGUYA_BASE_LAT = 3.6458

@@ -128,7 +128,7 @@ function getTreeVisualProfile(tree) {
 // --- CONSTANTES DEL CROQUIS ---
 const IMAGE_WIDTH = 1102;
 const IMAGE_HEIGHT = 787;
-const CROQUIS_IMAGE_URL = '/media/predio-el-zapote-mapa.png';
+const CROQUIS_IMAGE_URL = '/media/predio-el-zapote-mapa.jpg';
 
 export default function PredioZapote() {
   const [selectedTree, setSelectedTree] = useState(null);
