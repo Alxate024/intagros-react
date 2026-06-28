@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import './PrediosHub.css'
 
@@ -84,7 +84,6 @@ const activeFinca = activeClient.fincas[0]
 const allFincas = clientes.flatMap((cliente) => cliente.fincas.map((item) => ({ ...item, cliente })))
 const fincaDetailPath = `/predioshub/${activeFinca.slug}/`
 
-// ── Logo PNG en lugar del SVG original ──────────────────────────────────────
 function FincaIcon() {
   return (
     <img
@@ -139,19 +138,17 @@ function MapPreview({ src, alt }) {
 export default function PrediosHub() {
   const navigate = useNavigate()
   const location = useLocation()
-  const [detected, setDetected] = useState(null)
+  const [detected] = useState(() => {
+    if (typeof window === 'undefined') return null
+    const path = window.location.pathname
+    const ref = document.referrer || ''
+    return activeFinca.predios.find((p) => path.includes(p.slug) || ref.includes(p.slug)) ?? null
+  })
   const [bannerDismissed, setBannerDismissed] = useState(false)
   const [toast, setToast] = useState('')
   const toastTimer = useRef(null)
   const totalPredios = allFincas.reduce((sum, item) => sum + item.predios.length, 0)
   const isFincaDetail = location.pathname.includes(activeFinca.slug)
-
-  useEffect(() => {
-    const path = window.location.pathname
-    const ref = document.referrer || ''
-    const match = activeFinca.predios.find((p) => path.includes(p.slug) || ref.includes(p.slug))
-    setDetected(match ?? null)
-  }, [])
 
   const showToast = (msg) => {
     setToast(msg)

@@ -17,7 +17,15 @@ export default function PredioGuadalito() {
   const [groupFilter, setGroupFilter] = useState('Todos')
   const [search, setSearch] = useState('')
 
-  const [trees, setTrees] = useState(() => guadalitoTreesDefault.map((t) => ({ ...t })))
+  const [trees, setTrees] = useState(() => {
+    const baseTrees = guadalitoTreesDefault.map((t) => ({ ...t }))
+    try {
+      const saved = JSON.parse(localStorage.getItem('guadalito_point_overrides') || '{}')
+      return baseTrees.map((t) => (saved[t.id] ? { ...t, ...saved[t.id] } : t))
+    } catch {
+      return baseTrees
+    }
+  })
 
   // --- estados de calibración / overlay (persistidos como "guadalito_*")
   const [puntoLng, setPuntoLng] = useState(() => {
@@ -84,17 +92,6 @@ export default function PredioGuadalito() {
     saved[selectedTreeId] = { x, y }
     localStorage.setItem('guadalito_point_overrides', JSON.stringify(saved))
   }
-
-  // load overrides from localStorage on mount (in case user saved earlier via interactive mode)
-  useMemo(() => {
-    try {
-      const saved = JSON.parse(localStorage.getItem('guadalito_point_overrides') || '{}')
-      if (Object.keys(saved).length === 0) return
-      setTrees((prev) => prev.map((t) => (saved[t.id] ? { ...t, ...saved[t.id] } : t)))
-    } catch (err) {
-      // ignore
-    }
-  }, [])
 
   // función para convertir coordenadas de croquis a lon/lat (rotación incluida)
   function getLngLat(x, y) {
@@ -210,7 +207,7 @@ export default function PredioGuadalito() {
           <div className="guadalito-mapbox-panel">
             <MapboxOrchard3D
               trees={filteredTrees}
-              selectedTreeId={selectedTree.id}
+              selectedTreeId={selectedTreeId}
               onSelectTree={setSelectedTreeId}
               initialViewState={{
                 longitude: GUADALITO_BASE_LNG,

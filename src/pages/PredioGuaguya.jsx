@@ -70,7 +70,6 @@ const normalizeText = (value) =>
 // Croquis constants and overlay (compatible with Zapote controls)
 const IMAGE_WIDTH = 1102
 const IMAGE_HEIGHT = 787
-const CROQUIS_IMAGE_URL = '/media/predio-guaguya-mapa.png'
 
 const GUAGUYA_BASE_LNG = -76.4311
 const GUAGUYA_BASE_LAT = 3.6458
@@ -103,7 +102,6 @@ export default function PredioGuaguya() {
     const saved = localStorage.getItem('guaguya_isAnclado')
     return saved === 'true'
   })
-  const [croquisOpacity, setCroquisOpacity] = useState(0.6)
 
   const toggleAnclar = () => {
     if (!isAnclado) {
@@ -117,25 +115,6 @@ export default function PredioGuaguya() {
     }
     setIsAnclado(!isAnclado)
   }
-
-  const imageCoordinates = useMemo(() => {
-    const w = IMAGE_WIDTH * puntoEscala
-    const h = IMAGE_HEIGHT * puntoEscala
-    const rad = (rotation * Math.PI) / 180
-
-    const rotateCoord = (dx, dy) => {
-      const rx = dx * Math.cos(rad) - dy * Math.sin(rad)
-      const ry = dx * Math.sin(rad) + dy * Math.cos(rad)
-      return [puntoLng + rx, puntoLat + ry]
-    }
-
-    return [
-      rotateCoord(-w / 2, h / 2),
-      rotateCoord(w / 2, h / 2),
-      rotateCoord(w / 2, -h / 2),
-      rotateCoord(-w / 2, -h / 2),
-    ]
-  }, [puntoLng, puntoLat, puntoEscala, rotation])
 
   function getLngLat(x, y) {
     const dx = x - IMAGE_WIDTH / 2
@@ -176,8 +155,6 @@ export default function PredioGuaguya() {
       return matchesSpecies && matchesGroup && matchesSearch
     })
   }, [groupFilter, search, speciesFilter, trees])
-
-  const visibleIds = useMemo(() => new Set(filteredTrees.map((tree) => tree.id)), [filteredTrees])
 
   const speciesCounts = useMemo(
     () =>
@@ -321,9 +298,6 @@ export default function PredioGuaguya() {
                 bearing: 0,
               }}
               mapStyle="mapbox://styles/mapbox/satellite-streets-v12"
-              overlayUrl={CROQUIS_IMAGE_URL}
-              overlayCoordinates={imageCoordinates}
-              overlayOpacity={croquisOpacity}
               getLngLat={getLngLat}
             />
 
@@ -334,18 +308,6 @@ export default function PredioGuaguya() {
               >
                 {isAnclado ? '🔒 Anclado' : '🔓 Anclar Posición'}
               </button>
-
-              <div className="zapote-control-group">
-                <label>Opacidad Croquis</label>
-                <input
-                  type="range"
-                  min="0"
-                  max="1"
-                  step="0.05"
-                  value={croquisOpacity}
-                  onChange={(e) => setCroquisOpacity(Number(e.target.value))}
-                />
-              </div>
 
               <div className="zapote-control-group">
                 <label>Pan rápido</label>

@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import { HiArrowRight } from 'react-icons/hi';
-import cn from '../../utils/cn';
 
 export default function ServiceCard({
   number,
@@ -10,7 +9,7 @@ export default function ServiceCard({
   description,
   tags = [],
   image,
-  href,
+  _href,
   delay = 0,
   onClick,
   ...props

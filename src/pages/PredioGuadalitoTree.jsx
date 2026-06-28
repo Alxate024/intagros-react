@@ -27,11 +27,21 @@ export default function PredioGuadalitoTree() {
   useEffect(() => {
     let mounted = true
     if (!tree) return undefined
-    setLoading(true)
-    fetchWikipediaSummary(tree.species)
-      .then((s) => { if (mounted) setWiki(s) })
-      .catch(() => { if (mounted) setWiki(null) })
-      .finally(() => { if (mounted) setLoading(false) })
+
+    const load = async () => {
+      if (!mounted) return
+      setLoading(true)
+      try {
+        const summary = await fetchWikipediaSummary(tree.species)
+        if (mounted) setWiki(summary)
+      } catch {
+        if (mounted) setWiki(null)
+      } finally {
+        if (mounted) setLoading(false)
+      }
+    }
+
+    load()
     return () => { mounted = false }
   }, [id, tree])
 

@@ -1,5 +1,4 @@
-import React from 'react';
-import Map, { Marker, NavigationControl, Source, Layer } from 'react-map-gl';
+import Map, { Marker, NavigationControl } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 const PUBLIC_MAPBOX_TOKEN = [
@@ -53,9 +52,6 @@ export default function MapboxOrchard3D({
     bearing: 0,
   },
   mapStyle = 'mapbox://styles/mapbox/satellite-streets-v12',
-  overlayUrl,
-  overlayCoordinates,
-  overlayOpacity = 0.78,
   getLngLat,
 }) {
   const token = import.meta.env.VITE_MAPBOX_TOKEN || PUBLIC_MAPBOX_TOKEN;
@@ -88,16 +84,6 @@ export default function MapboxOrchard3D({
         }}
       >
         <NavigationControl position="top-right" />
-
-        {overlayUrl && overlayCoordinates && (
-          <Source type="image" url={overlayUrl} coordinates={overlayCoordinates}>
-            <Layer
-              id="mapbox-overlay"
-              type="raster"
-              paint={{ 'raster-opacity': overlayOpacity, 'raster-fade-duration': 0 }}
-            />
-          </Source>
-        )}
 
         {trees.map((tree) => {
           const { longitude, latitude } = computeLngLat(tree);

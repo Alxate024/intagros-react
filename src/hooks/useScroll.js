@@ -6,15 +6,12 @@ import { useEffect, useState } from 'react'
  * @returns {boolean} - isScrolled
  */
 export function useScroll(threshold = 18) {
-  const [isScrolled, setIsScrolled] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(() => typeof window !== 'undefined' && window.scrollY > threshold)
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > threshold)
     }
-
-    // Set initial value after mount (safe from SSR)
-    setIsScrolled(window.scrollY > threshold)
 
     const options = { passive: true }
     window.addEventListener('scroll', handleScroll, options)

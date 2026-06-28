@@ -128,7 +128,6 @@ function getTreeVisualProfile(tree) {
 // --- CONSTANTES DEL CROQUIS ---
 const IMAGE_WIDTH = 1102;
 const IMAGE_HEIGHT = 787;
-const CROQUIS_IMAGE_URL = '/media/predio-el-zapote-mapa.jpg';
 
 export default function PredioZapote() {
   const [selectedTree, setSelectedTree] = useState(null);
@@ -156,7 +155,6 @@ export default function PredioZapote() {
     const saved = localStorage.getItem('zapote_isAnclado');
     return saved === 'true';
   });
-  const [croquisOpacity, setCroquisOpacity] = useState(0.6);
 
   const toggleAnclar = () => {
     if (!isAnclado) {
@@ -177,26 +175,6 @@ export default function PredioZapote() {
 
   const selectedTreeId = selectedTree ? selectedTree.id : null;
 
-  // Calcular coordenadas de la imagen con rotación
-  const imageCoordinates = useMemo(() => {
-    const w = IMAGE_WIDTH * puntoEscala;
-    const h = IMAGE_HEIGHT * puntoEscala;
-    const rad = (rotation * Math.PI) / 180;
-
-    const rotateCoord = (dx, dy) => {
-      const rx = dx * Math.cos(rad) - dy * Math.sin(rad);
-      const ry = dx * Math.sin(rad) + dy * Math.cos(rad);
-      return [puntoLng + rx, puntoLat + ry];
-    };
-
-    return [
-      rotateCoord(-w/2, h/2),
-      rotateCoord(w/2, h/2),
-      rotateCoord(w/2, -h/2),
-      rotateCoord(-w/2, -h/2)
-    ];
-  }, [puntoLng, puntoLat, puntoEscala, rotation]);
-
   // Calcular posición de marcadores con rotación
   function getLngLat(x, y) {
     const dx = x - (IMAGE_WIDTH / 2);
@@ -207,8 +185,8 @@ export default function PredioZapote() {
     const ry = dx * Math.sin(rad) + dy * Math.cos(rad);
     
     return {
-      lng: puntoLng + (rx * puntoEscala),
-      lat: puntoLat - (ry * puntoEscala)
+      longitude: puntoLng + (rx * puntoEscala),
+      latitude: puntoLat - (ry * puntoEscala),
     };
   }
 
@@ -351,9 +329,6 @@ export default function PredioZapote() {
                   pitch: 0,
                 }}
                 mapStyle="mapbox://styles/mapbox/satellite-streets-v12"
-                overlayUrl={CROQUIS_IMAGE_URL}
-                overlayCoordinates={imageCoordinates}
-                overlayOpacity={croquisOpacity}
                 getLngLat={(x, y) => ({
                   longitude: puntoLng + (x - IMAGE_WIDTH / 2) * puntoEscala,
                   latitude: puntoLat - (y - IMAGE_HEIGHT / 2) * puntoEscala,
@@ -366,18 +341,6 @@ export default function PredioZapote() {
                 >
                   {isAnclado ? '🔒 Anclado' : '🔓 Anclar Posición'}
                 </button>
-
-                <div className="zapote-control-group">
-                  <label>Opacidad Croquis</label>
-                  <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.05"
-                    value={croquisOpacity}
-                    onChange={(e) => setCroquisOpacity(Number(e.target.value))}
-                  />
-                </div>
 
                 <div className="zapote-control-group">
                   <label>Rotación ({rotation.toFixed(0)}°)</label>

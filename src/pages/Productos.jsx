@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { FaStar, FaLeaf, FaAward } from 'react-icons/fa';
+import { FaStar, FaAward } from 'react-icons/fa';
 import { HiArrowRight } from 'react-icons/hi';
 import HeroSection from '../components/ui/HeroSection';
 import Card from '../components/ui/Card';
