@@ -522,12 +522,6 @@
   box-shadow: 0 22px 56px rgba(0, 0, 0, 0.45);
 }
 
-.zapote-controls-hidden {
-  opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-}
-
 .zapote-anchor-btn {
   grid-column: span 2;
   min-width: 100%;
@@ -576,48 +570,6 @@
 .zapote-control-group input[type="range"]:disabled {
   opacity: 0.4;
   cursor: not-allowed;
-}
-
-.zapote-edit-action,
-.guadalito-edit-action {
-  display: flex;
-  flex-direction: column;
-  gap: 0.55rem;
-  margin-top: 1rem;
-}
-
-.zapote-edit-toggle,
-.point-edit-toggle {
-  width: 100%;
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 14px;
-  padding: 0.9rem 1rem;
-  background: rgba(255,255,255,0.06);
-  color: #f9f9f9;
-  font-weight: 700;
-  text-align: center;
-  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
-  cursor: pointer;
-}
-
-.zapote-edit-toggle:hover,
-.point-edit-toggle:hover {
-  transform: translateY(-1px);
-  background: rgba(255,255,255,0.12);
-}
-
-.zapote-edit-toggle.active,
-.point-edit-toggle.active {
-  border-color: #8cae66;
-  background: rgba(140, 174, 102, 0.18);
-}
-
-.zapote-edit-hint,
-.point-edit-hint {
-  margin: 0;
-  color: var(--zapote-accent);
-  font-size: 0.9rem;
-  line-height: 1.35;
 }
 
 /* ============================================================================
