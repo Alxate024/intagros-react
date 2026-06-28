@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import guaguyaTreesDefault, { guaguya_groups, guaguya_species } from '../data/guaguya-trees'
 import MapboxOrchard3D from '../components/MapboxOrchard3D'
@@ -81,9 +81,11 @@ export default function PredioGuaguya() {
   const [speciesFilter, setSpeciesFilter] = useState('Todas')
   const [groupFilter, setGroupFilter] = useState('Todos')
   const [search, setSearch] = useState('')
+  const [editingPoints, setEditingPoints] = useState(false)
 
   // --- calibration / overlay states (persisted as `guaguya_*`)
   const [puntoLng, setPuntoLng] = useState(() => {
+    if (typeof window === 'undefined') return GUAGUYA_BASE_LNG
     const saved = localStorage.getItem('guaguya_puntoLng')
     return saved ? parseFloat(saved) : GUAGUYA_BASE_LNG
   })
@@ -96,27 +98,48 @@ export default function PredioGuaguya() {
     return saved ? parseFloat(saved) : 0.000008
   })
   const [rotation, setRotation] = useState(() => {
+    if (typeof window === 'undefined') return 0
     const saved = localStorage.getItem('guaguya_rotation')
     return saved ? parseFloat(saved) : 0
   })
+
   const [isAnclado, setIsAnclado] = useState(() => {
+    if (typeof window === 'undefined') return true
     const saved = localStorage.getItem('guaguya_isAnclado')
-    return saved === 'true'
+    return saved === 'false' ? false : true
   })
-  const [croquisOpacity, setCroquisOpacity] = useState(0.6)
+
+  useEffect(() => {
+    if (!isAnclado) return
+    localStorage.setItem('guaguya_puntoLng', puntoLng.toString())
+    localStorage.setItem('guaguya_puntoLat', puntoLat.toString())
+    localStorage.setItem('guaguya_puntoEscala', puntoEscala.toString())
+    localStorage.setItem('guaguya_rotation', rotation.toString())
+    localStorage.setItem('guaguya_isAnclado', 'true')
+  }, [isAnclado, puntoLng, puntoLat, puntoEscala, rotation])
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || window.sessionStorage.getItem('guaguyaControlAlertShown')) return
+    window.alert('Control oculto: estos son los patrones de los puntos.')
+    window.sessionStorage.setItem('guaguyaControlAlertShown', '1')
+  }, [])
 
   const toggleAnclar = () => {
-    if (!isAnclado) {
-      localStorage.setItem('guaguya_puntoLng', puntoLng.toString())
-      localStorage.setItem('guaguya_puntoLat', puntoLat.toString())
-      localStorage.setItem('guaguya_puntoEscala', puntoEscala.toString())
-      localStorage.setItem('guaguya_rotation', rotation.toString())
-      localStorage.setItem('guaguya_isAnclado', 'true')
-    } else {
-      localStorage.setItem('guaguya_isAnclado', 'false')
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('guaguya_isAnclado', isAnclado ? 'false' : 'true')
     }
-    setIsAnclado(!isAnclado)
+    setIsAnclado((current) => !current)
   }
+
+  const [trees, setTrees] = useState(() => {
+    if (typeof window === 'undefined') return guaguyaTreesDefault.map((tree) => ({ ...tree }))
+    const overrides = JSON.parse(localStorage.getItem('guaguya_point_overrides') || '{}')
+    return guaguyaTreesDefault.map((tree) => {
+      const saved = overrides[tree.id]
+      const [x, y] = guaguyaLayout[tree.id] ?? [tree.x, tree.y]
+      return { ...tree, x: saved?.x ?? x, y: saved?.y ?? y }
+    })
+  })
 
   const imageCoordinates = useMemo(() => {
     const w = IMAGE_WIDTH * puntoEscala
@@ -151,14 +174,32 @@ export default function PredioGuaguya() {
     }
   }
 
-  const trees = useMemo(
-    () =>
-      guaguyaTreesDefault.map((tree) => {
-        const [x, y] = guaguyaLayout[tree.id] ?? [tree.x, tree.y]
-        return { ...tree, x, y }
-      }),
-    [],
-  )
+  function lonLatToXY(lng, lat) {
+    const dx = lng - puntoLng
+    const dy = puntoLat - lat
+    const rx = dx / puntoEscala
+    const ry = dy / puntoEscala
+    const rad = (rotation * Math.PI) / 180
+
+    const x = rx * Math.cos(rad) + ry * Math.sin(rad) + IMAGE_WIDTH / 2
+    const y = -rx * Math.sin(rad) + ry * Math.cos(rad) + IMAGE_HEIGHT / 2
+    return [x, y]
+  }
+
+  function handleMapClick(e) {
+    if (!editingPoints || !selectedTree || !e?.lngLat) return
+    const lng = e.lngLat.lng ?? e.lngLat[0]
+    const lat = e.lngLat.lat ?? e.lngLat[1]
+    const [x, y] = lonLatToXY(lng, lat)
+
+    setTrees((prev) => prev.map((tree) => (tree.id === selectedTree.id ? { ...tree, x, y } : tree)))
+
+    if (typeof window !== 'undefined') {
+      const saved = JSON.parse(localStorage.getItem('guaguya_point_overrides') || '{}')
+      saved[selectedTree.id] = { x, y }
+      localStorage.setItem('guaguya_point_overrides', JSON.stringify(saved))
+    }
+  }
 
   const selectedTree = useMemo(
     () => trees.find((tree) => tree.id === selectedTreeId) ?? trees[0],
@@ -313,6 +354,7 @@ export default function PredioGuaguya() {
               trees={filteredTrees}
               selectedTreeId={selectedTree.id}
               onSelectTree={setSelectedTreeId}
+              onMapClick={handleMapClick}
               initialViewState={{
                 longitude: puntoLng,
                 latitude: puntoLat,
@@ -321,85 +363,16 @@ export default function PredioGuaguya() {
                 bearing: 0,
               }}
               mapStyle="mapbox://styles/mapbox/satellite-streets-v12"
-              overlayUrl={CROQUIS_IMAGE_URL}
-              overlayCoordinates={imageCoordinates}
-              overlayOpacity={croquisOpacity}
               getLngLat={getLngLat}
             />
 
-            <div className="guadalito-controls-panel">
+            <div className="guadalito-controls-panel guadalito-controls-hidden">
               <button
                 className={`zapote-anchor-btn ${isAnclado ? 'anclado' : ''}`}
                 onClick={toggleAnclar}
               >
                 {isAnclado ? '🔒 Anclado' : '🔓 Anclar Posición'}
               </button>
-
-              <div className="zapote-control-group">
-                <label>Opacidad Croquis</label>
-                <input
-                  type="range"
-                  min="0"
-                  max="1"
-                  step="0.05"
-                  value={croquisOpacity}
-                  onChange={(e) => setCroquisOpacity(Number(e.target.value))}
-                />
-              </div>
-
-              <div className="zapote-control-group">
-                <label>Pan rápido</label>
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (isAnclado) return
-                      const v = puntoLat + 0.0001
-                      localStorage.setItem('guaguya_puntoLat', v.toString())
-                      setPuntoLat(v)
-                    }}
-                    disabled={isAnclado}
-                  >
-                    ↑
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (isAnclado) return
-                      const v = puntoLat - 0.0001
-                      localStorage.setItem('guaguya_puntoLat', v.toString())
-                      setPuntoLat(v)
-                    }}
-                    disabled={isAnclado}
-                  >
-                    ↓
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (isAnclado) return
-                      const v = puntoLng - 0.0001
-                      localStorage.setItem('guaguya_puntoLng', v.toString())
-                      setPuntoLng(v)
-                    }}
-                    disabled={isAnclado}
-                  >
-                    ←
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (isAnclado) return
-                      const v = puntoLng + 0.0001
-                      localStorage.setItem('guaguya_puntoLng', v.toString())
-                      setPuntoLng(v)
-                    }}
-                    disabled={isAnclado}
-                  >
-                    →
-                  </button>
-                </div>
-              </div>
 
               <div className="zapote-control-group">
                 <label>Rotación ({rotation.toFixed(0)}°)</label>
@@ -410,7 +383,7 @@ export default function PredioGuaguya() {
                   step="1"
                   value={rotation}
                   onChange={(e) => setRotation(Number(e.target.value))}
-                  disabled={isAnclado}
+                  disabled={!isAnclado}
                 />
               </div>
 
@@ -418,12 +391,12 @@ export default function PredioGuaguya() {
                 <label>Escala</label>
                 <input
                   type="range"
-                  min="0.000001"
-                  max="0.000050"
+                  min="0.000002"
+                  max="0.000010"
                   step="0.0000001"
                   value={puntoEscala}
                   onChange={(e) => setPuntoEscala(Number(e.target.value))}
-                  disabled={isAnclado}
+                  disabled={!isAnclado}
                 />
               </div>
 
@@ -436,7 +409,7 @@ export default function PredioGuaguya() {
                   step="0.00001"
                   value={puntoLng - GUAGUYA_BASE_LNG}
                   onChange={(e) => setPuntoLng(GUAGUYA_BASE_LNG + Number(e.target.value))}
-                  disabled={isAnclado}
+                  disabled={!isAnclado}
                 />
               </div>
 
@@ -449,7 +422,7 @@ export default function PredioGuaguya() {
                   step="0.00001"
                   value={puntoLat - GUAGUYA_BASE_LAT}
                   onChange={(e) => setPuntoLat(GUAGUYA_BASE_LAT + Number(e.target.value))}
-                  disabled={isAnclado}
+                  disabled={!isAnclado}
                 />
               </div>
             </div>
@@ -464,6 +437,19 @@ export default function PredioGuaguya() {
               <h2>Arbol {selectedTree.id}</h2>
               <p>{selectedTree.species}</p>
             </div>
+          </div>
+
+          <div className="guadalito-edit-action">
+            <button
+              type="button"
+              className={`point-edit-toggle ${editingPoints ? 'active' : ''}`}
+              onClick={() => setEditingPoints((value) => !value)}
+            >
+              {editingPoints ? '✅ Mover árbol activo' : '✍️ Mover árbol'}
+            </button>
+            {editingPoints && (
+              <p className="point-edit-hint">Haz clic en el mapa para mover el árbol seleccionado.</p>
+            )}
           </div>
 
           <dl className="guadalito-facts">

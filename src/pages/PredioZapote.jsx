@@ -34,119 +34,142 @@ async function fetchWikipediaSummary(query) {
 // --- PERFILES VISUALES DE ÁRBOLES CON IMÁGENES PERSONALIZABLES ---
 function getTreeVisualProfile(tree) {
   const species = normalizeText(tree.species);
-  
+
   // Mango
   if (species.includes('mango')) {
-    return { 
-      canopy: '#23451f', 
+    return {
+      canopy: '#23451f',
       border: '#d7a23b',
       customImage: tree.customImage || '/media/trees/mango.png' // ← Imagen personalizable
     };
   }
-  
+
   // Aguacate
   if (species.includes('aguacate')) {
-    return { 
-      canopy: '#1f3b22', 
+    return {
+      canopy: '#1f3b22',
       border: '#253719',
       customImage: tree.customImage || '/media/trees/aguacate.png'
     };
   }
-  
+
   // Cítricos
   if (tree.group === 'Citricos') {
     const isLemon = species.includes('limon');
-    return { 
-      canopy: '#2e5523', 
+    return {
+      canopy: '#2e5523',
       border: isLemon ? '#cbd84a' : '#e48b24',
       customImage: tree.customImage || (isLemon ? '/media/trees/limon.png' : '/media/trees/naranja.png')
     };
   }
-  
+
   // Guayaba
   if (species.includes('guayaba') || species.includes('guayana')) {
-    return { 
-      canopy: '#4c7438', 
+    return {
+      canopy: '#4c7438',
       border: '#b9d878',
       customImage: tree.customImage || '/media/trees/guayaba.png'
     };
   }
-  
+
   // Guanábano
   if (species.includes('guanabano') || species.includes('anon')) {
-    return { 
-      canopy: '#315229', 
+    return {
+      canopy: '#315229',
       border: '#8cae66',
       customImage: tree.customImage || '/media/trees/guanabano.png'
     };
   }
-  
+
   // Jaboticaba
   if (species.includes('jaboticaba')) {
-    return { 
-      canopy: '#1d3322', 
+    return {
+      canopy: '#1d3322',
       border: '#2b1d38',
       customImage: tree.customImage || '/media/trees/jaboticaba.png'
     };
   }
-  
+
   // Mamey / Zapote
   if (species.includes('mamey') || species.includes('zapote')) {
-    return { 
-      canopy: '#2d4722', 
+    return {
+      canopy: '#2d4722',
       border: '#a65f35',
       customImage: tree.customImage || '/media/trees/zapote.png'
     };
   }
-  
+
   // Carambola
   if (species.includes('carambola')) {
-    return { 
-      canopy: '#3f6731', 
+    return {
+      canopy: '#3f6731',
       border: '#d7c93e',
       customImage: tree.customImage || '/media/trees/carambola.png'
     };
   }
-  
+
   // Marañón
   if (species.includes('maranon')) {
-    return { 
-      canopy: '#344f23', 
+    return {
+      canopy: '#344f23',
       border: '#c6532a',
       customImage: tree.customImage || '/media/trees/maranon.png'
     };
   }
-  
+
   // Default
-  return { 
-    canopy: '#314f28', 
+  return {
+    canopy: '#314f28',
     border: '#9b7d35',
     customImage: tree.customImage || '/media/trees/default.png'
   };
 }
 
-// --- CONSTANTES DEL CROQUIS ---
-const IMAGE_WIDTH = 1102;
-const IMAGE_HEIGHT = 787;
-const CROQUIS_IMAGE_URL = '/media/predio-el-zapote-mapa.jpg';
+// --- CONSTANTES DE POSICIÓN BASE ---
+const ZAPOTE_BASE_LNG = -76.429972;
+const ZAPOTE_BASE_LAT = 3.645361;
+const ZAPOTE_BASE_SCALE = 0.000004;
 
 export default function PredioZapote() {
   const [selectedTree, setSelectedTree] = useState(null);
   const [wikiInfo, setWikiInfo] = useState(null);
   const [loadingWiki, setLoadingWiki] = useState(false);
+  const [trees, setTrees] = useState(() => {
+    const overrides = typeof window !== 'undefined'
+      ? JSON.parse(localStorage.getItem('zapote_point_overrides') || '{}')
+      : {};
+    return zapoteTrees.map((tree) => {
+      const saved = overrides[tree.id];
+      return { ...tree, x: saved?.x ?? tree.x, y: saved?.y ?? tree.y };
+    });
+  });
+  const [editingPoints, setEditingPoints] = useState(false);
 
-  // --- ESTADOS DEL MAPA ---
+  const selectedTreeProfile = useMemo(() => {
+    return selectedTree ? getTreeVisualProfile(selectedTree) : null;
+  }, [selectedTree]);
+
+  const selectedTreeId = selectedTree ? selectedTree.id : null;
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (!window.sessionStorage.getItem('zapoteControlAlertShown')) {
+      window.alert('Control oculto: estos son los patrones de los puntos.');
+      window.sessionStorage.setItem('zapoteControlAlertShown', '1');
+    }
+  }, []);
+
   const [puntoLng, setPuntoLng] = useState(() => {
     const saved = localStorage.getItem('zapote_puntoLng');
-    return saved ? parseFloat(saved) : -76.429972;
+    return saved ? parseFloat(saved) : ZAPOTE_BASE_LNG;
   });
   const [puntoLat, setPuntoLat] = useState(() => {
     const saved = localStorage.getItem('zapote_puntoLat');
-    return saved ? parseFloat(saved) : 3.645361;
+    return saved ? parseFloat(saved) : ZAPOTE_BASE_LAT;
   });
   const [puntoEscala, setPuntoEscala] = useState(() => {
     const saved = localStorage.getItem('zapote_puntoEscala');
-    return saved ? parseFloat(saved) : 0.000008;
+    return saved ? parseFloat(saved) : ZAPOTE_BASE_SCALE;
   });
   const [rotation, setRotation] = useState(() => {
     const saved = localStorage.getItem('zapote_rotation');
@@ -154,9 +177,44 @@ export default function PredioZapote() {
   });
   const [isAnclado, setIsAnclado] = useState(() => {
     const saved = localStorage.getItem('zapote_isAnclado');
-    return saved === 'true';
+    return saved === null ? true : saved === 'true';
   });
-  const [croquisOpacity, setCroquisOpacity] = useState(0.6);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !isAnclado) return;
+    localStorage.setItem('zapote_puntoLng', puntoLng.toString());
+    localStorage.setItem('zapote_puntoLat', puntoLat.toString());
+    localStorage.setItem('zapote_puntoEscala', puntoEscala.toString());
+    localStorage.setItem('zapote_rotation', rotation.toString());
+    localStorage.setItem('zapote_isAnclado', 'true');
+  }, [puntoLng, puntoLat, puntoEscala, rotation, isAnclado]);
+
+  function lonLatToXY(lng, lat) {
+    const dx = lng - puntoLng;
+    const dy = puntoLat - lat;
+    const rx = dx / puntoEscala;
+    const ry = dy / puntoEscala;
+    const rad = (rotation * Math.PI) / 180;
+    const x = rx * Math.cos(rad) + ry * Math.sin(rad) + 551;
+    const y = -rx * Math.sin(rad) + ry * Math.cos(rad) + 393;
+    return [x, y];
+  }
+
+  function handleMapClick(e) {
+    if (!editingPoints || !selectedTree || !e?.lngLat) return;
+    const lng = e.lngLat.lng ?? e.lngLat[0];
+    const lat = e.lngLat.lat ?? e.lngLat[1];
+    const [x, y] = lonLatToXY(lng, lat);
+
+    setTrees((prev) => prev.map((t) => (t.id === selectedTree.id ? { ...t, x, y } : t)));
+    setSelectedTree((prev) => (prev && prev.id === selectedTree.id ? { ...prev, x, y } : prev));
+
+    if (typeof window !== 'undefined') {
+      const saved = JSON.parse(localStorage.getItem('zapote_point_overrides') || '{}');
+      saved[selectedTree.id] = { x, y };
+      localStorage.setItem('zapote_point_overrides', JSON.stringify(saved));
+    }
+  }
 
   const toggleAnclar = () => {
     if (!isAnclado) {
@@ -171,44 +229,15 @@ export default function PredioZapote() {
     setIsAnclado(!isAnclado);
   };
 
-  const selectedTreeProfile = useMemo(() => {
-    return selectedTree ? getTreeVisualProfile(selectedTree) : null;
-  }, [selectedTree]);
-
-  const selectedTreeId = selectedTree ? selectedTree.id : null;
-
-  // Calcular coordenadas de la imagen con rotación
-  const imageCoordinates = useMemo(() => {
-    const w = IMAGE_WIDTH * puntoEscala;
-    const h = IMAGE_HEIGHT * puntoEscala;
-    const rad = (rotation * Math.PI) / 180;
-
-    const rotateCoord = (dx, dy) => {
-      const rx = dx * Math.cos(rad) - dy * Math.sin(rad);
-      const ry = dx * Math.sin(rad) + dy * Math.cos(rad);
-      return [puntoLng + rx, puntoLat + ry];
-    };
-
-    return [
-      rotateCoord(-w/2, h/2),
-      rotateCoord(w/2, h/2),
-      rotateCoord(w/2, -h/2),
-      rotateCoord(-w/2, -h/2)
-    ];
-  }, [puntoLng, puntoLat, puntoEscala, rotation]);
-
-  // Calcular posición de marcadores con rotación
   function getLngLat(x, y) {
-    const dx = x - (IMAGE_WIDTH / 2);
-    const dy = y - (IMAGE_HEIGHT / 2);
+    const dx = x - 551;
+    const dy = y - 393;
     const rad = (rotation * Math.PI) / 180;
-    
     const rx = dx * Math.cos(rad) - dy * Math.sin(rad);
     const ry = dx * Math.sin(rad) + dy * Math.cos(rad);
-    
     return {
-      lng: puntoLng + (rx * puntoEscala),
-      lat: puntoLat - (ry * puntoEscala)
+      longitude: puntoLng + rx * puntoEscala,
+      latitude: puntoLat - ry * puntoEscala,
     };
   }
 
@@ -288,6 +317,20 @@ export default function PredioZapote() {
                   </button>
                 )}
               </div>
+              {selectedTree && (
+                <div className="zapote-edit-action">
+                  <button
+                    type="button"
+                    className={`zapote-edit-toggle ${editingPoints ? 'active' : ''}`}
+                    onClick={() => setEditingPoints((value) => !value)}
+                  >
+                    {editingPoints ? '✅ Mover árbol activo' : '✍️ Mover árbol'}
+                  </button>
+                  {editingPoints && (
+                    <p className="zapote-edit-hint">Haz clic en el mapa para mover el árbol seleccionado.</p>
+                  )}
+                </div>
+              )}
 
               {selectedTree ? (
                 <div className="zapote-tree-info">
@@ -341,9 +384,10 @@ export default function PredioZapote() {
 
             <div className="zapote-map-wrapper">
               <MapboxOrchard3D
-                trees={zapoteTrees}
+                trees={trees}
                 selectedTreeId={selectedTreeId}
-                onSelectTree={(id) => setSelectedTree(zapoteTrees.find((tree) => tree.id === id) ?? null)}
+                onSelectTree={(id) => setSelectedTree(trees.find((tree) => tree.id === id) ?? null)}
+                onMapClick={handleMapClick}
                 initialViewState={{
                   latitude: puntoLat,
                   longitude: puntoLng,
@@ -351,33 +395,16 @@ export default function PredioZapote() {
                   pitch: 0,
                 }}
                 mapStyle="mapbox://styles/mapbox/satellite-streets-v12"
-                overlayUrl={CROQUIS_IMAGE_URL}
-                overlayCoordinates={imageCoordinates}
-                overlayOpacity={croquisOpacity}
-                getLngLat={(x, y) => ({
-                  longitude: puntoLng + (x - IMAGE_WIDTH / 2) * puntoEscala,
-                  latitude: puntoLat - (y - IMAGE_HEIGHT / 2) * puntoEscala,
-                })}
+                getLngLat={getLngLat}
               />
-              <div className="zapote-controls-panel">
+
+              <div className="zapote-controls-panel zapote-controls-hidden">
                 <button
                   className={`zapote-anchor-btn ${isAnclado ? 'anclado' : ''}`}
                   onClick={toggleAnclar}
                 >
                   {isAnclado ? '🔒 Anclado' : '🔓 Anclar Posición'}
                 </button>
-
-                <div className="zapote-control-group">
-                  <label>Opacidad Croquis</label>
-                  <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.05"
-                    value={croquisOpacity}
-                    onChange={(e) => setCroquisOpacity(Number(e.target.value))}
-                  />
-                </div>
 
                 <div className="zapote-control-group">
                   <label>Rotación ({rotation.toFixed(0)}°)</label>
@@ -388,7 +415,7 @@ export default function PredioZapote() {
                     step="1"
                     value={rotation}
                     onChange={(e) => setRotation(Number(e.target.value))}
-                    disabled={isAnclado}
+                    disabled={!isAnclado}
                   />
                 </div>
 
@@ -396,12 +423,12 @@ export default function PredioZapote() {
                   <label>Escala</label>
                   <input
                     type="range"
-                    min="0.000001"
-                    max="0.000020"
+                    min="0.000002"
+                    max="0.000010"
                     step="0.0000001"
                     value={puntoEscala}
                     onChange={(e) => setPuntoEscala(Number(e.target.value))}
-                    disabled={isAnclado}
+                    disabled={!isAnclado}
                   />
                 </div>
 
@@ -409,12 +436,12 @@ export default function PredioZapote() {
                   <label>Mover Este-Oeste</label>
                   <input
                     type="range"
-                    min="-0.001"
-                    max="0.001"
+                    min="-0.01"
+                    max="0.01"
                     step="0.00001"
-                    value={puntoLng - (-76.429972)}
-                    onChange={(e) => setPuntoLng(-76.429972 + Number(e.target.value))}
-                    disabled={isAnclado}
+                    value={puntoLng - ZAPOTE_BASE_LNG}
+                    onChange={(e) => setPuntoLng(ZAPOTE_BASE_LNG + Number(e.target.value))}
+                    disabled={!isAnclado}
                   />
                 </div>
 
@@ -422,12 +449,12 @@ export default function PredioZapote() {
                   <label>Mover Norte-Sur</label>
                   <input
                     type="range"
-                    min="-0.001"
-                    max="0.001"
+                    min="-0.01"
+                    max="0.01"
                     step="0.00001"
-                    value={puntoLat - 3.645361}
-                    onChange={(e) => setPuntoLat(3.645361 + Number(e.target.value))}
-                    disabled={isAnclado}
+                    value={puntoLat - ZAPOTE_BASE_LAT}
+                    onChange={(e) => setPuntoLat(ZAPOTE_BASE_LAT + Number(e.target.value))}
+                    disabled={!isAnclado}
                   />
                 </div>
               </div>

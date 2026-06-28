@@ -166,6 +166,49 @@
   z-index: 40;
 }
 
+.guadalito-controls-hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.guadalito-edit-action {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 1rem;
+}
+
+.point-edit-toggle {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  padding: 0.9rem 1rem;
+  background: rgba(255, 255, 255, 0.06);
+  color: #f9f9f9;
+  font-weight: 700;
+  text-align: center;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+}
+
+.point-edit-toggle:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.point-edit-toggle.active {
+  border-color: #8cae66;
+  background: rgba(140, 174, 102, 0.18);
+}
+
+.point-edit-hint {
+  margin: 0;
+  color: var(--g-text-label);
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
 .guadalito-panel,
 .guadalito-map-shell {
   border: 1px solid var(--g-border);
@@ -181,6 +224,43 @@
   padding: var(--g-gap);
   position: sticky;
   top: calc(var(--header-height) + var(--g-gap));
+}
+
+.guadalito-edit-action {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 1rem;
+}
+
+.point-edit-toggle {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  padding: 0.9rem 1rem;
+  background: rgba(255, 255, 255, 0.06);
+  color: #f9f9f9;
+  font-weight: 700;
+  text-align: center;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+}
+
+.point-edit-toggle:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.point-edit-toggle.active {
+  border-color: #8cae66;
+  background: rgba(140, 174, 102, 0.18);
+}
+
+.point-edit-hint {
+  margin: 0;
+  color: var(--g-text-label);
+  font-size: 0.9rem;
+  line-height: 1.35;
 }
 
 .guadalito-panel__head,

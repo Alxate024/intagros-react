@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import guadalitoTreesDefault from '../data/guadalitoTrees'
 import MapboxOrchard3D from '../components/MapboxOrchard3D'
@@ -17,7 +17,18 @@ export default function PredioGuadalito() {
   const [groupFilter, setGroupFilter] = useState('Todos')
   const [search, setSearch] = useState('')
 
-  const [trees, setTrees] = useState(() => guadalitoTreesDefault.map((t) => ({ ...t })))
+  const [trees, setTrees] = useState(() => {
+    const overrides = typeof window !== 'undefined'
+      ? JSON.parse(localStorage.getItem('guadalito_point_overrides') || '{}')
+      : {}
+    return guadalitoTreesDefault.map((t) => {
+      const saved = overrides[t.id]
+      return {
+        ...t,
+        ...(saved ? { ...saved, anchored: saved.anchored !== false } : {}),
+      }
+    })
+  })
 
   // --- estados de calibración / overlay (persistidos como "guadalito_*")
   const [puntoLng, setPuntoLng] = useState(() => {
@@ -38,21 +49,32 @@ export default function PredioGuadalito() {
   })
   const [isAnclado, setIsAnclado] = useState(() => {
     const saved = localStorage.getItem('guadalito_isAnclado')
-    return saved === 'true'
+    return saved === 'false' ? false : true
   })
   
+  useEffect(() => {
+    if (!isAnclado) return
+    localStorage.setItem('guadalito_puntoLng', puntoLng.toString())
+    localStorage.setItem('guadalito_puntoLat', puntoLat.toString())
+    localStorage.setItem('guadalito_puntoEscala', puntoEscala.toString())
+    localStorage.setItem('guadalito_rotation', rotation.toString())
+    localStorage.setItem('guadalito_isAnclado', 'true')
+  }, [isAnclado, puntoLng, puntoLat, puntoEscala, rotation])
+
+  useEffect(() => {
+    if (!window.sessionStorage.getItem('guadalitoControlAlertShown')) {
+      window.alert('Control oculto: estos son los patrones de los puntos.')
+      window.sessionStorage.setItem('guadalitoControlAlertShown', '1')
+    }
+  }, [])
 
   const toggleAnclar = () => {
-    if (!isAnclado) {
-      localStorage.setItem('guadalito_puntoLng', puntoLng.toString())
-      localStorage.setItem('guadalito_puntoLat', puntoLat.toString())
-      localStorage.setItem('guadalito_puntoEscala', puntoEscala.toString())
-      localStorage.setItem('guadalito_rotation', rotation.toString())
-      localStorage.setItem('guadalito_isAnclado', 'true')
-    } else {
+    if (isAnclado) {
       localStorage.setItem('guadalito_isAnclado', 'false')
+    } else {
+      localStorage.setItem('guadalito_isAnclado', 'true')
     }
-    setIsAnclado(!isAnclado)
+    setIsAnclado((current) => !current)
   }
 
   // --- edición interactiva de puntos: convertir lon/lat => x,y en croquis
@@ -78,15 +100,28 @@ export default function PredioGuadalito() {
     const lat = e.lngLat.lat ?? e.lngLat[1]
     const [x, y] = lonLatToXY(lng, lat)
 
-    setTrees((prev) => prev.map((t) => (t.id === selectedTreeId ? { ...t, x, y } : t)))
-    // also persist a temporary mapping to localStorage so it survives refresh
+    persistTreeOverride(selectedTreeId, x, y)
+  }
+
+  function handleTreeDragEnd(treeId, lngLat) {
+    if (!editingPoints || !lngLat) return
+    const lng = lngLat.longitude ?? lngLat.lng ?? lngLat[0]
+    const lat = lngLat.latitude ?? lngLat.lat ?? lngLat[1]
+    const [x, y] = lonLatToXY(lng, lat)
+
+    persistTreeOverride(treeId, x, y)
+  }
+
+  function persistTreeOverride(id, x, y) {
+    setTrees((prev) => prev.map((t) => (t.id === id ? { ...t, x, y, anchored: true } : t)))
+    if (typeof window === 'undefined') return
     const saved = JSON.parse(localStorage.getItem('guadalito_point_overrides') || '{}')
-    saved[selectedTreeId] = { x, y }
+    saved[id] = { x, y, anchored: true }
     localStorage.setItem('guadalito_point_overrides', JSON.stringify(saved))
   }
 
   // load overrides from localStorage on mount (in case user saved earlier via interactive mode)
-  useMemo(() => {
+  useEffect(() => {
     try {
       const saved = JSON.parse(localStorage.getItem('guadalito_point_overrides') || '{}')
       if (Object.keys(saved).length === 0) return
@@ -115,6 +150,8 @@ export default function PredioGuadalito() {
     () => trees.find((tree) => tree.id === selectedTreeId) ?? trees[0],
     [selectedTreeId, trees],
   )
+
+  const selectedTreeAnchored = selectedTree?.anchored === true
 
   const filteredTrees = useMemo(() => {
     const q = search.trim().toLowerCase()
@@ -187,6 +224,33 @@ export default function PredioGuadalito() {
             </select>
           </label>
 
+          <div className="guadalito-edit-action">
+            <button
+              type="button"
+              className={`point-edit-toggle ${editingPoints ? 'active' : ''}`}
+              onClick={() => setEditingPoints((value) => !value)}
+            >
+              {editingPoints ? '✅ Modo mover: clic en el mapa' : '✍️ Modo mover árbol'}
+            </button>
+            {editingPoints && (
+              <>
+                <p className="point-edit-hint">Selecciona un árbol y haz clic o arrastra el marcador para moverlo.</p>
+                {selectedTree && (
+                  selectedTreeAnchored ? (
+                    <p className="point-anchor-status">📌 Posición del árbol anclada</p>
+                  ) : (
+                    <button
+                      type="button"
+                      className="point-anchor-btn"
+                      onClick={() => persistTreeOverride(selectedTree.id, selectedTree.x, selectedTree.y)}
+                    >
+                      📌 Anclar posición actual
+                    </button>
+                  )
+                )}
+              </>
+            )}
+          </div>
         </aside>
 
         <div className="guadalito-map-shell">
@@ -210,8 +274,9 @@ export default function PredioGuadalito() {
           <div className="guadalito-mapbox-panel">
             <MapboxOrchard3D
               trees={filteredTrees}
-              selectedTreeId={selectedTree.id}
+              selectedTreeId={selectedTreeId}
               onSelectTree={setSelectedTreeId}
+              onTreeDragEnd={handleTreeDragEnd}
               initialViewState={{
                 longitude: GUADALITO_BASE_LNG,
                 latitude: GUADALITO_BASE_LAT,
@@ -224,7 +289,7 @@ export default function PredioGuadalito() {
               onMapClick={handleMapClick}
             />
 
-            <div className="guadalito-controls-panel">
+            <div className="guadalito-controls-panel guadalito-controls-hidden">
               <button
                 className={`zapote-anchor-btn ${isAnclado ? 'anclado' : ''}`}
                 onClick={toggleAnclar}
