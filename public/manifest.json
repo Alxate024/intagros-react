@@ -1,0 +1,12 @@
+{
+  "name": "INTAGROS — Inteligencia Agropecuaria",
+  "short_name": "INTAGROS",
+  "description": "Sistema integral de monitoreo frutícola con imagery satelital y croquis georreferenciado.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a1a0e",
+  "theme_color": "#0a1a0e",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

@@ -53,6 +53,8 @@ export default function MapboxOrchard3D({
   },
   mapStyle = 'mapbox://styles/mapbox/satellite-streets-v12',
   getLngLat,
+  renderMarker,
+  pendingMarker,
 }) {
   const token = import.meta.env.VITE_MAPBOX_TOKEN || PUBLIC_MAPBOX_TOKEN;
   const resolvedMapStyle = typeof mapStyle === 'string' && mapStyle.startsWith('mapbox://')
@@ -70,7 +72,7 @@ export default function MapboxOrchard3D({
     );
   }
   
-  const computeLngLat = (tree) => (typeof getLngLat === 'function' ? getLngLat(tree.x, tree.y) : defaultGetLngLat(tree.x, tree.y));
+  const computeLngLat = (tree) => (typeof getLngLat === 'function' ? getLngLat(tree.x, tree.y, tree) : defaultGetLngLat(tree.x, tree.y));
 
   return (
     <div className="mapbox-orchard-shell" style={{ width: '100%', height: '100%', minHeight: '360px' }}>
@@ -100,18 +102,29 @@ export default function MapboxOrchard3D({
                 onSelectTree(tree.id);
               }}
             >
-              <div
-                className={`mapbox-tree-objective ${isSelected ? 'is-selected' : ''}`}
-                style={{
-                  backgroundColor: tree.color || '#4CAF50',
-                  borderColor: tree.color || '#4CAF50',
-                }}
-              >
-                <span>{tree.id}</span>
-              </div>
+              {renderMarker ? (
+                renderMarker(tree, isSelected)
+              ) : (
+                <div
+                  className={`mapbox-tree-objective ${isSelected ? 'is-selected' : ''}`}
+                  style={{
+                    backgroundColor: tree.color || '#4CAF50',
+                    borderColor: tree.color || '#4CAF50',
+                  }}
+                >
+                  <span>{tree.id}</span>
+                </div>
+              )}
             </Marker>
           );
         })}
+        {pendingMarker && (
+          <Marker longitude={pendingMarker.lng} latitude={pendingMarker.lat} anchor="center">
+            <div className="zp-pending-marker">
+              <span className="zp-pending-marker__icon">+</span>
+            </div>
+          </Marker>
+        )}
       </Map>
     </div>
   );

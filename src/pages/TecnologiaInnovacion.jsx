@@ -5,22 +5,22 @@ import '../styles/tecnologia.css'
 
 const techServices = [
   {
-    title: 'Agricultura de precisión',
+    title: 'Agricultura de precisi├│n',
     kicker: 'Drones, sensores y mapas NDVI',
     image: 'https://www.intagros.com.co/wp-content/uploads/2026/05/grok-video-6529f42e-e8b1-4d1a-92aa-d23642c913f8-1.gif',
-    text: 'Lectura multiespectral, zonificación de lotes y recomendaciones por ambiente productivo.',
+    text: 'Lectura multiespectral, zonificaci├│n de lotes y recomendaciones por ambiente productivo.',
   },
   {
-    title: 'Telemetría operativa',
-    kicker: 'Maquinaria y logística en vivo',
+    title: 'Telemetr├¡a operativa',
+    kicker: 'Maquinaria y log├¡stica en vivo',
     image: 'https://www.intagros.com.co/wp-content/uploads/2026/05/grok-video-99445b25-387c-4812-be5b-c5935f416476.gif',
-    text: 'GPS, horas efectivas, rutas, consumo y desempeño de equipos agrícolas en una vista accionable.',
+    text: 'GPS, horas efectivas, rutas, consumo y desempe├▒o de equipos agr├¡colas en una vista accionable.',
   },
   {
-    title: 'IA para caña y cultivos',
+    title: 'IA para ca├▒a y cultivos',
     kicker: 'Modelos predictivos',
     image: 'https://www.intagros.com.co/wp-content/uploads/2026/05/grok-video-e8178b41-da33-45fb-afdb-09cebe63e1cc.gif',
-    text: 'Predicción de rendimiento, alertas tempranas y análisis de cosecha con datos de campo.',
+    text: 'Predicci├│n de rendimiento, alertas tempranas y an├ílisis de cosecha con datos de campo.',
   },
   {
     title: 'Tableros ejecutivos',
@@ -53,9 +53,9 @@ export default function TecnologiaInnovacion() {
   return (
     <div className="bpk">
 
-      {/* ══════════════════════════════════════════
+      {/* ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
           HERO
-      ══════════════════════════════════════════ */}
+      ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ */}
       <section className="bpk-hero">
         <div className="bpk-hero-video" aria-hidden="true">
           <video
@@ -85,15 +85,15 @@ export default function TecnologiaInnovacion() {
             Sistema agro-inteligente activo
           </div>
           <h1 className="bpk-hero-h1">
-            Tecnología que vuelve visible lo que pasa en el campo.
+            Tecnolog├¡a que vuelve visible lo que pasa en el campo.
           </h1>
           <p className="bpk-hero-desc">
-            Integramos drones, sensores, telemetría, tableros e inteligencia artificial para convertir datos agrícolas
+            Integramos drones, sensores, telemetr├¡a, tableros e inteligencia artificial para convertir datos agr├¡colas
             en decisiones oportunas, medibles y rentables.
           </p>
           <div className="bpk-hero-buttons">
             <a href={contact.whatsappHref} className="bpk-btn-primary" target="_blank" rel="noreferrer">
-              Solicitar diagnóstico
+              Solicitar diagn├│stico
             </a>
             <a href="#bpk-plataforma" className="bpk-btn-secondary">Ver plataforma</a>
           </div>
@@ -118,10 +118,10 @@ export default function TecnologiaInnovacion() {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
+      {/* ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
           MARQUEE
-      ══════════════════════════════════════════ */}
-      <section className="bpk-marquee" aria-label="Señales monitoreadas">
+      ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ */}
+      <section className="bpk-marquee" aria-label="Se├▒ales monitoreadas">
         <div>
           {[...signals, ...signals].map((signal, index) => (
             <span key={`${signal}-${index}`}>{signal}</span>
@@ -129,9 +129,9 @@ export default function TecnologiaInnovacion() {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
-          SERVICIOS — con video de fondo
-      ══════════════════════════════════════════ */}
+      {/* ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+          SERVICIOS ÔÇö con video de fondo
+      ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ */}
       <section className="bpk-services">
         {/* Capa 0: video */}
         <div className="bpk-services-video" aria-hidden="true">
@@ -156,11 +156,11 @@ export default function TecnologiaInnovacion() {
         {/* Capa 3: contenido */}
         <div className="bpk-services-inner">
           <div className="bpk-sec-head bpk-reveal">
-            <span className="bpk-section-label">Unidad de tecnología</span>
-            <h2 className="bpk-sec-h2">Soluciones con imagen, dato y ejecución.</h2>
+            <span className="bpk-section-label">Unidad de tecnolog├¡a</span>
+            <h2 className="bpk-sec-h2">Soluciones con imagen, dato y ejecuci├│n.</h2>
             <p>
-              La tecnología no se instala para verse moderna. Se instala para saber qué hacer, cuándo hacerlo y cuánto
-              mejora la operación.
+              La tecnolog├¡a no se instala para verse moderna. Se instala para saber qu├® hacer, cu├índo hacerlo y cu├ínto
+              mejora la operaci├│n.
             </p>
           </div>
 
@@ -180,14 +180,14 @@ export default function TecnologiaInnovacion() {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
+      {/* ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
           INTELIGENCIA APLICADA
-      ══════════════════════════════════════════ */}
+      ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ */}
       <section className="bpk-intel">
         <div className="bpk-intel__media bpk-reveal">
           <img
             src="https://www.intagros.com.co/wp-content/uploads/2026/02/tech-agriculture.jpg"
-            alt="Tecnología agrícola aplicada por INTAGROS"
+            alt="Tecnolog├¡a agr├¡cola aplicada por INTAGROS"
           />
           <div className="bpk-intel__hud">
             <span>Modelo predictivo</span>
@@ -199,20 +199,20 @@ export default function TecnologiaInnovacion() {
           <span className="bpk-section-label">Inteligencia aplicada</span>
           <h2>Un campo conectado no es un lujo. Es ventaja operativa.</h2>
           <p>
-            Cruzamos monitoreo satelital, información de maquinaria, registros de campo y experiencia agronómica para
-            encontrar restricciones antes de que se conviertan en pérdidas.
+            Cruzamos monitoreo satelital, informaci├│n de maquinaria, registros de campo y experiencia agron├│mica para
+            encontrar restricciones antes de que se conviertan en p├®rdidas.
           </p>
           <div className="bpk-intel__list">
-            <div><strong>01</strong><span>Diagnóstico tecnológico y mapa de datos disponibles.</span></div>
-            <div><strong>02</strong><span>Diseño de indicadores por cultivo, lote y operación.</span></div>
-            <div><strong>03</strong><span>Implementación, capacitación y seguimiento de resultados.</span></div>
+            <div><strong>01</strong><span>Diagn├│stico tecnol├│gico y mapa de datos disponibles.</span></div>
+            <div><strong>02</strong><span>Dise├▒o de indicadores por cultivo, lote y operaci├│n.</span></div>
+            <div><strong>03</strong><span>Implementaci├│n, capacitaci├│n y seguimiento de resultados.</span></div>
           </div>
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
-          MÉTRICAS
-      ══════════════════════════════════════════ */}
+      {/* ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+          M├ëTRICAS
+      ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ */}
       <section className="bpk-metrics">
         {[
           ['24/7', 'monitoreo operativo'],
@@ -227,15 +227,15 @@ export default function TecnologiaInnovacion() {
         ))}
       </section>
 
-      {/* ══════════════════════════════════════════
+      {/* ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
           CTA FINAL
-      ══════════════════════════════════════════ */}
+      ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ */}
       <section className="bpk-cta">
         <div className="bpk-cta-bg">AGRO DATA</div>
         <div className="bpk-cta-inner bpk-reveal">
           <span className="bpk-section-label">Siguiente paso</span>
-          <h2>Diseñemos el tablero de mando de su finca, cultivo u operación.</h2>
-          <p>Empezamos con un diagnóstico claro: datos disponibles, brechas, prioridades y retorno esperado.</p>
+          <h2>Dise├▒emos el tablero de mando de su finca, cultivo u operaci├│n.</h2>
+          <p>Empezamos con un diagn├│stico claro: datos disponibles, brechas, prioridades y retorno esperado.</p>
           <div className="bpk-hero-buttons">
             <a href={contact.whatsappHref} className="bpk-btn-primary" target="_blank" rel="noreferrer">
               Hablar con un asesor

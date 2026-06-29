@@ -1,4 +1,4 @@
-// Importar todas las imágenes locales
+// Importar todas las im├ígenes locales
 import imagenAsesorias from '/media/imagen-asesorias-agroindustriales.png?url';
 import imagenAmbiental from '/media/gestion-ambiental.png?url';
 import imagenTecnologia from '/media/tecnologia.png?url';

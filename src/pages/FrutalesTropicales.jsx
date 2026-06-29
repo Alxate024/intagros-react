@@ -4,36 +4,36 @@ import { contact } from '../data/siteContent'
 import './FrutalesTropicales.css'
 
 const stats = [
-  ['800+', 'Hectáreas asesoradas'],
+  ['800+', 'Hect├íreas asesoradas'],
   ['12+', 'Especies tropicales'],
-  ['30%', 'Reducción pérdidas postcosecha'],
-  ['25+', 'Años de experiencia en campo'],
+  ['30%', 'Reducci├│n p├®rdidas postcosecha'],
+  ['25+', 'A├▒os de experiencia en campo'],
 ]
 
 const species = [
-  ['Zapote', 'Especie nativa, alta demanda local, gestión árbol a árbol y código individual.', 'Quararibea cordata', 'https://www.intagros.com.co/wp-content/uploads/2026/03/Imagen1-2.jpg'],
-  ['Aguacate Hass', 'Exportación, GlobalG.A.P., cadena de frío y alto volumen comercial.', 'Persea americana var. Hass', 'https://www.intagros.com.co/wp-content/uploads/2026/03/images-1.jpg'],
+  ['Zapote', 'Especie nativa, alta demanda local, gesti├│n ├írbol a ├írbol y c├│digo individual.', 'Quararibea cordata', 'https://www.intagros.com.co/wp-content/uploads/2026/03/Imagen1-2.jpg'],
+  ['Aguacate Hass', 'Exportaci├│n, GlobalG.A.P., cadena de fr├¡o y alto volumen comercial.', 'Persea americana var. Hass', 'https://www.intagros.com.co/wp-content/uploads/2026/03/images-1.jpg'],
   ['Mango', 'Tommy Atkins, Keitt, cosecha escalonada y postcosecha para fresco.', 'Mangifera indica', 'https://www.intagros.com.co/wp-content/uploads/2026/03/Airbrush-IMAGE-ENHANCER-1773406399916-1773406399916.jpg'],
-  ['Cítricos', 'Valencia, mandarina, limón Tahití, análisis foliar y MIP certificado.', 'Citrus spp.', 'https://www.intagros.com.co/wp-content/uploads/2026/03/WhatsApp-Image-2026-03-13-at-7.28.56-AM.jpg'],
-  ['Guanábana', 'Mercados naturistas, control de antracnosis y alto valor agregado.', 'Annona muricata', 'https://www.intagros.com.co/wp-content/uploads/2026/03/images-2.jpg'],
-  ['Maracuyá', 'Ciclo corto, alta rentabilidad, espaldera y mercado de exportación.', 'Passiflora edulis', 'https://www.intagros.com.co/wp-content/uploads/2026/03/images-3.jpg'],
+  ['C├¡tricos', 'Valencia, mandarina, lim├│n Tahit├¡, an├ílisis foliar y MIP certificado.', 'Citrus spp.', 'https://www.intagros.com.co/wp-content/uploads/2026/03/WhatsApp-Image-2026-03-13-at-7.28.56-AM.jpg'],
+  ['Guan├íbana', 'Mercados naturistas, control de antracnosis y alto valor agregado.', 'Annona muricata', 'https://www.intagros.com.co/wp-content/uploads/2026/03/images-2.jpg'],
+  ['Maracuy├í', 'Ciclo corto, alta rentabilidad, espaldera y mercado de exportaci├│n.', 'Passiflora edulis', 'https://www.intagros.com.co/wp-content/uploads/2026/03/images-3.jpg'],
 ]
 
 const services = [
-  ['Establecimiento y diseño agronómico', 'Selección de variedades por zona agroecológica, análisis de suelo, trazado de la finca y plan de siembra.', ['Variedades', 'Suelos', 'Siembra']],
-  ['Manejo fitosanitario integrado', 'Monitoreo periódico, umbrales de acción y calendario fitosanitario con residualidad mínima.', ['MIP', 'Diagnóstico', 'Calendario']],
-  ['Nutrición y fertilización por árbol', 'Planes foliares y edáficos por especie, estado fenológico y resultados de laboratorio.', ['Foliar', 'Edáfica', 'Dosis']],
-  ['Poda y labores culturales', 'Poda de formación, producción y saneamiento para mejorar calibre, uniformidad y sanidad.', ['Poda', 'Aclareo', 'Saneamiento']],
-  ['Postcosecha y comercialización', 'Protocolos de cosecha, temperatura, empaque, transporte y conexión con compradores.', ['Cadena de frío', 'Empaque', 'Mercado']],
-  ['Certificaciones BPA y GlobalG.A.P.', 'Implementación documental, trazabilidad y preparación para mercados de exportación.', ['BPA', 'GlobalG.A.P.', 'Trazabilidad']],
+  ['Establecimiento y dise├▒o agron├│mico', 'Selecci├│n de variedades por zona agroecol├│gica, an├ílisis de suelo, trazado de la finca y plan de siembra.', ['Variedades', 'Suelos', 'Siembra']],
+  ['Manejo fitosanitario integrado', 'Monitoreo peri├│dico, umbrales de acci├│n y calendario fitosanitario con residualidad m├¡nima.', ['MIP', 'Diagn├│stico', 'Calendario']],
+  ['Nutrici├│n y fertilizaci├│n por ├írbol', 'Planes foliares y ed├íficos por especie, estado fenol├│gico y resultados de laboratorio.', ['Foliar', 'Ed├ífica', 'Dosis']],
+  ['Poda y labores culturales', 'Poda de formaci├│n, producci├│n y saneamiento para mejorar calibre, uniformidad y sanidad.', ['Poda', 'Aclareo', 'Saneamiento']],
+  ['Postcosecha y comercializaci├│n', 'Protocolos de cosecha, temperatura, empaque, transporte y conexi├│n con compradores.', ['Cadena de fr├¡o', 'Empaque', 'Mercado']],
+  ['Certificaciones BPA y GlobalG.A.P.', 'Implementaci├│n documental, trazabilidad y preparaci├│n para mercados de exportaci├│n.', ['BPA', 'GlobalG.A.P.', 'Trazabilidad']],
 ]
 
 const features = [
-  ['Ficha individual por árbol', 'Nombre científico, código, coordenadas GPS, foto, estado actual e historial completo.'],
-  ['QR y código de barras', 'Placa física por árbol para cargar ficha completa, historial y próximos controles.'],
+  ['Ficha individual por ├írbol', 'Nombre cient├¡fico, c├│digo, coordenadas GPS, foto, estado actual e historial completo.'],
+  ['QR y c├│digo de barras', 'Placa f├¡sica por ├írbol para cargar ficha completa, historial y pr├│ximos controles.'],
   ['Mapa georreferenciado', 'Vista de finca con filtros por especie, estado sanitario y labores pendientes.'],
-  ['Informe de visita agronómica', 'Reporte técnico imprimible con observaciones, dosis aplicadas y recomendaciones.'],
-  ['Calendario de controles', 'Alertas de control fitosanitario, fertilización, poda y cosecha programada.'],
+  ['Informe de visita agron├│mica', 'Reporte t├®cnico imprimible con observaciones, dosis aplicadas y recomendaciones.'],
+  ['Calendario de controles', 'Alertas de control fitosanitario, fertilizaci├│n, poda y cosecha programada.'],
 ]
 
 export default function FrutalesTropicales() {
@@ -65,7 +65,7 @@ export default function FrutalesTropicales() {
           </nav>
 
           <div className="ift-title">
-            <span>Gestión integral de cítricos, frutales y ornamentales</span>
+            <span>Gesti├│n integral de c├¡tricos, frutales y ornamentales</span>
             <h1>
               <em>Frutales</em>
               <strong>Tropi-</strong>
@@ -74,15 +74,15 @@ export default function FrutalesTropicales() {
           </div>
 
           <div className="ift-hero-bottom">
-            <p>Asesoría técnica árbol por árbol, desde zapote hasta aguacate Hass de exportación. Georreferenciación, bitácora digital y certificación GlobalG.A.P.</p>
-            <a className="ift-pill" href={contact.whatsappHref} target="_blank" rel="noreferrer">Solicitar asesoría</a>
+            <p>Asesor├¡a t├®cnica ├írbol por ├írbol, desde zapote hasta aguacate Hass de exportaci├│n. Georreferenciaci├│n, bit├ícora digital y certificaci├│n GlobalG.A.P.</p>
+            <a className="ift-pill" href={contact.whatsappHref} target="_blank" rel="noreferrer">Solicitar asesor├¡a</a>
           </div>
         </div>
         <div className="ift-hero-right">
           <img src="https://www.intagros.com.co/wp-content/uploads/2026/03/WhatsApp-Image-2026-03-13-at-12.26.03-PM.jpeg" alt="Frutales tropicales asesorados por INTAGROS" />
           <div className="ift-hero-label">
-            <span>Finca El Zapote · Vereda La Escalera</span>
-            <strong>Quararibea cordata — Zapote</strong>
+            <span>Finca El Zapote ┬À Vereda La Escalera</span>
+            <strong>Quararibea cordata ÔÇö Zapote</strong>
           </div>
         </div>
       </section>
@@ -99,11 +99,11 @@ export default function FrutalesTropicales() {
       <section className="ift-manifest">
         <div className="ift-manifest-year">25</div>
         <div className="ift-manifest-inner ift-reveal">
-          <span className="ift-section-label">Nuestra filosofía</span>
-          <p className="ift-quote">No asesoramos fincas: asesoramos <strong>cada árbol individual</strong>, con su nombre científico, código, historia y próximo control en calendario.</p>
+          <span className="ift-section-label">Nuestra filosof├¡a</span>
+          <p className="ift-quote">No asesoramos fincas: asesoramos <strong>cada ├írbol individual</strong>, con su nombre cient├¡fico, c├│digo, historia y pr├│ximo control en calendario.</p>
           <div className="ift-manifest-cols">
-            <p>INTAGROS gestiona cada planta como una unidad productiva única: georreferenciación, ficha técnica individual, bitácora de mantenimiento y alertas de controles.</p>
-            <p>El resultado es trazabilidad completa desde la raíz hasta el mercado, clave para certificación GlobalG.A.P. y compradores internacionales.</p>
+            <p>INTAGROS gestiona cada planta como una unidad productiva ├║nica: georreferenciaci├│n, ficha t├®cnica individual, bit├ícora de mantenimiento y alertas de controles.</p>
+            <p>El resultado es trazabilidad completa desde la ra├¡z hasta el mercado, clave para certificaci├│n GlobalG.A.P. y compradores internacionales.</p>
           </div>
         </div>
       </section>
@@ -111,7 +111,7 @@ export default function FrutalesTropicales() {
       <section className="ift-archive">
         <header className="ift-section-head ift-reveal">
           <h2>Archivo de especies</h2>
-          <p>Protocolos técnicos diferenciados para especies tropicales de alto valor.</p>
+          <p>Protocolos t├®cnicos diferenciados para especies tropicales de alto valor.</p>
         </header>
         <div className="ift-species-list">
           {species.map(([name, description, scientific, image], index) => (
@@ -150,10 +150,10 @@ export default function FrutalesTropicales() {
       <section className="ift-system" id="ift-sistema">
         <div className="ift-system-inner">
           <div className="ift-system-copy ift-reveal">
-            <span className="ift-section-label">Herramienta INTAGROS · En desarrollo</span>
-            <h2>Sistema de gestión árbol por árbol</h2>
-            <p>Plataforma para fincas de cítricos, frutales y ornamentales. Cada árbol tiene ficha digital, QR, historial de mantenimientos y actualización desde celular en campo.</p>
-            <p>Funciona como archivo botánico productivo: mapa georreferenciado, visita agronómica por árbol, informes imprimibles y calendario de próximos controles.</p>
+            <span className="ift-section-label">Herramienta INTAGROS ┬À En desarrollo</span>
+            <h2>Sistema de gesti├│n ├írbol por ├írbol</h2>
+            <p>Plataforma para fincas de c├¡tricos, frutales y ornamentales. Cada ├írbol tiene ficha digital, QR, historial de mantenimientos y actualizaci├│n desde celular en campo.</p>
+            <p>Funciona como archivo bot├ínico productivo: mapa georreferenciado, visita agron├│mica por ├írbol, informes imprimibles y calendario de pr├│ximos controles.</p>
             <div className="ift-feature-list">
               {features.map(([title, text]) => (
                 <article className="ift-feature ift-reveal" key={title}>
@@ -162,29 +162,29 @@ export default function FrutalesTropicales() {
                 </article>
               ))}
             </div>
-            <div className="ift-coming"><span />Próximamente disponible — registro anticipado abierto</div>
+            <div className="ift-coming"><span />Pr├│ximamente disponible ÔÇö registro anticipado abierto</div>
           </div>
 
-          <div className="ift-phone ift-reveal" aria-label="Mockup de ficha digital de árbol">
+          <div className="ift-phone ift-reveal" aria-label="Mockup de ficha digital de ├írbol">
             <div className="ift-phone-screen">
               <div className="ift-phone-notch" />
               <div className="ift-phone-content">
                 <div className="ift-phone-bar">
                   <span>Finca El Zapote</span>
-                  <strong>Gestión Frutales</strong>
+                  <strong>Gesti├│n Frutales</strong>
                 </div>
                 <div className="ift-ficha-top">
                   <img src="https://www.intagros.com.co/wp-content/uploads/2026/03/apple.jpg" alt="" />
                   <div>
-                    <span>Cód. 001 · Vda. La Escalera</span>
+                    <span>C├│d. 001 ┬À Vda. La Escalera</span>
                     <strong>Zapote</strong>
                     <em>Quararibea cordata</em>
                     <small><i /> Estado bueno</small>
                   </div>
                 </div>
-                <h4>Dosis foliar — 16 Mar 2026</h4>
+                <h4>Dosis foliar ÔÇö 16 Mar 2026</h4>
                 <div className="ift-dose-grid">
-                  {['Pegal PH · 1,5 cm3/L', 'Wuxal T. Rojo · 2,5 cm3/L', 'Numetrin · 2 cm3/L', 'Carbendazim · 2 cm3/L'].map((dose) => <span key={dose}>{dose}</span>)}
+                  {['Pegal PH ┬À 1,5 cm3/L', 'Wuxal T. Rojo ┬À 2,5 cm3/L', 'Numetrin ┬À 2 cm3/L', 'Carbendazim ┬À 2 cm3/L'].map((dose) => <span key={dose}>{dose}</span>)}
                 </div>
                 <h4>Dosis suelo</h4>
                 <div className="ift-soil-list">
@@ -196,7 +196,7 @@ export default function FrutalesTropicales() {
                   <strong>16 Abr 2026</strong>
                   <span>Control fitosanitario</span>
                   <strong>16 Jul 2026</strong>
-                  <span>Fertilización</span>
+                  <span>Fertilizaci├│n</span>
                 </div>
                 <div className="ift-phone-actions">
                   <button type="button">Imprimir</button>
@@ -212,10 +212,10 @@ export default function FrutalesTropicales() {
       <section className="ift-cta" id="ift-contacto">
         <div className="ift-cta-bg">FRUTALES</div>
         <div className="ift-cta-inner ift-reveal">
-          <span className="ift-section-label">Finca El Zapote — y la suya</span>
-          <h2>Su finca tiene más potencial del que imagina.</h2>
+          <span className="ift-section-label">Finca El Zapote ÔÇö y la suya</span>
+          <h2>Su finca tiene m├ís potencial del que imagina.</h2>
           <div>
-            <a className="ift-btn-main" href={contact.whatsappHref} target="_blank" rel="noreferrer">Solicitar visita diagnóstica</a>
+            <a className="ift-btn-main" href={contact.whatsappHref} target="_blank" rel="noreferrer">Solicitar visita diagn├│stica</a>
             <Link className="ift-btn-sec" to="/servicios/">Ver servicios</Link>
           </div>
         </div>

@@ -893,3 +893,179 @@ svg.guadalito-map {
   z-index: 1;
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
 }
+
+/* ── Empty detail panel ── */
+.guadalito-panel--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.guadalito-panel--empty .zapote-empty-hint {
+  color: var(--g-text-muted);
+  font-size: 0.8rem;
+  font-family: 'Courier New', monospace;
+  opacity: 0.6;
+}
+
+/* ── Editing mode tree list ── */
+.zp-tree-list__item--editable {
+  cursor: crosshair;
+  border-left: 2px solid transparent !important;
+}
+.zp-tree-list__item--editable:hover {
+  border-left-color: #d4a62f !important;
+}
+.zp-tree-list__item--editable.zp-tree-list__item--active {
+  border-left-color: #d4a62f !important;
+  background: rgba(212, 166, 47, 0.08) !important;
+}
+.zp-editing-badge {
+  font-size: 0.45rem;
+  font-family: 'Courier New', monospace;
+  color: #d4a62f;
+  background: rgba(212, 166, 47, 0.1);
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+  margin-left: auto;
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+}
+.zp-edit-hint {
+  margin: 0.5rem 0 0;
+  padding: 0.4rem 0.5rem;
+  font-size: 0.6rem;
+  font-family: 'Courier New', monospace;
+  color: rgba(212, 166, 47, 0.5);
+  background: rgba(212, 166, 47, 0.04);
+  border-radius: 4px;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ── Quick placement panel ── */
+.zp-edit-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 0;
+}
+.zp-edit-tree-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+.zp-edit-tree-id {
+  font-size: 1.8rem;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  color: #d4a62f;
+  line-height: 1;
+}
+.zp-edit-tree-species {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.zp-edit-tree-group {
+  font-size: 0.55rem;
+  color: var(--g-text-muted);
+  opacity: 0.6;
+}
+.zp-edit-count {
+  margin: 0.25rem 0 0;
+  font-size: 0.55rem;
+  font-family: 'Courier New', monospace;
+  color: var(--g-text-muted);
+  opacity: 0.5;
+}
+.guadalito-panel--detail .zp-edit-hint {
+  margin-top: 0;
+}
+.zapote-empty-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 1rem;
+}
+.zapote-empty-sub {
+  font-size: 0.5rem;
+  font-family: 'Courier New', monospace;
+  color: var(--g-text-muted);
+  opacity: 0.5;
+}
+
+/* ── Confirm placement dialog ── */
+.zp-confirm-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+}
+.zp-confirm-msg {
+  font-size: 0.65rem;
+  color: #e0e0e0;
+  text-align: center;
+  line-height: 1.5;
+}
+.zp-confirm-msg strong {
+  color: #d4a62f;
+}
+.zp-confirm-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.zp-confirm-actions button {
+  padding: 0.35rem 1rem;
+  border: 1px solid;
+  border-radius: 4px;
+  font-size: 0.6rem;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: transparent;
+  transition: all 0.15s;
+}
+.zp-confirm-yes {
+  color: #7fb069;
+  border-color: #7fb069;
+}
+.zp-confirm-yes:hover {
+  background: rgba(127, 176, 105, 0.15);
+}
+.zp-confirm-no {
+  color: #c94835;
+  border-color: #c94835;
+}
+.zp-confirm-no:hover {
+  background: rgba(201, 72, 53, 0.15);
+}
+
+/* ── Pending placement marker on map ── */
+.zp-pending-marker {
+  width: 28px;
+  height: 28px;
+  border: 2px solid #d4a62f;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(212, 166, 47, 0.15);
+  animation: zp-pending-pulse 0.8s ease-in-out infinite alternate;
+}
+.zp-pending-marker__icon {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #d4a62f;
+  line-height: 1;
+}
+@keyframes zp-pending-pulse {
+  from { transform: scale(1); opacity: 0.7; }
+  to   { transform: scale(1.15); opacity: 1; }
+}

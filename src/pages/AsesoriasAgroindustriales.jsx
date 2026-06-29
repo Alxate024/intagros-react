@@ -8,9 +8,9 @@ const specialties = [
   {
     to: '/unidades/asesorias-agroindustriales/cana-de-azucar/',
     number: '01',
-    title: 'Caña de Azúcar & Panela',
-    theme: 'Surco · Brix · Trapiche',
-    text: 'Manejo técnico del lote, cosecha, quema controlada, molienda, calidad de panela y trazabilidad.',
+    title: 'Ca├▒a de Az├║car & Panela',
+    theme: 'Surco ┬À Brix ┬À Trapiche',
+    text: 'Manejo t├®cnico del lote, cosecha, quema controlada, molienda, calidad de panela y trazabilidad.',
     image: 'https://www.intagros.com.co/wp-content/uploads/2020/06/capacitacion-2-scaled.jpg',
     tone: 'cane',
   },
@@ -18,8 +18,8 @@ const specialties = [
     to: '/unidades/asesorias-agroindustriales/frutales-tropicales/',
     number: '02',
     title: 'Frutales Tropicales',
-    theme: 'Árbol · QR · GlobalG.A.P.',
-    text: 'Gestión árbol por árbol, nutrición, fitosanidad, postcosecha y archivo botánico productivo.',
+    theme: '├ürbol ┬À QR ┬À GlobalG.A.P.',
+    text: 'Gesti├│n ├írbol por ├írbol, nutrici├│n, fitosanidad, postcosecha y archivo bot├ínico productivo.',
     image: 'https://www.intagros.com.co/wp-content/uploads/2026/03/WhatsApp-Image-2026-03-13-at-12.26.03-PM.jpeg',
     tone: 'fruit',
   },
@@ -27,8 +27,8 @@ const specialties = [
     to: '/unidades/asesorias-agroindustriales/floricultura/',
     number: '03',
     title: 'Floricultura',
-    theme: 'Esqueje · Tallo · Exportación',
-    text: 'Invernadero, fertirrigación, MIP, punto de corte, postcosecha y cadena de frío.',
+    theme: 'Esqueje ┬À Tallo ┬À Exportaci├│n',
+    text: 'Invernadero, fertirrigaci├│n, MIP, punto de corte, postcosecha y cadena de fr├¡o.',
     image: 'https://www.intagros.com.co/wp-content/uploads/2026/03/WhatsApp-Image-2026-03-13-at-7.37.03-AM.jpeg',
     tone: 'flower',
   },
@@ -36,14 +36,14 @@ const specialties = [
     to: '/unidades/asesorias-agroindustriales/cultivos-transitorios/',
     number: '04',
     title: 'Cultivos Transitorios',
-    theme: 'Ciclo · Ventana · Rentabilidad',
-    text: 'Planeación de siembra, nutrición, sanidad, seguimiento de labores y cierre técnico del ciclo.',
+    theme: 'Ciclo ┬À Ventana ┬À Rentabilidad',
+    text: 'Planeaci├│n de siembra, nutrici├│n, sanidad, seguimiento de labores y cierre t├®cnico del ciclo.',
     image: 'https://www.intagros.com.co/wp-content/uploads/2026/02/54.jpeg',
     tone: 'cycle',
   },
 ]
 
-const method = ['Diagnóstico de campo', 'Mapa técnico', 'Ejecución acompañada', 'Indicadores y mejora']
+const method = ['Diagn├│stico de campo', 'Mapa t├®cnico', 'Ejecuci├│n acompa├▒ada', 'Indicadores y mejora']
 
 export default function AsesoriasAgroindustriales() {
   return (
@@ -53,17 +53,17 @@ export default function AsesoriasAgroindustriales() {
           {Array.from({ length: 7 }).map((_, index) => <span key={index} />)}
         </div>
         <div className="aga-hero__media">
-          <img src="https://www.intagros.com.co/wp-content/uploads/2026/02/01.jpeg" alt="Asesorías agroindustriales INTAGROS" />
+          <img src="https://www.intagros.com.co/wp-content/uploads/2026/02/01.jpeg" alt="Asesor├¡as agroindustriales INTAGROS" />
         </div>
         <div className="aga-hero__content">
-          <span>Unidad 01 · Asesorías Agroindustriales</span>
-          <h1>Un mapa técnico para cada cultivo, finca y decisión.</h1>
+          <span>Unidad 01 ┬À Asesor├¡as Agroindustriales</span>
+          <h1>Un mapa t├®cnico para cada cultivo, finca y decisi├│n.</h1>
           <p>
-            Caña, frutales, flores y cultivos por ciclo viven dentro de esta unidad. Cada especialidad tiene su propia
-            metodología, pero comparten una misma promesa: diagnóstico claro, ejecución cercana y resultados medibles.
+            Ca├▒a, frutales, flores y cultivos por ciclo viven dentro de esta unidad. Cada especialidad tiene su propia
+            metodolog├¡a, pero comparten una misma promesa: diagn├│stico claro, ejecuci├│n cercana y resultados medibles.
           </p>
           <div>
-            <a href={contact.whatsappHref} target="_blank" rel="noreferrer">Solicitar diagnóstico</a>
+            <a href={contact.whatsappHref} target="_blank" rel="noreferrer">Solicitar diagn├│stico</a>
             <a href="#especialidades">Ver especialidades</a>
           </div>
         </div>
@@ -71,7 +71,7 @@ export default function AsesoriasAgroindustriales() {
 
       <section className="aga-map" id="especialidades">
         <div className="aga-map__head">
-          <span>Correspondencia técnica</span>
+          <span>Correspondencia t├®cnica</span>
           <h2>Cuatro ramas, una misma inteligencia de campo.</h2>
         </div>
         <div className="aga-specialties">
@@ -100,7 +100,7 @@ export default function AsesoriasAgroindustriales() {
                     whileHover={{ x: 4 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <span>Entrar a la sección</span>
+                    <span>Entrar a la secci├│n</span>
                     <div className="aga-card__arrow">
                       <HiArrowRight className="w-5 h-5" />
                     </div>
@@ -114,8 +114,8 @@ export default function AsesoriasAgroindustriales() {
 
       <section className="aga-method">
         <div className="aga-method__copy">
-          <span>Cómo trabajamos</span>
-          <h2>La belleza visual sirve a una cosa: que el productor sepa dónde está y qué sigue.</h2>
+          <span>C├│mo trabajamos</span>
+          <h2>La belleza visual sirve a una cosa: que el productor sepa d├│nde est├í y qu├® sigue.</h2>
         </div>
         <div className="aga-method__steps">
           {method.map((step, index) => (

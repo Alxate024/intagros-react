@@ -31,7 +31,7 @@ class ErrorBoundary extends React.Component {
           }}
         >
           <h2>Ha ocurrido un error</h2>
-          <p>Por favor, intenta recargar la página. Si el problema persiste, contacta a soporte.</p>
+          <p>Por favor, intenta recargar la p├ígina. Si el problema persiste, contacta a soporte.</p>
           {/* eslint-disable-next-line no-constant-binary-expression */}
           {false && (
 

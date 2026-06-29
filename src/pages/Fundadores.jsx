@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import { FaLinkedin, FaTwitter, FaEnvelope } from 'react-icons/fa';
-import { HiArrowRight } from 'react-icons/hi';
 import HeroSection from '../components/ui/HeroSection';
 import Card from '../components/ui/Card';
 import Breadcrumb from '../components/ui/Breadcrumb';

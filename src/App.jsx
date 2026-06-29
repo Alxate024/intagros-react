@@ -1,11 +1,10 @@
 import { lazy, Suspense } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import AgroVerse from './components/AgroVerse'
-import AiAssistant from './components/AiAssistant'
 import Header from './components/Header'
 import ExperienceLayer from './components/ExperienceLayer'
 import ErrorBoundary from './components/common/ErrorBoundary'
-import { ContactProvider, UIProvider } from './context'
+import { UIProvider } from './context'
 import { contact, crops, units } from './data/siteContent'
 import './styles/global.css'
 import './App.css'
@@ -44,7 +43,6 @@ const LoadingFallback = () => (
 function App() {
   return (
     <ErrorBoundary>
-      <ContactProvider>
         <UIProvider>
           <BrowserRouter>
             <div className="app">
@@ -128,7 +126,6 @@ function App() {
                   </Routes>
                 </Suspense>
               </main>
-              <AiAssistant />
             <footer className="footer">
               <div>
                 <strong>INTAGROS</strong>
@@ -139,7 +136,6 @@ function App() {
           </div>
           </BrowserRouter>
         </UIProvider>
-      </ContactProvider>
     </ErrorBoundary>
   )
 }

@@ -39,13 +39,13 @@ export function validateContactForm(data) {
   if (isEmpty(data.email)) {
     errors.email = 'El email es requerido'
   } else if (!isValidEmail(data.email)) {
-    errors.email = 'Email inválido'
+    errors.email = 'Email inv├ílido'
   }
 
   if (isEmpty(data.telefono)) {
-    errors.telefono = 'El teléfono es requerido'
+    errors.telefono = 'El tel├®fono es requerido'
   } else if (!isValidPhone(data.telefono)) {
-    errors.telefono = 'Teléfono inválido (formato: +57 310 0000000)'
+    errors.telefono = 'Tel├®fono inv├ílido (formato: +57 310 0000000)'
   }
 
   if (isEmpty(data.empresa)) {

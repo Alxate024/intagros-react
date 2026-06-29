@@ -3,9 +3,9 @@ import { company, contact, crops, partnerLogos, units } from '../data/siteConten
 import './InstitutionalPage.css'
 
 const unitHighlights = [
-  'Diagnóstico técnico y financiero',
+  'Diagn├│stico t├®cnico y financiero',
   'Plan de trabajo por cultivo o predio',
-  'Acompañamiento de implementación',
+  'Acompa├▒amiento de implementaci├│n',
   'Seguimiento con indicadores claros',
 ]
 
@@ -29,8 +29,8 @@ function ContactPanel() {
   return (
     <div className="contact-panel">
       <span className="eyebrow eyebrow--light">Contacto directo</span>
-      <h2>Conversemos sobre su operación agrícola.</h2>
-      <p>Comparta ubicación, cultivo, extensión y necesidad principal para orientar el primer diagnóstico.</p>
+      <h2>Conversemos sobre su operaci├│n agr├¡cola.</h2>
+      <p>Comparta ubicaci├│n, cultivo, extensi├│n y necesidad principal para orientar el primer diagn├│stico.</p>
       <div className="contact-panel__links">
         <a href={contact.phoneHref}>{contact.phoneLabel}</a>
         <a href={`mailto:${contact.email}`}>{contact.email}</a>
@@ -46,7 +46,7 @@ export function AboutPage() {
     <div className="institutional-page">
       <PageHero
         eyebrow="Nosotros"
-        title="Criterio técnico para decisiones agroindustriales de alto impacto."
+        title="Criterio t├®cnico para decisiones agroindustriales de alto impacto."
         text={company.promise}
         image="https://www.intagros.com.co/wp-content/uploads/2026/02/03.jpeg"
       />
@@ -54,8 +54,8 @@ export function AboutPage() {
       <section className="section-pad institutional-band">
         <div className="shell narrative-grid">
           <div>
-            <span className="eyebrow">Quiénes somos</span>
-            <h2>Un equipo que une agronomía, operación, sostenibilidad y datos.</h2>
+            <span className="eyebrow">Qui├®nes somos</span>
+            <h2>Un equipo que une agronom├¡a, operaci├│n, sostenibilidad y datos.</h2>
           </div>
           <div className="narrative-copy">
             <p>{company.mission}</p>
@@ -69,7 +69,7 @@ export function AboutPage() {
 
       <section className="section-pad proof-section">
         <div className="shell proof-grid">
-          {['300+ proyectos ejecutados', '18 departamentos', '25+ años de experiencia'].map((item) => (
+          {['300+ proyectos ejecutados', '18 departamentos', '25+ a├▒os de experiencia'].map((item) => (
             <article key={item}>
               <strong>{item.split(' ')[0]}</strong>
               <span>{item.replace(item.split(' ')[0], '').trim()}</span>
@@ -86,8 +86,8 @@ export function UnitsPage() {
     <div className="institutional-page">
       <PageHero
         eyebrow="Unidades de negocio"
-        title="Cuatro líneas de acción para ordenar, ejecutar y medir mejor."
-        text="Cada unidad responde a un frente crítico de la agroindustria: campo, ambiente, tecnología e infraestructura."
+        title="Cuatro l├¡neas de acci├│n para ordenar, ejecutar y medir mejor."
+        text="Cada unidad responde a un frente cr├¡tico de la agroindustria: campo, ambiente, tecnolog├¡a e infraestructura."
         image="https://www.intagros.com.co/wp-content/uploads/2026/02/55.jpeg"
       />
 
@@ -120,7 +120,7 @@ export function ServicesPage() {
       <PageHero
         eyebrow="Servicios asociados"
         title="Servicios complementarios para llevar la estrategia al terreno."
-        text="INTAGROS estructura equipos, diagnósticos y acompañamientos a la medida de cada cultivo, finca o proyecto."
+        text="INTAGROS estructura equipos, diagn├│sticos y acompa├▒amientos a la medida de cada cultivo, finca o proyecto."
         image="https://www.intagros.com.co/wp-content/uploads/2026/02/00.jpeg"
       />
 
@@ -142,7 +142,7 @@ export function ServicesPage() {
       <section className="section-pad allied-section" id="aliados">
         <div className="shell">
           <div className="section-head">
-            <span className="eyebrow">Aliados estratégicos</span>
+            <span className="eyebrow">Aliados estrat├®gicos</span>
             <h2>Relaciones de confianza construidas en campo.</h2>
           </div>
           <div className="partner-strip partner-strip--static">
@@ -163,8 +163,8 @@ export function ContactPage() {
     <div className="institutional-page">
       <PageHero
         eyebrow="Contacto"
-        title="Cuéntenos el reto. Lo convertimos en un primer mapa de acción."
-        text="Use el canal que prefiera para iniciar una conversación técnica con el equipo INTAGROS."
+        title="Cu├®ntenos el reto. Lo convertimos en un primer mapa de acci├│n."
+        text="Use el canal que prefiera para iniciar una conversaci├│n t├®cnica con el equipo INTAGROS."
         image="https://www.intagros.com.co/wp-content/uploads/2026/02/33.jpeg"
       />
 
@@ -175,8 +175,8 @@ export function ContactPage() {
             <label>Nombre<input type="text" name="nombre" placeholder="Nombre completo" /></label>
             <label>Empresa / finca<input type="text" name="empresa" placeholder="Hacienda o empresa" /></label>
             <label>Correo<input type="email" name="email" placeholder="correo@empresa.com" /></label>
-            <label>Teléfono<input type="tel" name="telefono" placeholder="+57 300 000 0000" /></label>
-            <label>Mensaje<textarea name="mensaje" placeholder="Cultivo, extensión, ubicación y reto principal" /></label>
+            <label>Tel├®fono<input type="tel" name="telefono" placeholder="+57 300 000 0000" /></label>
+            <label>Mensaje<textarea name="mensaje" placeholder="Cultivo, extensi├│n, ubicaci├│n y reto principal" /></label>
             <a className="btn btn--primary btn--full" href={contact.whatsappHref} target="_blank" rel="noreferrer">Enviar por WhatsApp</a>
           </form>
         </div>
@@ -189,19 +189,19 @@ export function TermsPage() {
   return (
     <div className="institutional-page">
       <PageHero
-        eyebrow="Términos y condiciones"
-        title="Uso responsable de la información y los canales digitales."
-        text="Esta página resume condiciones generales para el uso del sitio y el contacto comercial con INTAGROS."
+        eyebrow="T├®rminos y condiciones"
+        title="Uso responsable de la informaci├│n y los canales digitales."
+        text="Esta p├ígina resume condiciones generales para el uso del sitio y el contacto comercial con INTAGROS."
         image="https://www.intagros.com.co/wp-content/uploads/2026/02/11.jpeg"
       />
 
       <section className="section-pad terms-section">
         <div className="shell terms-layout">
           {[
-            ['Uso del sitio', 'La información publicada tiene carácter institucional y comercial. Puede cambiar según la evolución de los servicios, proyectos o canales de atención.'],
+            ['Uso del sitio', 'La informaci├│n publicada tiene car├ícter institucional y comercial. Puede cambiar seg├║n la evoluci├│n de los servicios, proyectos o canales de atenci├│n.'],
             ['Contacto y datos', 'Los datos enviados por formularios, correo o WhatsApp se usan para responder solicitudes, orientar servicios y dar seguimiento comercial.'],
-            ['Contenido e imágenes', 'Las marcas, textos, imágenes y materiales asociados a INTAGROS se presentan para comunicar capacidades y no autorizan reproducción no solicitada.'],
-            ['Servicios', 'Las propuestas, diagnósticos y acompañamientos se definen caso por caso según alcance, ubicación, cultivo, recursos disponibles y condiciones contractuales.'],
+            ['Contenido e im├ígenes', 'Las marcas, textos, im├ígenes y materiales asociados a INTAGROS se presentan para comunicar capacidades y no autorizan reproducci├│n no solicitada.'],
+            ['Servicios', 'Las propuestas, diagn├│sticos y acompa├▒amientos se definen caso por caso seg├║n alcance, ubicaci├│n, cultivo, recursos disponibles y condiciones contractuales.'],
           ].map(([title, text]) => (
             <article key={title}>
               <h2>{title}</h2>
@@ -218,9 +218,9 @@ export function CropsPage() {
   return (
     <div className="institutional-page">
       <PageHero
-        eyebrow="Especialidades agrícolas"
-        title="Cultivos con manejo técnico, trazabilidad y visión de negocio."
-        text="Además de las unidades de negocio, INTAGROS acompaña sistemas productivos específicos con criterios agronómicos y operativos."
+        eyebrow="Especialidades agr├¡colas"
+        title="Cultivos con manejo t├®cnico, trazabilidad y visi├│n de negocio."
+        text="Adem├ís de las unidades de negocio, INTAGROS acompa├▒a sistemas productivos espec├¡ficos con criterios agron├│micos y operativos."
         image="https://www.intagros.com.co/wp-content/uploads/2026/02/53.jpeg"
       />
 

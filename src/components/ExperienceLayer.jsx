@@ -64,6 +64,11 @@ const defaultProfile = {
 export default function ExperienceLayer() {
   const { pathname } = useLocation()
   const [progress, setProgress] = useState(0)
+  const isPrediosExperience =
+    pathname === '/' ||
+    pathname.includes('predio') ||
+    pathname.includes('finca') ||
+    pathname.includes('fincas')
 
   const profile = useMemo(
     () => routeProfiles.find((item) => pathname.includes(item.match)) ?? defaultProfile,
@@ -71,6 +76,10 @@ export default function ExperienceLayer() {
   )
 
   useEffect(() => {
+    if (isPrediosExperience) {
+      return undefined
+    }
+
     const updateProgress = () => {
       const available = document.documentElement.scrollHeight - window.innerHeight
       setProgress(available > 0 ? Math.min(window.scrollY / available, 1) : 0)
@@ -83,7 +92,11 @@ export default function ExperienceLayer() {
       window.removeEventListener('scroll', updateProgress)
       window.removeEventListener('resize', updateProgress)
     }
-  }, [pathname])
+  }, [isPrediosExperience, pathname])
+
+  if (isPrediosExperience) {
+    return null
+  }
 
   return (
     <div className={`experience-layer experience-layer--${profile.tone}`} aria-hidden="true">

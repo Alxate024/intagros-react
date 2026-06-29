@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 import * as THREE from 'three'
 import './AgroVerse.css'
 
@@ -41,8 +42,18 @@ function createCane(x, z, height, color) {
 
 export default function AgroVerse() {
   const mountRef = useRef(null)
+  const { pathname } = useLocation()
+  const isPrediosExperience =
+    pathname === '/' ||
+    pathname.includes('predio') ||
+    pathname.includes('finca') ||
+    pathname.includes('fincas')
 
   useEffect(() => {
+    if (isPrediosExperience) {
+      return undefined
+    }
+
     const mount = mountRef.current
     if (!mount) {
       return undefined
@@ -171,7 +182,11 @@ export default function AgroVerse() {
         }
       })
     }
-  }, [])
+  }, [isPrediosExperience])
+
+  if (isPrediosExperience) {
+    return null
+  }
 
   return (
     <div className="agro-verse" aria-hidden="true">
