@@ -388,6 +388,13 @@ export default function PredioGuadalito() {
               <button className={`zapote-anchor-btn ${isAnclado ? 'anclado' : ''}`} onClick={toggleAnclar}>
                 {isAnclado ? '🔒 Anclado' : '🔓 Anclar Posición'}
               </button>
+              <button type="button" onClick={() => {
+                const cal = { puntoLng, puntoLat, puntoEscala, rotation }
+                const blob = new Blob([JSON.stringify(cal, null, 2)], { type: 'application/json' })
+                const url = URL.createObjectURL(blob)
+                const a = document.createElement('a'); a.href = url; a.download = 'guadalito_calibracion.json'
+                a.click(); URL.revokeObjectURL(url)
+              }}>📥 Fijar</button>
 
               <div className="zapote-control-group">
                 <label>Editar puntos</label>

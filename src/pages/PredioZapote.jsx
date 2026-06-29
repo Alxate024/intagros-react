@@ -372,9 +372,16 @@ function CalibratorPanel({
           {isAnclado ? (
             <><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect x="2" y="4" width="6" height="5" rx="1" stroke="currentColor" strokeWidth="1"/><path d="M3.5 4V3a1.5 1.5 0 013 0v1" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/></svg>Anclado</>
           ) : (
-            <><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect x="2" y="4" width="6" height="5" rx="1" stroke="currentColor" strokeWidth="1"/><path d="M6.5 4V2.5a1.5 1.5 0 00-3 0" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/></svg>Anclar</>
+            <><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect x="2" y="4" width="6" height="5" rx="1" stroke="currentColor" strokeWidth="1"/>            <path d="M6.5 4V2.5a1.5 1.5 0 00-3 0" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/></svg>Anclar</>
           )}
         </button>
+        <button type="button" className="zp-calibrator__export" onClick={() => {
+          const cal = { puntoLng, puntoLat, puntoEscala, rotation }
+          const blob = new Blob([JSON.stringify(cal, null, 2)], { type: 'application/json' })
+          const url = URL.createObjectURL(blob)
+          const a = document.createElement('a'); a.href = url; a.download = 'zapote_calibracion.json'
+          a.click(); URL.revokeObjectURL(url)
+        }}>📥</button>
       </div>
       <div className="zp-calibrator__body">
         <div className="zp-cal-group">
@@ -762,7 +769,7 @@ export default function PredioZapote() {
                               <span className="zp-tree-list__species" style={{ color: profile.border }}>{tree.species}</span>
                               <span className="zp-tree-list__group">{tree.group}</span>
                             </span>
-                          </button>
+        </button>
                         );
                       })
                     )}
