@@ -1702,91 +1702,446 @@
 
 @media (max-width: 768px) {
   .zapote-hero-section {
-    padding-top: calc(var(--header-height) + 1rem);
-    padding-bottom: 2rem;
+    padding-top: calc(var(--header-height) + 0.75rem);
+    padding-bottom: 1.5rem;
   }
-  
+  .zapote-hero-section h1 {
+    font-size: clamp(1.8rem, 7vw, 2.8rem);
+  }
   .zapote-hero-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .zapote-hero-cards {
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+  }
+  .zapote-hero-card strong {
+    font-size: 1.4rem;
+  }
+  .zapote-hero-card span {
+    font-size: 0.5rem;
+  }
+  .zapote-hero-copy p {
+    font-size: 0.9rem;
+  }
+  .zapote-breadcrumb {
+    font-size: 0.65rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.2rem;
+  }
+  .zapote-kicker {
+    font-size: 0.6rem;
+  }
+  .zp-hero-canopy-leaf--left {
+    width: clamp(140px, 25vw, 240px);
+  }
+  .zp-hero-canopy-leaf--right {
+    width: clamp(100px, 18vw, 180px);
   }
 
-  .zapote-hero-cards {
-    grid-template-columns: 1fr;
-  }
-  
   .zapote-map-section {
-    padding: 1rem;
+    padding: 0.75rem;
+    min-height: auto;
   }
-  
+  .zapote-map-section::before,
+  .zapote-map-section::after {
+    display: none;
+  }
+
   .zapote-map-container {
-    min-height: 500px;
+    grid-template-columns: 1fr;
+    min-height: auto;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0.75rem;
+    gap: 0.75rem;
+  }
+  .zapote-map-container::before,
+  .zapote-map-container::after {
+    display: none;
   }
 
   .zp-map-frame {
-    min-height: 560px;
-  }
-  
-  .zapote-info-panel {
-    top: 1rem;
-    left: 1rem;
-    right: 1rem;
-    width: auto;
-    max-height: calc(100% - 180px);
-  }
-  
-  .zp-calibrator {
-    bottom: 1rem;
-    right: 1rem;
-    width: 200px;
+    min-height: 500px;
   }
 
+  .zapote-info-panel {
+    position: static;
+    top: auto;
+    left: auto;
+    right: auto;
+    width: auto;
+    max-height: none;
+    border-radius: 12px;
+    padding: 1rem;
+  }
+
+  .zp-calibrator {
+    position: relative;
+    bottom: auto;
+    right: auto;
+    width: auto;
+    margin: 0.5rem 0;
+  }
+
+  .zp-map-statusbar {
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.55rem;
+  }
+  .zp-map-statusbar__left {
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .zp-map-statusbar__badge {
+    font-size: 0.5rem;
+    padding: 0.15rem 0.35rem;
+  }
+  .zp-coords {
+    flex-wrap: wrap;
+    gap: 0.2rem;
+  }
+  .zp-coords__chip {
+    font-size: 0.5rem;
+    padding: 0.1rem 0.3rem;
+  }
+  .zp-map-footerbar {
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    padding: 0.3rem 0.6rem;
+  }
   .zp-map-footerbar__center {
     display: none;
+  }
+  .zp-map-selected-badge {
+    font-size: 0.55rem;
+    padding: 0.25rem 0.6rem;
+    top: 0.6rem;
+  }
+  .zp-compass {
+    width: 36px;
+    height: 36px;
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+
+  .zapote-tree-image img {
+    max-height: 150px;
+  }
+  .zapote-tree-info h3 {
+    font-size: 1.3rem;
+  }
+
+  .zp-tree-list {
+    max-height: 200px;
+  }
+  .zp-tree-list__item {
+    padding: 0.3rem 0.4rem;
+  }
+  .zp-tree-list__id-box {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+  .zp-tree-list__species {
+    font-size: 0.55rem;
+  }
+  .zp-tree-list__group {
+    font-size: 0.45rem;
+  }
+  .zp-filter-chip {
+    font-size: 0.5rem;
+    padding: 0.15rem 0.4rem;
   }
 
   .zp-dash-kpis {
     grid-template-columns: 1fr 1fr;
   }
-
   .zp-dash-tools {
     grid-template-columns: 1fr;
   }
-
   .zp-dash-charts {
     grid-template-columns: 1fr;
+  }
+
+  .zp-data-panel {
+    padding: 2rem 0.75rem 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .zp-data-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .zp-data-header__title {
+    font-size: 1.2rem;
+  }
+  .zp-data-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .zp-data-metrics {
+    flex-wrap: wrap;
+  }
+  .zp-data-metric__value {
+    font-size: 1.2rem;
+  }
+  .zp-data-spec {
+    padding: 0.4rem 0.5rem;
+  }
+  .zp-data-spec__title {
+    font-size: 0.7rem;
+  }
+  .zp-data-spec__desc {
+    font-size: 0.6rem;
+  }
+  .zp-data-footer {
+    flex-direction: column;
+    gap: 0.3rem;
+    text-align: center;
+  }
+
+  .zp-env-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .zp-env-item__value {
+    font-size: 0.7rem;
+  }
+
+  .zp-health-gauge svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .zapote-instructions-section {
+    padding: 3rem 0.75rem;
+  }
+  .zapote-instructions-section h2 {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+  }
+  .zapote-instructions-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .zapote-instructions-grid article {
+    padding: 1.2rem;
   }
 }
 
 @media (max-width: 480px) {
-  .zapote-hero-section h1 {
-    font-size: 2rem;
+  .zapote-hero-section {
+    padding-top: calc(var(--header-height) + 0.5rem);
+    padding-bottom: 1rem;
   }
-  
-  .zapote-map-container {
-    min-height: 400px;
+  .zapote-hero-section h1 {
+    font-size: 1.6rem;
+  }
+  .zapote-hero-cards {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+  .zapote-hero-card strong {
+    font-size: 1.2rem;
+  }
+  .zapote-hero-card {
+    padding: 0.7rem 1rem;
+  }
+  .zapote-hero-copy p {
+    font-size: 0.8rem;
+  }
+  .zapote-breadcrumb {
+    font-size: 0.55rem;
+    gap: 0.3rem;
   }
 
-  .zp-map-frame {
-    min-height: 500px;
+  .zapote-map-section {
+    padding: 0.5rem;
   }
-  
+  .zapote-map-container {
+    min-height: auto;
+    padding: 0.5rem;
+    gap: 0.5rem;
+  }
+  .zp-map-frame {
+    min-height: 420px;
+  }
   .zapote-info-panel {
     position: fixed;
     top: auto;
     bottom: 0;
     left: 0;
     right: 0;
-    max-height: 60vh;
+    max-height: 50vh;
     border-radius: var(--zapote-radius) var(--zapote-radius) 0 0;
+    padding: 0.75rem;
+    z-index: 100;
+    overflow-y: auto;
   }
-  
+  .zapote-info-panel::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 3px;
+    border-radius: 3px;
+    background: rgba(107, 143, 78, 0.2);
+    margin: 0 auto 0.5rem;
+  }
+  .zapote-info-header h2 {
+    font-size: 0.9rem;
+  }
   .zp-calibrator {
-    position: relative;
-    bottom: auto;
-    right: auto;
-    margin: 0.5rem;
-    margin-top: 3.5rem;
+    margin: 0.25rem;
+    margin-top: 3rem;
     width: auto;
+  }
+  .zp-calibrator__header {
+    padding: 0.4rem 0.6rem;
+  }
+  .zp-calibrator__body {
+    padding: 0.4rem 0.6rem;
+  }
+  .zp-calibrator__header-left {
+    font-size: 0.45rem;
+  }
+  .zp-cal-group__label {
+    font-size: 0.5rem;
+  }
+  .zp-cal-group__label code {
+    font-size: 0.5rem;
+  }
+
+  .zp-map-statusbar {
+    font-size: 0.5rem;
+    padding: 0.3rem 0.5rem;
+  }
+  .zp-map-footerbar {
+    font-size: 0.5rem;
+    padding: 0.25rem 0.5rem;
+  }
+  .zp-map-selected-badge {
+    display: none;
+  }
+  .zp-compass {
+    width: 30px;
+    height: 30px;
+  }
+  .zp-crosshair {
+    width: 28px;
+    height: 28px;
+  }
+
+  .zapote-tree-info h3 {
+    font-size: 1.1rem;
+  }
+  .zapote-tree-group {
+    font-size: 0.75rem;
+  }
+  .zapote-wiki-content p {
+    font-size: 0.8rem;
+  }
+  .zapote-empty-tree {
+    width: 80px;
+    height: 100px;
+  }
+
+  .zp-tree-list {
+    max-height: 150px;
+  }
+  .zp-tree-list-header {
+    font-size: 0.45rem;
+  }
+  .zp-tree-list__item {
+    padding: 0.25rem 0.3rem;
+    gap: 0.4rem;
+  }
+  .zp-tree-list__id-box {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .zp-tree-list__id-num {
+    font-size: 0.45rem;
+  }
+  .zp-tree-list__species {
+    font-size: 0.5rem;
+  }
+
+  .zp-dash-kpis {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  .zp-dash-tools {
+    gap: 0.5rem;
+  }
+
+  .zp-data-panel {
+    padding: 1.5rem 0.5rem 1rem;
+  }
+  .zp-data-header__title {
+    font-size: 1rem;
+  }
+  .zp-data-metrics {
+    gap: 0.3rem;
+  }
+  .zp-data-metric {
+    padding: 0.4rem 0.3rem;
+  }
+  .zp-data-metric__value {
+    font-size: 1rem;
+  }
+  .zp-data-metric__label {
+    font-size: 0.45rem;
+  }
+  .zp-data-text {
+    font-size: 0.75rem;
+  }
+  .zp-data-feature {
+    font-size: 0.7rem;
+  }
+
+  .zp-env-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.3rem;
+  }
+  .zp-env-item__value {
+    font-size: 0.6rem;
+  }
+  .zp-env-item__label {
+    font-size: 0.4rem;
+  }
+
+  .zapote-instructions-grid {
+    gap: 0.75rem;
+  }
+  .zapote-instructions-grid article {
+    padding: 1rem;
+    gap: 0.5rem;
+  }
+  .zapote-instructions-grid h3 {
+    font-size: 1rem;
+  }
+  .zapote-instructions-grid p {
+    font-size: 0.8rem;
+  }
+  .zapote-instruction-icon {
+    font-size: 1.8rem;
+  }
+
+  .zp-view-toggle__btn {
+    font-size: 0.5rem;
+    padding: 0.2rem 0.5rem;
+  }
+
+  .zp-dash-section-title {
+    font-size: 1.2rem;
+  }
+  .zp-dash-sub {
+    font-size: 0.7rem;
+  }
+  .zp-export-btn {
+    font-size: 0.5rem;
+    padding: 0.3rem 0.6rem;
   }
 }
 
