@@ -54,7 +54,7 @@ const clientes = [
               { v: '—',  l: 'Grupos'     },
             ],
             accent: '#7fb069',
-            mapImg: '/media/predio-guadalito-mapa.png',
+            mapImg: '/media/predio-guadalito.png',
             tags: ['Mapa', 'Seleccion', '3D', 'Precision'],
             iconColor: '#1f3b22',
             iconBorder: '#7fb069',
