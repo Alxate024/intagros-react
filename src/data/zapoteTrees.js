@@ -275,6 +275,14 @@ const speciesInfo = {
   Maranon: { group: 'Otros frutales', query: 'Anacardium occidentale', color: '#c86138' },
 }
 
+const IMAGE_WIDTH_ZAP = 1102
+const IMAGE_HEIGHT_ZAP = 787
+const ZAP_PUNTO_LNG = -76.429972
+const ZAP_PUNTO_LAT = 3.645361
+const ZAP_ESCALA = 0.000008
+const ZAP_ROTATION = 0
+const zapRad = (ZAP_ROTATION * Math.PI) / 180
+
 export const zapoteTrees = speciesByNumber.map((species, index) => {
   const number = index + 1
   const [x, y] = coordinates[index]
@@ -283,6 +291,11 @@ export const zapoteTrees = speciesByNumber.map((species, index) => {
     query: species,
     color: '#7d8b57',
   }
+
+  const dx = x - IMAGE_WIDTH_ZAP / 2
+  const dy = y - IMAGE_HEIGHT_ZAP / 2
+  const lng = Number((ZAP_PUNTO_LNG + (dx * Math.cos(zapRad) - dy * Math.sin(zapRad)) * ZAP_ESCALA).toFixed(7))
+  const lat = Number((ZAP_PUNTO_LAT - (dx * Math.sin(zapRad) + dy * Math.cos(zapRad)) * ZAP_ESCALA).toFixed(7))
 
   return {
     id: number,
@@ -295,6 +308,8 @@ export const zapoteTrees = speciesByNumber.map((species, index) => {
     sourceY: y,
     x,
     y,
+    lng,
+    lat,
   }
 })
 

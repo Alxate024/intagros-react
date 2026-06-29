@@ -192,7 +192,8 @@ export default function PredioGuaguya() {
     setIsAnclado(!isAnclado)
   }
 
-  function getLngLat(x, y) {
+  function getLngLat(x, y, tree) {
+    if (tree?.lng != null && tree?.lat != null) return { longitude: tree.lng, latitude: tree.lat }
     const dx = x - IMAGE_WIDTH / 2
     const dy = y - IMAGE_HEIGHT / 2
     const rad = (rotation * Math.PI) / 180
@@ -205,7 +206,12 @@ export default function PredioGuaguya() {
   const trees = useMemo(
     () => guaguyaTreesDefault.map((tree) => {
       const [x, y] = guaguyaLayout[tree.id] ?? [tree.x, tree.y]
-      return { ...tree, x, y }
+      const dx = x - IMAGE_WIDTH / 2
+      const dy = y - IMAGE_HEIGHT / 2
+      const rad = 0
+      const lng = Number((GUAGUYA_BASE_LNG + (dx * Math.cos(rad) - dy * Math.sin(rad)) * 0.000008).toFixed(7))
+      const lat = Number((GUAGUYA_BASE_LAT - (dx * Math.sin(rad) + dy * Math.cos(rad)) * 0.000008).toFixed(7))
+      return { ...tree, x, y, lng, lat }
     }),
     [],
   )

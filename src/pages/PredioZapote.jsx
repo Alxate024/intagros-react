@@ -528,7 +528,8 @@ export default function PredioZapote() {
   }, []);
 
   // Calcular posición de marcadores con rotación
-  function getLngLat(x, _y) {
+  function getLngLat(x, _y, tree) {
+    if (tree?.lng != null && tree?.lat != null) return { longitude: tree.lng, latitude: tree.lat };
     const dx = x - (IMAGE_WIDTH / 2);
     const dy = _y - (IMAGE_HEIGHT / 2);
     const rad = (rotation * Math.PI) / 180;
