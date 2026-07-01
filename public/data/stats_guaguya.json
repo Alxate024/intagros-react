@@ -1,0 +1,103 @@
+{
+  "predio": "Guaguya",
+  "total_trees": 54,
+  "species_count": 28,
+  "species_list": [
+    "Aguacate Lorena",
+    "Aguacate Trinidad",
+    "Anon",
+    "Carambola",
+    "Grosella",
+    "Guanabano",
+    "Guayaba Comun",
+    "Guayaba Coronilla",
+    "Guayaba Pera",
+    "Guayaba Peruana",
+    "Jaboticaba",
+    "Kumquat",
+    "Limon Nativo",
+    "Limon Tahiti",
+    "Madrono",
+    "Mamey",
+    "Mandarina Arrayana",
+    "Mandarina Oneco",
+    "Mango Haden",
+    "Mango Tommy",
+    "Naranja Ombligona",
+    "Naranja Sanguina",
+    "Naranja Sweety",
+    "Naranja Valencia",
+    "Nispero",
+    "Pitanga",
+    "Tangelo Orlando",
+    "Zapote"
+  ],
+  "group_count": 7,
+  "groups": [
+    "Aguacates",
+    "Anonaceas",
+    "Citricos",
+    "Guayabas",
+    "Mangos",
+    "Otros frutales",
+    "Zapote"
+  ],
+  "avg_health": 78,
+  "health_distribution": {
+    "optimas": 25,
+    "buenas": 29,
+    "regulares": 0,
+    "criticas": 0
+  },
+  "health_stats": {
+    "min": 63,
+    "max": 95,
+    "mean": 78,
+    "median": 78,
+    "std": 7.85
+  },
+  "group_breakdown": [
+    {
+      "group": "Aguacates",
+      "count": 6,
+      "pct": 11.1
+    },
+    {
+      "group": "Anonaceas",
+      "count": 3,
+      "pct": 5.6
+    },
+    {
+      "group": "Citricos",
+      "count": 13,
+      "pct": 24.1
+    },
+    {
+      "group": "Guayabas",
+      "count": 8,
+      "pct": 14.8
+    },
+    {
+      "group": "Mangos",
+      "count": 12,
+      "pct": 22.2
+    },
+    {
+      "group": "Otros frutales",
+      "count": 9,
+      "pct": 16.7
+    },
+    {
+      "group": "Zapote",
+      "count": 3,
+      "pct": 5.6
+    }
+  ],
+  "top_species": {
+    "Mango Tommy": 9,
+    "Aguacate Lorena": 5,
+    "Naranja Valencia": 3,
+    "Mango Haden": 3,
+    "Guayaba Comun": 3
+  }
+}

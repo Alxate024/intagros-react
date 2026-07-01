@@ -567,8 +567,8 @@ export default function PredioGuadalito() {
 
       <PredioDashboard
         predioName="Guadalito"
+        predioKey="guadalito"
         trees={trees}
-        dashboardStats={dashboardStats}
         envData={envData}
         getTreeHealth={getTreeHealth}
         downloadCSV={downloadCSV}

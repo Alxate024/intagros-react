@@ -1,0 +1,84 @@
+{
+  "predio": "Guadalito",
+  "total_trees": 67,
+  "species_count": 21,
+  "species_list": [
+    "Aguacate Lorena",
+    "Anon",
+    "Carambola",
+    "Grosella",
+    "Guanabano",
+    "Guayaba Comun",
+    "Guayaba Coronilla",
+    "Guayaba Peruana",
+    "Jaboticaba",
+    "Kumquat",
+    "Limón Nativo",
+    "Limón Tahití",
+    "Madrono",
+    "Mandarina Arrayana",
+    "Mandarina Oneco",
+    "Mango Tommy",
+    "Naranja Valencia",
+    "Nispero",
+    "Pitanga",
+    "Tangelo Minneola",
+    "Zapote"
+  ],
+  "group_count": 5,
+  "groups": [
+    "Aguacates",
+    "Citricos",
+    "Guayabas",
+    "Mangos",
+    "Otros frutales"
+  ],
+  "avg_health": 76,
+  "health_distribution": {
+    "optimas": 16,
+    "buenas": 51,
+    "regulares": 0,
+    "criticas": 0
+  },
+  "health_stats": {
+    "min": 66,
+    "max": 92,
+    "mean": 76,
+    "median": 75,
+    "std": 5.93
+  },
+  "group_breakdown": [
+    {
+      "group": "Aguacates",
+      "count": 11,
+      "pct": 16.4
+    },
+    {
+      "group": "Citricos",
+      "count": 37,
+      "pct": 55.2
+    },
+    {
+      "group": "Guayabas",
+      "count": 6,
+      "pct": 9.0
+    },
+    {
+      "group": "Mangos",
+      "count": 3,
+      "pct": 4.5
+    },
+    {
+      "group": "Otros frutales",
+      "count": 10,
+      "pct": 14.9
+    }
+  ],
+  "top_species": {
+    "Naranja Valencia": 30,
+    "Aguacate Lorena": 11,
+    "Guayaba Peruana": 4,
+    "Mango Tommy": 3,
+    "Limón Tahití": 2
+  }
+}

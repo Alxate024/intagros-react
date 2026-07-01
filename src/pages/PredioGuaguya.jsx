@@ -516,8 +516,8 @@ export default function PredioGuaguya() {
 
       <PredioDashboard
         predioName="Guaguya"
+        predioKey="guaguya"
         trees={trees}
-        dashboardStats={dashboardStats}
         envData={envData}
         getTreeHealth={getTreeHealth}
         downloadCSV={downloadCSV}

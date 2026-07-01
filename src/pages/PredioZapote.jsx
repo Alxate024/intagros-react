@@ -862,8 +862,8 @@ export default function PredioZapote() {
 
         <PredioDashboard
           predioName="El Zapote"
+          predioKey="zapote"
           trees={zapoteTrees}
-          dashboardStats={dashboardStats}
           envData={envData}
           getTreeHealth={getTreeHealth}
           downloadCSV={downloadCSV}
