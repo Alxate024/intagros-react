@@ -1,3 +1,4 @@
+import { useState, useCallback } from 'react';
 import Map, { Marker, NavigationControl } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
@@ -20,47 +21,40 @@ const PUBLIC_SATELLITE_STYLE = {
     },
   },
   layers: [
-    {
-      id: 'satellite',
-      type: 'raster',
-      source: 'satellite',
-      minzoom: 0,
-      maxzoom: 22,
-    },
+    { id: 'satellite', type: 'raster', source: 'satellite', minzoom: 0, maxzoom: 22 },
   ],
 };
 
-const defaultGetLngLat = (x, y) => {
-  const baseLng = -76.429972;
-  const baseLat = 3.645361;
-  return {
-    longitude: baseLng + (x - 551) * 0.000004,
-    latitude: baseLat - (y - 393) * 0.000004,
-  };
-};
+const defaultGetLngLat = (x, y) => ({
+  longitude: -76.429972 + (x - 551) * 0.000004,
+  latitude: 3.645361 - (y - 393) * 0.000004,
+});
 
 export default function MapboxOrchard3D({
   trees,
   selectedTreeId,
   onSelectTree,
   onMapClick,
-  initialViewState = {
-    longitude: -76.429972,
-    latitude: 3.645361,
-    zoom: 17.6,
-    pitch: 50,
-    bearing: 0,
-  },
+  initialViewState = { longitude: -76.429972, latitude: 3.645361, zoom: 17.6, pitch: 50, bearing: 0 },
   mapStyle = 'mapbox://styles/mapbox/satellite-streets-v12',
   getLngLat,
   renderMarker,
   pendingMarker,
+  onViewStateChange,
 }) {
+  const [viewport, setViewport] = useState(initialViewState);
   const token = import.meta.env.VITE_MAPBOX_TOKEN || PUBLIC_MAPBOX_TOKEN;
+
   const resolvedMapStyle = typeof mapStyle === 'string' && mapStyle.startsWith('mapbox://')
     ? PUBLIC_SATELLITE_STYLE
     : mapStyle;
-  
+
+  const handleMove = useCallback((evt) => {
+    const vs = evt.viewState;
+    setViewport(vs);
+    if (onViewStateChange) onViewStateChange(vs);
+  }, [onViewStateChange]);
+
   if (!token) {
     return (
       <div className="mapbox-orchard-shell mapbox-orchard-shell--missing-token">
@@ -71,19 +65,18 @@ export default function MapboxOrchard3D({
       </div>
     );
   }
-  
-  const computeLngLat = (tree) => (typeof getLngLat === 'function' ? getLngLat(tree.x, tree.y, tree) : defaultGetLngLat(tree.x, tree.y));
+
+  const computeLngLat = (tree) => (typeof getLngLat === 'function' ? getLngLat(tree.x, tree.y, tree, viewport.zoom) : defaultGetLngLat(tree.x, tree.y));
 
   return (
     <div className="mapbox-orchard-shell" style={{ width: '100%', height: '100%', minHeight: '360px' }}>
       <Map
-        initialViewState={initialViewState}
+        {...viewport}
+        onMove={handleMove}
         mapStyle={resolvedMapStyle}
         mapboxAccessToken={token}
         style={{ width: '100%', height: '100%' }}
-        onClick={(e) => {
-          if (typeof onMapClick === 'function') onMapClick(e)
-        }}
+        onClick={(e) => { if (typeof onMapClick === 'function') onMapClick(e); }}
       >
         <NavigationControl position="top-right" />
 
@@ -118,6 +111,7 @@ export default function MapboxOrchard3D({
             </Marker>
           );
         })}
+
         {pendingMarker && (
           <Marker longitude={pendingMarker.lng} latitude={pendingMarker.lat} anchor="center">
             <div className="zp-pending-marker">

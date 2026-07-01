@@ -2529,9 +2529,7 @@
   display: inline-block;
   vertical-align: middle;
 }
-.zp-tree-list__health[data-status="good"]  { background: #7fb069; box-shadow: 0 0 4px rgba(127,176,105,0.3); }
-.zp-tree-list__health[data-status="warning"] { background: #f4d35e; box-shadow: 0 0 4px rgba(244,211,94,0.3); }
-.zp-tree-list__health[data-status="critical"] { background: #c94835; box-shadow: 0 0 4px rgba(201,72,53,0.3); }
+
 
 /* ── HEALTH INDICATOR ON MAP MARKER ─────────────────────────────────────── */
 .zp-tree-marker-health {
@@ -2564,3 +2562,170 @@
 .zapote-info-panel::-webkit-scrollbar-thumb:hover {
   background: var(--zapote-accent);
 }
+
+/* ============================================================================
+   LIVE MONITOR BAR (empty state)
+   ============================================================================ */
+.zp-monitor-bar {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem 0.6rem;
+  background: rgba(10, 26, 14, 0.5);
+  border: 1px solid rgba(74, 124, 58, 0.08);
+  border-radius: 6px;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+.zp-monitor-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.6rem;
+  color: rgba(200, 212, 192, 0.5);
+}
+.zp-monitor-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.zp-monitor-label {
+  font-family: 'Courier New', monospace;
+  font-size: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgba(107, 143, 78, 0.35);
+}
+.zp-monitor-count {
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  color: rgba(200, 212, 192, 0.6);
+}
+
+/* ============================================================================
+   TREE STATUS BADGES
+   ============================================================================ */
+.zapote-tree-status-badges {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+.zt-badge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid;
+  text-transform: capitalize;
+}
+.zt-badge--optima { background: rgba(76,175,80,0.15); border-color: #4CAF50; color: #4CAF50; }
+.zt-badge--buena  { background: rgba(102,187,106,0.15); border-color: #66BB6A; color: #66BB6A; }
+.zt-badge--regular { background: rgba(251,140,0,0.15); border-color: #fb8c00; color: #fb8c00; }
+.zt-badge--critica { background: rgba(244,67,53,0.15); border-color: #F44335; color: #F44335; }
+.zt-badge--prod {
+  background: rgba(200,163,92,0.1);
+  border-color: rgba(200,163,92,0.3);
+  color: #c8a35c;
+}
+
+/* ============================================================================
+   TREE LIST EXTENSIONS
+   ============================================================================ */
+.zp-tree-list__edited {
+  font-size: 0.55rem;
+  color: #c8a35c;
+  margin-left: 0.15rem;
+  opacity: 0.6;
+}
+.zp-tree-list__prod {
+  font-size: 0.45rem;
+  color: rgba(107, 143, 78, 0.4);
+  margin-left: 0.15rem;
+}
+.zp-tree-list-actions {
+  display: flex;
+  gap: 0.25rem;
+  margin-left: auto;
+}
+.zp-tool-btn {
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(74, 124, 58, 0.12);
+  border-radius: 4px;
+  background: rgba(10, 26, 14, 0.4);
+  color: rgba(200, 212, 192, 0.4);
+  font-size: 0.6rem;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  line-height: 1;
+  padding: 0;
+}
+.zp-tool-btn:hover {
+  border-color: rgba(200, 163, 92, 0.3);
+  color: rgba(200, 212, 192, 0.7);
+}
+
+/* ============================================================================
+   CALIBRATOR COLLAPSIBLE
+   ============================================================================ */
+.zp-calibrator--collapsed .zp-calibrator__body {
+  display: none;
+}
+.zp-calibrator__collapse-btn {
+  background: none;
+  border: none;
+  color: rgba(200, 212, 192, 0.3);
+  cursor: pointer;
+  font-size: 0.5rem;
+  padding: 0 0.25rem;
+  line-height: 1;
+  transition: color 0.15s;
+}
+.zp-calibrator__collapse-btn:hover {
+  color: rgba(200, 212, 192, 0.6);
+}
+
+/* ============================================================================
+   MAP MARKER: HEALTH-BASED STYLES
+   ============================================================================ */
+.zp-tree-marker--optima .zp-tree-marker-pin {
+  box-shadow: 0 0 6px rgba(76,175,80,0.3);
+}
+.zp-tree-marker--critica .zp-tree-marker-pin {
+  box-shadow: 0 0 8px rgba(244,67,53,0.3);
+  animation: zp-marker-pulse 1.5s ease-in-out infinite;
+}
+@keyframes zp-marker-pulse {
+  0%, 100% { box-shadow: 0 0 4px rgba(244,67,53,0.2); }
+  50% { box-shadow: 0 0 12px rgba(244,67,53,0.5); }
+}
+.zp-tree-marker-prod {
+  position: absolute;
+  top: -6px;
+  right: -4px;
+  font-size: 0.45rem;
+  line-height: 1;
+  filter: drop-shadow(0 0 2px rgba(0,0,0,0.6));
+}
+
+/* ============================================================================
+   TREE COORDS
+   ============================================================================ */
+.zapote-tree-coords {
+  font-size: 0.6rem;
+  color: rgba(107, 143, 78, 0.4);
+  font-family: 'Courier New', monospace;
+  margin-bottom: 0.75rem;
+}
+
+/* ============================================================================
+   HEALTH LIST UPDATES (new status values)
+   ============================================================================ */
+.zp-tree-list__health[data-status="optima"] { background: #4CAF50; box-shadow: 0 0 4px rgba(76,175,80,0.3); }
+.zp-tree-list__health[data-status="buena"]  { background: #66BB6A; box-shadow: 0 0 4px rgba(102,187,106,0.3); }
+.zp-tree-list__health[data-status="regular"] { background: #fb8c00; box-shadow: 0 0 4px rgba(251,140,0,0.3); }
+.zp-tree-list__health[data-status="critica"] { background: #F44335; box-shadow: 0 0 4px rgba(244,67,53,0.3); }

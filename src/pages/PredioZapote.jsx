@@ -5,50 +5,24 @@ import Box from '@mui/material/Box';
 import MapboxOrchard3D from '../components/MapboxOrchard3D';
 import PredioDashboard from '../components/dashboard/PredioDashboard';
 import MDTypography from '../components/md/MDTypography';
+import useTreeStatus from '../hooks/useTreeStatus';
+import TreeStatusEditor from '../components/tree/TreeStatusEditor';
+import TreeMarkerIcon from '../components/tree/TreeMarkerIcon';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './PredioZapote.css';
 
-// Importar datos
 import { zapoteTrees, zapoteGroups, zapoteSpecies, zapoteSpeciesCounts } from '../data/zapoteTrees';
 
-// --- CACHÉ Y UTILIDADES ---
-const wikipediaCache = new globalThis.Map();
-
-// --- SALUD DE ÁRBOLES (heuristic) ---
-const treeHealthBase = {
-  Aguacate:       { score: 85, label: 'Buena',   status: 'good' },
-  Mango:          { score: 82, label: 'Buena',   status: 'good' },
-  Citricos:       { score: 73, label: 'Regular', status: 'warning' },
-  Guayaba:        { score: 78, label: 'Regular', status: 'warning' },
-  Anonaceas:      { score: 90, label: 'Óptima',  status: 'good' },
-  Zapote:         { score: 88, label: 'Óptima',  status: 'good' },
-  'Otros frutales': { score: 70, label: 'Regular', status: 'warning' },
-};
-function getTreeHealth(tree) {
-  const base = treeHealthBase[tree.group] || { score: 75, label: 'Regular', status: 'warning' };
-  const variation = ((tree.id * 7 + tree.species.length * 3) % 15) - 7;
-  const score = Math.min(100, Math.max(35, base.score + variation));
-  let label, status;
-  if (score >= 80) { label = 'Óptima'; status = 'good'; }
-  else if (score >= 60) { label = 'Buena'; status = 'good'; }
-  else if (score >= 40) { label = 'Regular'; status = 'warning'; }
-  else { label = 'Crítica'; status = 'critical'; }
-  return { score, label, status };
-}
-
-// --- DATOS AMBIENTALES (mock) ---
+const wikipediaCache = new Map();
 const envData = {
   temp: 28.4, feelsLike: 30.1, humidity: 74, rainfall: 12.4,
-  uv: 6, wind: 8.2, pressure: 1013, condition: 'Parcialmente nublado',
-  icon: '⛅',
+  uv: 6, wind: 8.2, pressure: 1013, condition: 'Parcialmente nublado', icon: '⛅',
 };
 
-// --- CSV EXPORT ---
 function downloadCSV(trees) {
-  const headers = ['ID', 'Código', 'Especie', 'Grupo', 'Salud', 'Puntaje', 'Coordenada X', 'Coordenada Y'];
+  const headers = ['ID', 'Código', 'Especie', 'Grupo', 'Salud', 'Puntaje', 'Produccion', 'Coordenada X', 'Coordenada Y'];
   const rows = trees.map(t => {
-    const h = getTreeHealth(t);
-    return [t.id, t.code, t.species, t.group, h.label, h.score, t.sourceX, t.sourceY];
+    return [t.id, t.code, t.species, t.group, t._healthLabel, '', t._produccion, t.sourceX, t.sourceY];
   });
   const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
   const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
@@ -111,143 +85,32 @@ async function fetchWikipediaSummary(query) {
   }
 }
 
-// --- PERFILES VISUALES DE ÁRBOLES CON IMÁGENES PERSONALIZABLES ---
 function getTreeVisualProfile(tree) {
   const species = normalizeText(tree.species);
   const imageFile = speciesImageFile[tree.species] || `${speciesToFilename(tree.species)}.png`;
   const treeImage = `/media/${imageFile}`;
-  
-  // Mango
-  if (species.includes('mango')) {
-    return { 
-      canopy: '#23451f', 
-      border: '#d7a23b',
-      customImage: treeImage,
-      shape: 'oval'
-    };
-  }
-  
-  // Aguacate
-  if (species.includes('aguacate')) {
-    return { 
-      canopy: '#1f3b22', 
-      border: '#253719',
-      customImage: treeImage,
-      shape: 'tall'
-    };
-  }
-  
-  // Cítricos
+  if (species.includes('mango')) return { canopy: '#23451f', border: '#d7a23b', customImage: treeImage, shape: 'oval' };
+  if (species.includes('aguacate')) return { canopy: '#1f3b22', border: '#253719', customImage: treeImage, shape: 'tall' };
   if (tree.group === 'Citricos') {
     const isLemon = species.includes('limon');
-    return { 
-      canopy: '#2e5523', 
-      border: isLemon ? '#cbd84a' : '#e48b24',
-      customImage: treeImage,
-      shape: 'round'
-    };
+    return { canopy: '#2e5523', border: isLemon ? '#cbd84a' : '#e48b24', customImage: treeImage, shape: 'round' };
   }
-  
-  // Guayaba
-  if (species.includes('guayaba') || species.includes('guayana')) {
-    return { 
-      canopy: '#4c7438', 
-      border: '#b9d878',
-      customImage: treeImage,
-      shape: 'round'
-    };
-  }
-  
-  // Guanábano
-  if (species.includes('guanabano') || species.includes('anon')) {
-    return { 
-      canopy: '#315229', 
-      border: '#8cae66',
-      customImage: treeImage,
-      shape: 'oval'
-    };
-  }
-  
-  // Jaboticaba
-  if (species.includes('jaboticaba')) {
-    return { 
-      canopy: '#1d3322', 
-      border: '#2b1d38',
-      customImage: treeImage,
-      shape: 'round'
-    };
-  }
-  
-  // Mamey / Zapote
-  if (species.includes('mamey') || species.includes('zapote')) {
-    return { 
-      canopy: '#2d4722', 
-      border: '#a65f35',
-      customImage: treeImage,
-      shape: 'broad'
-    };
-  }
-  
-  // Carambola
-  if (species.includes('carambola')) {
-    return { 
-      canopy: '#3f6731', 
-      border: '#d7c93e',
-      customImage: treeImage,
-      shape: 'round'
-    };
-  }
-  
-  // Marañón
-  if (species.includes('maranon')) {
-    return { 
-      canopy: '#344f23', 
-      border: '#c6532a',
-      customImage: treeImage,
-      shape: 'broad'
-    };
-  }
-  
-  // Default
-  return { 
-    canopy: '#314f28', 
-    border: '#9b7d35',
-    customImage: treeImage,
-    shape: 'round'
-  };
+  if (species.includes('guayaba') || species.includes('guayana')) return { canopy: '#4c7438', border: '#b9d878', customImage: treeImage, shape: 'round' };
+  if (species.includes('guanabano') || species.includes('anon')) return { canopy: '#315229', border: '#8cae66', customImage: treeImage, shape: 'oval' };
+  if (species.includes('jaboticaba')) return { canopy: '#1d3322', border: '#2b1d38', customImage: treeImage, shape: 'round' };
+  if (species.includes('mamey') || species.includes('zapote')) return { canopy: '#2d4722', border: '#a65f35', customImage: treeImage, shape: 'broad' };
+  if (species.includes('carambola')) return { canopy: '#3f6731', border: '#d7c93e', customImage: treeImage, shape: 'round' };
+  if (species.includes('maranon')) return { canopy: '#344f23', border: '#c6532a', customImage: treeImage, shape: 'broad' };
+  return { canopy: '#314f28', border: '#9b7d35', customImage: treeImage, shape: 'round' };
 }
 
-// --- FILTER CHIP ---
 function FilterChip({ active, onClick, children }) {
   return (
-    <button
-      onClick={onClick}
-      className={`zp-filter-chip ${active ? 'zp-filter-chip--active' : ''}`}
-    >
+    <button onClick={onClick} className={`zp-filter-chip ${active ? 'zp-filter-chip--active' : ''}`}>
       {children}
     </button>
   );
 }
-
-// --- TREE MARKER — punto de mapa PNG con badge de ID ---
-function TreeMarkerIcon({ tree, isSelected }) {
-  const profile = getTreeVisualProfile(tree);
-  const health = getTreeHealth(tree);
-  const healthColor = health.status === 'good' ? '#7fb069' : health.status === 'warning' ? '#f4d35e' : '#c94835';
-
-  return (
-    <div className={`zp-tree-marker ${isSelected ? 'zp-tree-marker--selected' : ''}`}>
-      <div className="zp-tree-marker-pin" style={{ '--zp-canopy': profile.canopy, '--zp-border': profile.border }}>
-        <img src="/media/point-icon.png" alt="" className="zp-tree-marker-img" />
-        <span className="zp-tree-marker-dot" style={{ background: profile.border }} />
-        <span className="zp-tree-marker-health" style={{ background: healthColor }} />
-      </div>
-      <span className="zp-tree-marker-id" style={{ color: profile.border }}>{tree.id}</span>
-    </div>
-  );
-}
-
-/* ── HUD DEL MAPA ───────────────────────────────────────────────────── */
 
 function CompassRose({ rotation }) {
   return (
@@ -259,7 +122,7 @@ function CompassRose({ rotation }) {
           <path d="M32 32 L29 14 L32 9 L35 14 Z" fill="#d95e32"/>
           <path d="M32 32 L29 50 L32 55 L35 50 Z" fill="rgba(245,237,220,0.5)"/>
           <path d="M32 32 L50 29 L55 32 L50 35 Z" fill="rgba(245,237,220,0.25)"/>
-          <path d="M32 32 L14 29 L9 32 L14 35 Z"  fill="rgba(245,237,220,0.25)"/>
+          <path d="M32 32 L14 29 L9 32 L14 35 Z" fill="rgba(245,237,220,0.25)"/>
           <path d="M32 32 L38 18 L40 20 Z" fill="rgba(230,165,59,0.3)"/>
           <path d="M32 32 L44 38 L42 40 Z" fill="rgba(230,165,59,0.2)"/>
           <path d="M32 32 L26 46 L24 44 Z" fill="rgba(230,165,59,0.2)"/>
@@ -276,9 +139,7 @@ function CompassRose({ rotation }) {
 function ScaleBar() {
   return (
     <div className="zp-scalebar">
-      <div className="zp-scalebar__track">
-        <div className="zp-scalebar__fill" />
-      </div>
+      <div className="zp-scalebar__track"><div className="zp-scalebar__fill" /></div>
       <span className="zp-scalebar__label">50 m</span>
     </div>
   );
@@ -288,15 +149,9 @@ function CoordDisplay({ lat, lng }) {
   const fmt = (n, d = 6) => n.toFixed(d);
   return (
     <div className="zp-coords">
-      <span className="zp-coords__chip">
-        <span className="zp-coords__axis">LAT</span>
-        <span className="zp-coords__val">{fmt(lat)}</span>
-      </span>
+      <span className="zp-coords__chip"><span className="zp-coords__axis">LAT</span><span className="zp-coords__val">{fmt(lat)}</span></span>
       <span className="zp-coords__sep">·</span>
-      <span className="zp-coords__chip">
-        <span className="zp-coords__axis">LNG</span>
-        <span className="zp-coords__val">{fmt(lng)}</span>
-      </span>
+      <span className="zp-coords__chip"><span className="zp-coords__axis">LNG</span><span className="zp-coords__val">{fmt(lng)}</span></span>
     </div>
   );
 }
@@ -304,9 +159,7 @@ function CoordDisplay({ lat, lng }) {
 function MapCrosshair() {
   return (
     <div className="zp-crosshair" aria-hidden="true">
-      <div className="zp-crosshair__h" />
-      <div className="zp-crosshair__v" />
-      <div className="zp-crosshair__dot" />
+      <div className="zp-crosshair__h" /><div className="zp-crosshair__v" /><div className="zp-crosshair__dot" />
     </div>
   );
 }
@@ -321,9 +174,7 @@ function MapStatusBar({ selectedTree, treeCount, totalCount, lat, lng }) {
         </span>
         <span className="zp-map-statusbar__sep" />
         <span className="zp-map-statusbar__info">
-          {selectedTree
-            ? `Árbol #${selectedTree.id} — ${selectedTree.species}`
-            : `${treeCount} de ${totalCount} marcadores`}
+          {selectedTree ? `Árbol #${selectedTree.id} — ${selectedTree.species}` : `${treeCount} de ${totalCount} marcadores`}
         </span>
       </div>
       <CoordDisplay lat={lat} lng={lng} />
@@ -349,107 +200,70 @@ function MapFooterBar({ rotation }) {
   );
 }
 
-/* ── PANEL DE CALIBRACIÓN ───────────────────────────────────────────── */
-
-function CalibratorPanel({
-  rotation, setRotation,
-  puntoEscala, setPuntoEscala,
-  puntoLng, setPuntoLng,
-  puntoLat, setPuntoLat,
-  isAnclado, toggleAnclar,
-}) {
+function CalibratorPanel({ rotation, setRotation, puntoEscala, setPuntoEscala, puntoLng, setPuntoLng, puntoLat, setPuntoLat, isAnclado, toggleAnclar, isCollapsed, onToggleCollapse }) {
   return (
-    <div className={`zp-calibrator ${isAnclado ? 'zp-calibrator--locked' : ''}`}>
+    <div className={`zp-calibrator ${isAnclado ? 'zp-calibrator--locked' : ''} ${isCollapsed ? 'zp-calibrator--collapsed' : ''}`}>
       <div className="zp-calibrator__header">
+        <button className="zp-calibrator__collapse-btn" onClick={onToggleCollapse} aria-label={isCollapsed ? 'Expandir' : 'Colapsar'}>
+          {isCollapsed ? '▶' : '▼'}
+        </button>
         <div className="zp-calibrator__header-left">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <circle cx="7" cy="7" r="5.5" stroke="rgba(230,165,59,0.7)" strokeWidth="1"/>
-            <circle cx="7" cy="7" r="2"   fill="rgba(230,165,59,0.5)"/>
+            <circle cx="7" cy="7" r="2" fill="rgba(230,165,59,0.5)"/>
             <path d="M7 1v2M7 11v2M1 7h2M11 7h2" stroke="rgba(230,165,59,0.5)" strokeWidth="1" strokeLinecap="round"/>
           </svg>
-          <span>CALIBRACIÓN DE CROQUIS</span>
+          <span>CALIBRACIÓN</span>
         </div>
-        <button
-          className={`zp-calibrator__anchor ${isAnclado ? 'zp-calibrator__anchor--locked' : ''}`}
-          onClick={toggleAnclar}
-        >
-          {isAnclado ? (
-            <><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect x="2" y="4" width="6" height="5" rx="1" stroke="currentColor" strokeWidth="1"/><path d="M3.5 4V3a1.5 1.5 0 013 0v1" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/></svg>Anclado</>
-          ) : (
-            <><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect x="2" y="4" width="6" height="5" rx="1" stroke="currentColor" strokeWidth="1"/>            <path d="M6.5 4V2.5a1.5 1.5 0 00-3 0" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/></svg>Anclar</>
-          )}
+        <button className={`zp-calibrator__anchor ${isAnclado ? 'zp-calibrator__anchor--locked' : ''}`} onClick={toggleAnclar}>
+          {isAnclado ? '🔒 Anclado' : '🔓 Anclar'}
         </button>
         <button type="button" className="zp-calibrator__export" onClick={() => {
-          const cal = { puntoLng, puntoLat, puntoEscala, rotation }
-          const blob = new Blob([JSON.stringify(cal, null, 2)], { type: 'application/json' })
-          const url = URL.createObjectURL(blob)
-          const a = document.createElement('a'); a.href = url; a.download = 'zapote_calibracion.json'
-          a.click(); URL.revokeObjectURL(url)
+          const cal = { puntoLng, puntoLat, puntoEscala, rotation };
+          const blob = new Blob([JSON.stringify(cal, null, 2)], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a'); a.href = url; a.download = 'zapote_calibracion.json';
+          a.click(); URL.revokeObjectURL(url);
         }}>📥</button>
       </div>
-      <div className="zp-calibrator__body">
-        <div className="zp-cal-group">
-          <div className="zp-cal-group__label">
-            <span>Rotación</span>
-            <code>{rotation.toFixed(0)}°</code>
+      {!isCollapsed && (
+        <div className="zp-calibrator__body">
+          <div className="zp-cal-group">
+            <div className="zp-cal-group__label"><span>Rotación</span><code>{rotation.toFixed(0)}°</code></div>
+            <input type="range" className="zp-cal-slider" min="-180" max="180" step="1" value={rotation}
+              onChange={(e) => setRotation(Number(e.target.value))} disabled={isAnclado} />
+            <div className="zp-cal-ticks"><span>-180°</span><span>0°</span><span>+180°</span></div>
           </div>
-          <input type="range" className="zp-cal-slider"
-            min="-180" max="180" step="1" value={rotation}
-            onChange={(e) => setRotation(Number(e.target.value))}
-            disabled={isAnclado}
-          />
-          <div className="zp-cal-ticks"><span>-180°</span><span>0°</span><span>+180°</span></div>
-        </div>
-        <div className="zp-cal-group">
-          <div className="zp-cal-group__label">
-            <span>Escala</span>
-            <code>{(puntoEscala * 1e6).toFixed(2)} µ</code>
+          <div className="zp-cal-group">
+            <div className="zp-cal-group__label"><span>Escala</span><code>{(puntoEscala * 1e6).toFixed(2)} µ</code></div>
+            <input type="range" className="zp-cal-slider" min="0.000001" max="0.000020" step="0.0000001" value={puntoEscala}
+              onChange={(e) => setPuntoEscala(Number(e.target.value))} disabled={isAnclado} />
           </div>
-          <input type="range" className="zp-cal-slider"
-            min="0.000001" max="0.000020" step="0.0000001" value={puntoEscala}
-            onChange={(e) => setPuntoEscala(Number(e.target.value))}
-            disabled={isAnclado}
-          />
-        </div>
-        <div className="zp-cal-group">
-          <div className="zp-cal-group__label">
-            <span>Este — Oeste</span>
-            <code>{(puntoLng - (-76.429972)).toFixed(5)}</code>
+          <div className="zp-cal-group">
+            <div className="zp-cal-group__label"><span>Este — Oeste</span><code>{(puntoLng - (-76.429972)).toFixed(5)}</code></div>
+            <input type="range" className="zp-cal-slider" min="-0.001" max="0.001" step="0.00001"
+              value={puntoLng - (-76.429972)} onChange={(e) => setPuntoLng(-76.429972 + Number(e.target.value))} disabled={isAnclado} />
           </div>
-          <input type="range" className="zp-cal-slider"
-            min="-0.001" max="0.001" step="0.00001"
-            value={puntoLng - (-76.429972)}
-            onChange={(e) => setPuntoLng(-76.429972 + Number(e.target.value))}
-            disabled={isAnclado}
-          />
-        </div>
-        <div className="zp-cal-group">
-          <div className="zp-cal-group__label">
-            <span>Norte — Sur</span>
-            <code>{(puntoLat - 3.645361).toFixed(5)}</code>
+          <div className="zp-cal-group">
+            <div className="zp-cal-group__label"><span>Norte — Sur</span><code>{(puntoLat - 3.645361).toFixed(5)}</code></div>
+            <input type="range" className="zp-cal-slider" min="-0.001" max="0.001" step="0.00001"
+              value={puntoLat - 3.645361} onChange={(e) => setPuntoLat(3.645361 + Number(e.target.value))} disabled={isAnclado} />
           </div>
-          <input type="range" className="zp-cal-slider"
-            min="-0.001" max="0.001" step="0.00001"
-            value={puntoLat - 3.645361}
-            onChange={(e) => setPuntoLat(3.645361 + Number(e.target.value))}
-            disabled={isAnclado}
-          />
         </div>
-      </div>
+      )}
     </div>
   );
 }
 
-// --- CONSTANTES DEL CROQUIS ---
 const IMAGE_WIDTH = 1102;
 const IMAGE_HEIGHT = 787;
 
 export default function PredioZapote() {
-  const [selectedTree, setSelectedTree] = useState(null);
+  const [selectedTreeId, setSelectedTreeId] = useState(null);
   const [wikiInfo, setWikiInfo] = useState(null);
   const [loadingWiki, setLoadingWiki] = useState(false);
+  const [calCollapsed, setCalCollapsed] = useState(() => localStorage.getItem('zapote_cal_collapsed') === 'true');
 
-  // --- ESTADOS DEL MAPA ---
   const [puntoLng, setPuntoLng] = useState(() => {
     const saved = localStorage.getItem('zapote_puntoLng');
     return saved ? parseFloat(saved) : -76.429972;
@@ -471,6 +285,8 @@ export default function PredioZapote() {
     return saved === 'true';
   });
 
+  const { getTree, updateTree, resetTree, exportData, stats: statusStats } = useTreeStatus('zapote', zapoteTrees);
+
   const toggleAnclar = () => {
     if (!isAnclado) {
       localStorage.setItem('zapote_puntoLng', puntoLng.toString());
@@ -484,16 +300,17 @@ export default function PredioZapote() {
     setIsAnclado(!isAnclado);
   };
 
+  const selectedTree = useMemo(
+    () => (selectedTreeId ? getTree(zapoteTrees.find((t) => t.id === selectedTreeId)) : null),
+    [selectedTreeId, zapoteTrees, getTree],
+  );
+
   const selectedTreeProfile = useMemo(() => {
     return selectedTree ? getTreeVisualProfile(selectedTree) : null;
   }, [selectedTree]);
 
-  const selectedTreeId = selectedTree ? selectedTree.id : null;
-
-  // --- FILTROS ---
   const [query, setQuery] = useState('');
   const [groupFilter, setGroupFilter] = useState('all');
-  const [viewMode, setViewMode] = useState('explore');
 
   const groups = useMemo(() => [...new Set(zapoteTrees.map(t => t.group))], []);
 
@@ -503,8 +320,8 @@ export default function PredioZapote() {
       const matchesQuery = !q || t.species.toLowerCase().includes(q) || String(t.id) === q || `#${t.id}` === q;
       const matchesGroup = groupFilter === 'all' || t.group === groupFilter;
       return matchesQuery && matchesGroup;
-    });
-  }, [query, groupFilter]);
+    }).map(t => getTree(t));
+  }, [query, groupFilter, getTree]);
 
   const groupLegend = useMemo(() => {
     return zapoteGroups.map(group => {
@@ -519,62 +336,55 @@ export default function PredioZapote() {
     const total = zapoteTrees.length;
     const speciesCount = zapoteSpecies.length;
     const groupCount = zapoteGroups.length;
-    const mostCommonSpecies = Object.entries(zapoteSpeciesCounts)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 5);
-
+    const mostCommonSpecies = Object.entries(zapoteSpeciesCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
     const groupBreakdown = groupLegend.map(({ group, color }) => {
       const count = zapoteTrees.filter(t => t.group === group).length;
       return { group, color, count, pct: Math.round((count / total) * 100) };
     });
-
     return { total, speciesCount, groupCount, mostCommonSpecies, groupBreakdown };
   }, []);
 
-  // Calcular posición de marcadores con rotación
-  function getLngLat(x, _y, tree) {
+  function getLngLat(x, _y, tree, currentZoom) {
     if (tree?.lng != null && tree?.lat != null) return { longitude: tree.lng, latitude: tree.lat };
     const dx = x - (IMAGE_WIDTH / 2);
     const dy = _y - (IMAGE_HEIGHT / 2);
     const rad = (rotation * Math.PI) / 180;
-    
     const rx = dx * Math.cos(rad) - dy * Math.sin(rad);
     const ry = dx * Math.sin(rad) + dy * Math.cos(rad);
-    
+    const refZoom = 17.5;
+    const zoomAdj = currentZoom ? Math.pow(2, refZoom - currentZoom) : 1;
+    const effectiveScale = puntoEscala * zoomAdj;
     return {
-      longitude: puntoLng + (rx * puntoEscala),
-      latitude: puntoLat - (ry * puntoEscala),
+      longitude: puntoLng + (rx * effectiveScale),
+      latitude: puntoLat - (ry * effectiveScale),
     };
   }
 
-  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (!selectedTree) return;
-
     setLoadingWiki(true);
     fetchWikipediaSummary(selectedTree.wikipediaQuery || selectedTree.species).then(info => {
       setWikiInfo(info);
       setLoadingWiki(false);
     });
   }, [selectedTree]);
-  /* eslint-enable react-hooks/set-state-in-effect */
 
-  // Estadísticas
-  const stats = useMemo(() => {
-    const groups = [...new Set(zapoteTrees.map(t => t.group))];
-    const species = [...new Set(zapoteTrees.map(t => t.species))];
-    return {
-      total: zapoteTrees.length,
-      groups: groups.length,
-      species: species.length
-    };
-  }, []);
+  const stats = useMemo(() => ({
+    total: zapoteTrees.length,
+    groups: groups.length,
+    species: zapoteSpecies.length
+  }), [groups.length]);
 
-  // Document title
   useEffect(() => {
     document.title = 'Predio El Zapote · Inventario Digital de Frutales';
     return () => { document.title = 'INTAGROS | Inteligencia Agropecuaria Sostenible'; };
   }, []);
+
+  const handleCollapseCal = () => {
+    const next = !calCollapsed;
+    setCalCollapsed(next);
+    localStorage.setItem('zapote_cal_collapsed', String(next));
+  };
 
   return (
     <div className="zapote-page">
@@ -600,24 +410,19 @@ export default function PredioZapote() {
               <span className="zapote-kicker">Inventario Digital de Frutales</span>
               <h1>Predio<br />El Zapote</h1>
               <p>
-                Solución profesional para monitoreo de frutales con visión satelital y datos de campo.
-                Visualiza el croquis del predio, identifica cada árbol y accede a información botánica relevante.
+                Monitoreo profesional de frutales con estado de salud editable, croquis calibrado y datos satelitales.
               </p>
             </div>
 
             <Box className="zapote-hero-cards" sx={{ display: 'flex', gap: 2 }}>
               {[
-                { label: 'Árboles registrados', value: stats.total, color: 'success' },
+                { label: 'Árboles', value: stats.total, color: 'success' },
                 { label: 'Variedades', value: stats.species, color: 'info' },
-                { label: 'Grupos botánicos', value: stats.groups, color: 'warning' },
+                { label: 'Grupos', value: stats.groups, color: 'warning' },
               ].map((item) => (
                 <Card key={item.label} sx={{ p: 2, minWidth: 140, textAlign: 'center' }}>
-                  <MDTypography variant="h3" fontWeight="bold" color={item.color}>
-                    {item.value}
-                  </MDTypography>
-                  <MDTypography variant="button" color="text" fontWeight="light">
-                    {item.label}
-                  </MDTypography>
+                  <MDTypography variant="h3" fontWeight="bold" color={item.color}>{item.value}</MDTypography>
+                  <MDTypography variant="button" color="text" fontWeight="light">{item.label}</MDTypography>
                 </Card>
               ))}
             </Box>
@@ -634,29 +439,12 @@ export default function PredioZapote() {
             <aside className={`zapote-info-panel ${selectedTree ? '' : 'zapote-empty-panel'}`}>
               <div className="zapote-info-header">
                 <div>
-                  <p className="zapote-panel-label">Detalle activo</p>
-                  <h2>{selectedTree ? `Árbol #${selectedTree.id}` : 'Vista general del predio'}</h2>
+                  <p className="zapote-panel-label">{selectedTree ? 'Detalle activo' : 'Vista general del predio'}</p>
+                  <h2>{selectedTree ? `Árbol #${selectedTree.id}` : 'Explorar árboles'}</h2>
                 </div>
                 {selectedTree ? (
-                  <button className="zapote-close-btn" onClick={() => setSelectedTree(null)} aria-label="Cerrar">
-                    ✕
-                  </button>
-                ) : (
-                  <div className="zp-view-toggle">
-                    <button
-                      className={`zp-view-toggle__btn ${viewMode === 'explore' ? 'zp-view-toggle__btn--active' : ''}`}
-                      onClick={() => setViewMode('explore')}
-                    >
-                      Explorar
-                    </button>
-                    <button
-                      className={`zp-view-toggle__btn ${viewMode === 'dashboard' ? 'zp-view-toggle__btn--active' : ''}`}
-                      onClick={() => setViewMode('dashboard')}
-                    >
-                      Dashboard
-                    </button>
-                  </div>
-                )}
+                  <button className="zapote-close-btn" onClick={() => setSelectedTreeId(null)} aria-label="Cerrar">✕</button>
+                ) : null}
               </div>
 
               {selectedTree ? (
@@ -664,41 +452,45 @@ export default function PredioZapote() {
                   <h3>{selectedTree.species}</h3>
                   <p className="zapote-tree-group">{selectedTree.group}</p>
 
+                  <div className="zapote-tree-status-badges">
+                    <span className={`zt-badge zt-badge--${selectedTree._healthStatus}`}>
+                      {selectedTree._healthLabel}
+                    </span>
+                    <span className={`zt-badge zt-badge--prod`}>
+                      {selectedTree._produccion === 'alta' ? '🔥' : selectedTree._produccion === 'media' ? '💧' : selectedTree._produccion === 'baja' ? '🌱' : '⛔'} {selectedTree._produccion}
+                    </span>
+                  </div>
+
                   {selectedTreeProfile?.customImage && (
                     <div className="zapote-tree-image">
-                      <img
-                        src={selectedTreeProfile.customImage}
-                        alt={selectedTree.species}
-                        onError={(e) => {
-                          e.target.style.display = 'none';
-                        }}
-                      />
+                      <img src={selectedTreeProfile.customImage} alt={selectedTree.species}
+                        onError={(e) => { e.target.style.display = 'none'; }} />
                     </div>
                   )}
+
+                  <TreeStatusEditor
+                    treeId={selectedTree.id}
+                    currentHealth={selectedTree._healthStatus}
+                    currentProduccion={selectedTree._produccion}
+                    currentNotas={selectedTree._notas}
+                    onUpdate={updateTree}
+                    onReset={resetTree}
+                  />
+
+                  <div className="zapote-tree-coords">
+                    <span>Croquis: {Math.round(selectedTree.x)}, {Math.round(selectedTree.y)}</span>
+                  </div>
 
                   {loadingWiki ? (
                     <p className="zapote-loading">Buscando en Wikipedia...</p>
                   ) : wikiInfo ? (
                     <div className="zapote-wiki-content">
-                      {wikiInfo.image && (
-                        <img
-                          src={wikiInfo.image}
-                          alt={wikiInfo.title}
-                          className="zapote-wiki-image"
-                        />
-                      )}
-                      <p>{wikiInfo.extract.substring(0, 320)}...</p>
-                      <a
-                        href={wikiInfo.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="zapote-wiki-link"
-                      >
-                        Leer más en Wikipedia →
-                      </a>
+                      {wikiInfo.image && <img src={wikiInfo.image} alt={wikiInfo.title} className="zapote-wiki-image" />}
+                      <p>{wikiInfo.extract?.substring(0, 320)}...</p>
+                      <a href={wikiInfo.url} target="_blank" rel="noreferrer" className="zapote-wiki-link">Leer más en Wikipedia →</a>
                     </div>
                   ) : (
-                    <p className="zapote-no-info">No se encontró información en Wikipedia.</p>
+                    <p className="zapote-no-info">Sin información disponible.</p>
                   )}
                 </div>
               ) : (
@@ -708,34 +500,40 @@ export default function PredioZapote() {
                   </div>
                   <p className="zapote-empty-hint">Selecciona un árbol en el mapa</p>
 
+                  <div className="zp-monitor-bar">
+                    <div className="zp-monitor-item">
+                      <span className="zp-monitor-dot" style={{ background: '#4CAF50' }} />
+                      <span className="zp-monitor-label">Óptimas</span>
+                      <span className="zp-monitor-count">{statusStats.counts.optima}</span>
+                    </div>
+                    <div className="zp-monitor-item">
+                      <span className="zp-monitor-dot" style={{ background: '#66BB6A' }} />
+                      <span className="zp-monitor-label">Buenas</span>
+                      <span className="zp-monitor-count">{statusStats.counts.buena}</span>
+                    </div>
+                    <div className="zp-monitor-item">
+                      <span className="zp-monitor-dot" style={{ background: '#fb8c00' }} />
+                      <span className="zp-monitor-label">Regulares</span>
+                      <span className="zp-monitor-count">{statusStats.counts.regular}</span>
+                    </div>
+                    <div className="zp-monitor-item">
+                      <span className="zp-monitor-dot" style={{ background: '#F44335' }} />
+                      <span className="zp-monitor-label">Críticas</span>
+                      <span className="zp-monitor-count">{statusStats.counts.critica}</span>
+                    </div>
+                  </div>
+
                   <div className="zp-filter-bar">
                     <div className="zp-search-wrap">
                       <span className="zp-search-icon">🔍</span>
-                      <input
-                        type="text"
-                        className="zp-filter-input"
-                        placeholder="Buscar especie o #ID…"
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                      />
-                      {query && (
-                        <button
-                          className="zp-search-clear"
-                          onClick={() => setQuery('')}
-                          aria-label="Limpiar búsqueda"
-                        >
-                          ✕
-                        </button>
-                      )}
+                      <input type="text" className="zp-filter-input" placeholder="Buscar especie o #ID…"
+                        value={query} onChange={(e) => setQuery(e.target.value)} />
+                      {query && <button className="zp-search-clear" onClick={() => setQuery('')} aria-label="Limpiar búsqueda">✕</button>}
                     </div>
                     <div className="zp-filter-chips">
-                      <FilterChip active={groupFilter === 'all'} onClick={() => setGroupFilter('all')}>
-                        Todos
-                      </FilterChip>
+                      <FilterChip active={groupFilter === 'all'} onClick={() => setGroupFilter('all')}>Todos</FilterChip>
                       {groups.map(g => (
-                        <FilterChip key={g} active={groupFilter === g} onClick={() => setGroupFilter(g)}>
-                          {g}
-                        </FilterChip>
+                        <FilterChip key={g} active={groupFilter === g} onClick={() => setGroupFilter(g)}>{g}</FilterChip>
                       ))}
                     </div>
                   </div>
@@ -743,6 +541,32 @@ export default function PredioZapote() {
                   <div className="zp-tree-list-header">
                     <span>Inventario</span>
                     <span className="zp-tree-list-header__count">{filteredTrees.length} resultados</span>
+                    <div className="zp-tree-list-actions">
+                      <button className="zp-tool-btn" onClick={() => {
+                        const blob = new Blob([exportData()], { type: 'application/json' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a'); a.href = url; a.download = 'zapote_estado_arboles.json';
+                        a.click(); URL.revokeObjectURL(url);
+                      }} title="Exportar estado">📤</button>
+                      <button className="zp-tool-btn" onClick={() => {
+                        const input = document.createElement('input');
+                        input.type = 'file'; input.accept = '.json';
+                        input.onchange = (e) => {
+                          const file = e.target.files[0];
+                          if (!file) return;
+                          const reader = new FileReader();
+                          reader.onload = (ev) => {
+                            try {
+                              const data = JSON.parse(ev.target.result);
+                              Object.entries(data).forEach(([id, val]) => updateTree(Number(id), val));
+                              alert('Estado restaurado exitosamente');
+                            } catch { alert('Error: archivo inválido'); }
+                          };
+                          reader.readAsText(file);
+                        };
+                        input.click();
+                      }} title="Importar estado">📂</button>
+                    </div>
                   </div>
 
                   <div className="zp-tree-list">
@@ -752,31 +576,22 @@ export default function PredioZapote() {
                       filteredTrees.map(tree => {
                         const profile = getTreeVisualProfile(tree);
                         return (
-                          <button
-                            key={tree.id}
-                            className={`zp-tree-list__item ${selectedTree?.id === tree.id ? 'zp-tree-list__item--active' : ''}`}
-                            onClick={() => setSelectedTree(tree)}
-                          >
-                            <span
-                              className="zp-tree-list__id-box"
-                              style={{ background: profile.canopy, borderColor: profile.border }}
-                            >
-                              <img
-                                src={profile.customImage}
-                                alt={`#${tree.id}`}
-                                className="zp-tree-list__thumb"
-                                onError={(e) => { e.target.style.display = 'none'; }}
-                              />
+                          <button key={tree.id}
+                            className={`zp-tree-list__item ${selectedTreeId === tree.id ? 'zp-tree-list__item--active' : ''}`}
+                            onClick={() => setSelectedTreeId(tree.id)}>
+                            <span className="zp-tree-list__id-box" style={{ background: profile.canopy, borderColor: profile.border }}>
+                              <img src={profile.customImage} alt={`#${tree.id}`} className="zp-tree-list__thumb"
+                                onError={(e) => { e.target.style.display = 'none'; }} />
                               <span className="zp-tree-list__id-num">{tree.id}</span>
                             </span>
                             <span className="zp-tree-list__info">
-                              {(() => { const h = getTreeHealth(tree); return (
-                                <span className="zp-tree-list__health" data-status={h.status} title={`Salud: ${h.label} (${h.score}%)`} />
-                              );})()}
+                              <span className="zp-tree-list__health" data-status={tree._healthStatus} title={tree._healthLabel} />
+                              {tree._healthOverride && <span className="zp-tree-list__edited" title="Estado editado">✎</span>}
                               <span className="zp-tree-list__species" style={{ color: profile.border }}>{tree.species}</span>
                               <span className="zp-tree-list__group">{tree.group}</span>
+                              {tree._produccion && <span className="zp-tree-list__prod">· {tree._produccion}</span>}
                             </span>
-        </button>
+                          </button>
                         );
                       })
                     )}
@@ -784,11 +599,9 @@ export default function PredioZapote() {
 
                   <div className="zp-group-legend">
                     {groupLegend.map(({ group, color, count }) => (
-                      <button
-                        key={group}
+                      <button key={group}
                         className={`zp-group-legend__item ${groupFilter === group ? 'zp-group-legend__item--active' : ''}`}
-                        onClick={() => setGroupFilter(groupFilter === group ? 'all' : group)}
-                      >
+                        onClick={() => setGroupFilter(groupFilter === group ? 'all' : group)}>
                         <span className="zp-group-legend__dot" style={{ background: color }} />
                         <span className="zp-group-legend__label">{group}</span>
                         <span className="zp-group-legend__count">{count}</span>
@@ -800,62 +613,47 @@ export default function PredioZapote() {
             </aside>
 
             <div className="zp-map-frame">
-
-              {/* Barra de estado superior */}
-                <MapStatusBar
-                  selectedTree={selectedTree}
-                  treeCount={filteredTrees.length}
-                  totalCount={zapoteTrees.length}
-                  lat={puntoLat}
-                  lng={puntoLng}
-                />
-
-                {/* Viewport del mapa + HUD */}
-                <div className="zp-map-viewport">
-
-                  <MapboxOrchard3D
-                    trees={filteredTrees}
+              <MapStatusBar
+                selectedTree={selectedTree}
+                treeCount={filteredTrees.length}
+                totalCount={zapoteTrees.length}
+                lat={puntoLat}
+                lng={puntoLng}
+              />
+              <div className="zp-map-viewport">
+                <MapboxOrchard3D
+                  trees={filteredTrees}
                   selectedTreeId={selectedTreeId}
-                  onSelectTree={(id) => setSelectedTree(zapoteTrees.find((tree) => tree.id === id) ?? null)}
-                  initialViewState={{
-                    latitude: puntoLat,
-                    longitude: puntoLng,
-                    zoom: 17.5,
-                    pitch: 0,
-                  }}
+                  onSelectTree={setSelectedTreeId}
+                  initialViewState={{ latitude: puntoLat, longitude: puntoLng, zoom: 17.5, pitch: 0 }}
                   mapStyle="mapbox://styles/mapbox/satellite-streets-v12"
                   getLngLat={getLngLat}
                   renderMarker={(tree, isSelected) => <TreeMarkerIcon tree={tree} isSelected={isSelected} />}
                 />
-
                 <MapCrosshair />
                 <CompassRose rotation={rotation} />
-
                 {selectedTree && (
                   <div className="zp-map-selected-badge">
                     <svg width="8" height="8" viewBox="0 0 8 8">
-                      <circle cx="4" cy="4" r="3" fill={selectedTreeProfile?.border || '#e6a53b'}/>
+                      <circle cx="4" cy="4" r="3" fill={selectedTreeProfile?.border || '#e6a53b'} />
                     </svg>
                     #{selectedTree.id} · {selectedTree.species}
                   </div>
                 )}
-
-                <div className="zp-map-corner zp-map-corner--tl" aria-hidden="true"/>
-                <div className="zp-map-corner zp-map-corner--tr" aria-hidden="true"/>
-                <div className="zp-map-corner zp-map-corner--bl" aria-hidden="true"/>
-                <div className="zp-map-corner zp-map-corner--br" aria-hidden="true"/>
+                <div className="zp-map-corner zp-map-corner--tl" aria-hidden="true" />
+                <div className="zp-map-corner zp-map-corner--tr" aria-hidden="true" />
+                <div className="zp-map-corner zp-map-corner--bl" aria-hidden="true" />
+                <div className="zp-map-corner zp-map-corner--br" aria-hidden="true" />
               </div>
-
               <MapFooterBar rotation={rotation} />
-
               <CalibratorPanel
-                rotation={rotation}           setRotation={setRotation}
-                puntoEscala={puntoEscala}     setPuntoEscala={setPuntoEscala}
-                puntoLng={puntoLng}           setPuntoLng={setPuntoLng}
-                puntoLat={puntoLat}           setPuntoLat={setPuntoLat}
-                isAnclado={isAnclado}         toggleAnclar={toggleAnclar}
+                rotation={rotation} setRotation={setRotation}
+                puntoEscala={puntoEscala} setPuntoEscala={setPuntoEscala}
+                puntoLng={puntoLng} setPuntoLng={setPuntoLng}
+                puntoLat={puntoLat} setPuntoLat={setPuntoLat}
+                isAnclado={isAnclado} toggleAnclar={toggleAnclar}
+                isCollapsed={calCollapsed} onToggleCollapse={handleCollapseCal}
               />
-
             </div>
           </div>
         </section>
@@ -863,12 +661,11 @@ export default function PredioZapote() {
         <PredioDashboard
           predioName="El Zapote"
           predioKey="zapote"
-          trees={zapoteTrees}
+          trees={filteredTrees}
           envData={envData}
-          getTreeHealth={getTreeHealth}
-          downloadCSV={downloadCSV}
+          getTreeHealth={(t) => ({ score: '', label: t._healthLabel, status: t._healthStatus })}
+          downloadCSV={() => downloadCSV(filteredTrees)}
         />
-
       </main>
     </div>
   );

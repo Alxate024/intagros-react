@@ -5,6 +5,9 @@ import guaguyaTreesDefault, { guaguya_groups, guaguya_species } from '../data/gu
 import MapboxOrchard3D from '../components/MapboxOrchard3D'
 import PredioDashboard from '../components/dashboard/PredioDashboard'
 import MDTypography from '../components/md/MDTypography'
+import useTreeStatus from '../hooks/useTreeStatus'
+import TreeStatusEditor from '../components/tree/TreeStatusEditor'
+import TreeMarkerIcon from '../components/tree/TreeMarkerIcon'
 import './PredioGuadalito.css'
 import './PredioZapote.css'
 
@@ -69,22 +72,6 @@ function getTreeVisualProfile(tree) {
   if (species.includes('zapote'))
     return { canopy: '#2d4722', border: '#a65f35', customImage: treeImage, shape: 'broad' }
   return { canopy: '#314f28', border: tree.color || '#9b7d35', customImage: treeImage, shape: 'round' }
-}
-
-function TreeMarkerIcon({ tree, isSelected }) {
-  const profile = getTreeVisualProfile(tree)
-  const health = getTreeHealth(tree)
-  const healthColor = health.status === 'good' ? '#7fb069' : health.status === 'warning' ? '#f4d35e' : '#c94835'
-  return (
-    <div className={`zp-tree-marker ${isSelected ? 'zp-tree-marker--selected' : ''}`}>
-      <div className="zp-tree-marker-pin" style={{ '--zp-canopy': profile.canopy, '--zp-border': profile.border }}>
-        <img src="/media/point-icon.png" alt="" className="zp-tree-marker-img" />
-        <span className="zp-tree-marker-dot" style={{ background: profile.border }} />
-        <span className="zp-tree-marker-health" style={{ background: healthColor }} />
-      </div>
-      <span className="zp-tree-marker-id" style={{ color: profile.border }}>{tree.id}</span>
-    </div>
-  )
 }
 
 const IMAGE_WIDTH = 1102
@@ -181,6 +168,8 @@ export default function PredioGuaguya() {
     const saved = localStorage.getItem('guaguya_isAnclado')
     return saved === 'true'
   })
+  const { getTree, updateTree, resetTree, exportData, stats: statusStats } = useTreeStatus('guaguya', trees);
+  const processedTrees = useMemo(() => trees.map(t => getTree(t)), [trees, getTree]);
 
   const toggleAnclar = () => {
     if (!isAnclado) {
@@ -195,14 +184,17 @@ export default function PredioGuaguya() {
     setIsAnclado(!isAnclado)
   }
 
-  function getLngLat(x, y, tree) {
+  function getLngLat(x, y, tree, currentZoom) {
     if (tree?.lng != null && tree?.lat != null) return { longitude: tree.lng, latitude: tree.lat }
     const dx = x - IMAGE_WIDTH / 2
     const dy = y - IMAGE_HEIGHT / 2
     const rad = (rotation * Math.PI) / 180
+    const refZoom = 17.5
+    const zoomAdj = currentZoom ? Math.pow(2, refZoom - currentZoom) : 1
+    const effectiveScale = puntoEscala * zoomAdj
     return {
-      longitude: puntoLng + (dx * Math.cos(rad) - dy * Math.sin(rad)) * puntoEscala,
-      latitude: puntoLat - (dx * Math.sin(rad) + dy * Math.cos(rad)) * puntoEscala,
+      longitude: puntoLng + (dx * Math.cos(rad) - dy * Math.sin(rad)) * effectiveScale,
+      latitude: puntoLat - (dx * Math.sin(rad) + dy * Math.cos(rad)) * effectiveScale,
     }
   }
 
@@ -220,20 +212,20 @@ export default function PredioGuaguya() {
   )
 
   const selectedTree = useMemo(
-    () => trees.find((tree) => tree.id === selectedTreeId) ?? null,
-    [selectedTreeId, trees],
+    () => processedTrees.find((tree) => tree.id === selectedTreeId) ?? null,
+    [selectedTreeId, processedTrees],
   )
 
   const filteredTrees = useMemo(() => {
     const normalizedSearch = normalizeText(search.trim())
-    return trees.filter((tree) => {
+    return processedTrees.filter((tree) => {
       const matchesSpecies = speciesFilter === 'Todas' || tree.species === speciesFilter
       const matchesGroup = groupFilter === 'Todos' || tree.group === groupFilter
       const target = normalizeText(`${tree.id} ${tree.species} ${tree.group}`)
       const matchesSearch = normalizedSearch.length === 0 || target.includes(normalizedSearch)
       return matchesSpecies && matchesGroup && matchesSearch
     })
-  }, [groupFilter, search, speciesFilter, trees])
+  }, [groupFilter, search, speciesFilter, processedTrees])
 
   const speciesCounts = useMemo(
     () => trees.reduce((acc, tree) => { acc[tree.species] = (acc[tree.species] ?? 0) + 1; return acc }, {}),
@@ -459,6 +451,10 @@ export default function PredioGuaguya() {
               <small>{selectedTree.group}</small>
               <h2>Arbol {selectedTree.id}</h2>
               <p>{selectedTree.species}</p>
+              <div className="zapote-tree-status-badges">
+                <span className={`zt-badge zt-badge--${selectedTree._healthStatus}`}>{selectedTree._healthLabel}</span>
+                <span className="zt-badge zt-badge--prod">{selectedTree._produccion === 'alta' ? '🔥' : selectedTree._produccion === 'media' ? '💧' : selectedTree._produccion === 'baja' ? '🌱' : '⛔'} {selectedTree._produccion}</span>
+              </div>
             </div>
             <button className="zapote-close-btn" onClick={() => setSelectedTreeId(null)}>✕</button>
           </div>
@@ -481,6 +477,8 @@ export default function PredioGuaguya() {
               <dd>{(() => { const h = getTreeHealth(selectedTree); return `${h.label} (${h.score}%)` })()}</dd>
             </div>
           </dl>
+
+          <TreeStatusEditor treeId={selectedTree.id} currentHealth={selectedTree._healthStatus} currentProduccion={selectedTree._produccion} currentNotas={selectedTree._notas} onUpdate={updateTree} onReset={resetTree} />
 
           <div className="zapote-wiki-content" style={{ marginTop: '0.75rem' }}>
             {loadingWiki ? (
@@ -509,6 +507,12 @@ export default function PredioGuaguya() {
         </aside>
         ) : (
           <aside className="guadalito-panel guadalito-panel--detail guadalito-panel--empty">
+            <div className="zp-monitor-bar">
+              <div className="zp-monitor-item"><span className="zp-monitor-dot" style={{ background: '#4CAF50' }} /><span className="zp-monitor-label">Óptimas</span><span className="zp-monitor-count">{statusStats.counts.optima}</span></div>
+              <div className="zp-monitor-item"><span className="zp-monitor-dot" style={{ background: '#66BB6A' }} /><span className="zp-monitor-label">Buenas</span><span className="zp-monitor-count">{statusStats.counts.buena}</span></div>
+              <div className="zp-monitor-item"><span className="zp-monitor-dot" style={{ background: '#fb8c00' }} /><span className="zp-monitor-label">Regulares</span><span className="zp-monitor-count">{statusStats.counts.regular}</span></div>
+              <div className="zp-monitor-item"><span className="zp-monitor-dot" style={{ background: '#F44335' }} /><span className="zp-monitor-label">Críticas</span><span className="zp-monitor-count">{statusStats.counts.critica}</span></div>
+            </div>
             <p className="zapote-empty-hint">Selecciona un árbol en el mapa</p>
           </aside>
         )}
@@ -519,7 +523,7 @@ export default function PredioGuaguya() {
         predioKey="guaguya"
         trees={trees}
         envData={envData}
-        getTreeHealth={getTreeHealth}
+        getTreeHealth={(t) => ({ score: '', label: t._healthLabel, status: t._healthStatus })}
         downloadCSV={downloadCSV}
       />
     </div>

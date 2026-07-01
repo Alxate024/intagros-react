@@ -5,6 +5,9 @@ import guadalitoTreesDefault, { guadalitoSpecies, guadalitoGroups } from '../dat
 import MapboxOrchard3D from '../components/MapboxOrchard3D'
 import PredioDashboard from '../components/dashboard/PredioDashboard'
 import MDTypography from '../components/md/MDTypography'
+import useTreeStatus from '../hooks/useTreeStatus'
+import TreeStatusEditor from '../components/tree/TreeStatusEditor'
+import TreeMarkerIcon from '../components/tree/TreeMarkerIcon'
 import './PredioGuadalito.css'
 import './PredioZapote.css'
 
@@ -65,23 +68,7 @@ function getTreeVisualProfile(tree) {
   return { canopy: '#314f28', border: tree.color || '#9b7d35', customImage: treeImage, shape: 'round' }
 }
 
-function TreeMarkerIcon({ tree, isSelected }) {
-  const profile = getTreeVisualProfile(tree)
-  const health = getTreeHealth(tree)
-  const healthColor = health.status === 'good' ? '#7fb069' : health.status === 'warning' ? '#f4d35e' : '#c94835'
-  return (
-    <div className={`zp-tree-marker ${isSelected ? 'zp-tree-marker--selected' : ''}`}>
-      <div className="zp-tree-marker-pin" style={{ '--zp-canopy': profile.canopy, '--zp-border': profile.border }}>
-        <img src="/media/point-icon.png" alt="" className="zp-tree-marker-img" />
-        <span className="zp-tree-marker-dot" style={{ background: profile.border }} />
-        <span className="zp-tree-marker-health" style={{ background: healthColor }} />
-      </div>
-      <span className="zp-tree-marker-id" style={{ color: profile.border }}>{tree.id}</span>
-    </div>
-  )
-}
-
-// ── Health system ─────────────────────────────────────────────────────
+// ── Health system (legacy, kept for backward compat) ──────────────────────
 const treeHealthBase = {
   Citricos: { score: 73, label: 'Regular', status: 'warning' },
   Mangos: { score: 82, label: 'Buena', status: 'good' },
@@ -179,6 +166,10 @@ export default function PredioGuadalito() {
     return saved === 'true'
   })
 
+  const { getTree, updateTree, resetTree, exportData, stats: statusStats } = useTreeStatus('guadalito', trees);
+
+  const processedTrees = useMemo(() => trees.map(t => getTree(t)), [trees, getTree]);
+
   const toggleAnclar = () => {
     if (!isAnclado) {
       localStorage.setItem('guadalito_puntoLng', puntoLng.toString())
@@ -240,20 +231,28 @@ export default function PredioGuadalito() {
     setPendingPlacement(null)
   }
 
-  function getLngLat(x, y, tree) {
+  function getLngLat(x, y, tree, currentZoom) {
     if (tree?.lng != null && tree?.lat != null) return { longitude: tree.lng, latitude: tree.lat }
     const dx = x - IMAGE_WIDTH / 2
     const dy = y - IMAGE_HEIGHT / 2
     const rad = (rotation * Math.PI) / 180
+    const refZoom = 17.5
+    const zoomAdj = currentZoom ? Math.pow(2, refZoom - currentZoom) : 1
+    const effectiveScale = puntoEscala * zoomAdj
     return {
-      longitude: puntoLng + (dx * Math.cos(rad) - dy * Math.sin(rad)) * puntoEscala,
-      latitude: puntoLat - (dx * Math.sin(rad) + dy * Math.cos(rad)) * puntoEscala,
+      longitude: puntoLng + (dx * Math.cos(rad) - dy * Math.sin(rad)) * effectiveScale,
+      latitude: puntoLat - (dx * Math.sin(rad) + dy * Math.cos(rad)) * effectiveScale,
     }
   }
 
   const selectedTree = useMemo(
     () => trees.find((tree) => tree.id === selectedTreeId) ?? null,
     [selectedTreeId, trees],
+  )
+
+  const selectedTreeProcessed = useMemo(
+    () => selectedTree ? getTree(selectedTree) : null,
+    [selectedTree, getTree],
   )
 
   const placedTreeIds = useMemo(() => {
@@ -267,13 +266,13 @@ export default function PredioGuadalito() {
 
   const filteredTrees = useMemo(() => {
     const q = search.trim().toLowerCase()
-    return trees.filter((t) => {
+    return processedTrees.filter((t) => {
       const matchesSpecies = speciesFilter === 'Todas' || t.species === speciesFilter
       const matchesGroup = groupFilter === 'Todos' || t.group === groupFilter
       const matchesSearch = q.length === 0 || `${t.id} ${t.species} ${t.group}`.toLowerCase().includes(q)
       return matchesSpecies && matchesGroup && matchesSearch
     })
-  }, [groupFilter, search, speciesFilter, trees])
+  }, [groupFilter, search, speciesFilter, processedTrees])
 
   const speciesCounts = useMemo(
     () => trees.reduce((acc, t) => { acc[t.species] = (acc[t.species] ?? 0) + 1; return acc }, {}),
@@ -509,26 +508,43 @@ export default function PredioGuadalito() {
               )}
             </div>
           </aside>
-        ) : selectedTree ? (
+        ) : selectedTreeProcessed ? (
         <aside className="guadalito-panel guadalito-panel--detail">
           <div className="guadalito-detail-top">
-            <span style={{ background: selectedTree.color }} />
+            <span style={{ background: selectedTreeProcessed.color }} />
             <div>
-              <small>{selectedTree.group}</small>
-              <h2>Arbol {selectedTree.id}</h2>
-              <p>{selectedTree.species}</p>
+              <small>{selectedTreeProcessed.group}</small>
+              <h2>Arbol {selectedTreeProcessed.id}</h2>
+              <p>{selectedTreeProcessed.species}</p>
             </div>
             <button className="zapote-close-btn" onClick={() => setSelectedTreeId(null)}>✕</button>
             {editingPoints && <span className="zp-editing-badge" style={{ marginTop: '0.25rem' }}>COLOCAR</span>}
           </div>
 
+          <div className="zapote-tree-status-badges">
+            <span className={`zt-badge zt-badge--${selectedTreeProcessed._healthStatus}`}>
+              {selectedTreeProcessed._healthLabel}
+            </span>
+            <span className="zt-badge zt-badge--prod">
+              {selectedTreeProcessed._produccion === 'alta' ? '🔥' : selectedTreeProcessed._produccion === 'media' ? '💧' : selectedTreeProcessed._produccion === 'baja' ? '🌱' : '⛔'} {selectedTreeProcessed._produccion}
+            </span>
+          </div>
+
           <dl className="guadalito-facts">
-            <div><dt>Grupo</dt><dd>{selectedTree.group}</dd></div>
-            <div><dt>Coordenada en croquis</dt><dd>{Math.round(selectedTree.x)}, {Math.round(selectedTree.y)}</dd></div>
-            {selectedTree.lng != null && <div><dt>Coordenada Mapbox</dt><dd>{selectedTree.lng.toFixed(6)}, {selectedTree.lat.toFixed(6)}</dd></div>}
-            <div><dt>Total de esta especie</dt><dd>{speciesCounts[selectedTree.species] ?? 0}</dd></div>
-            <div><dt>Salud estimada</dt><dd>{(() => { const h = getTreeHealth(selectedTree); return `${h.label} (${h.score}%)` })()}</dd></div>
+            <div><dt>Grupo</dt><dd>{selectedTreeProcessed.group}</dd></div>
+            <div><dt>Coordenada en croquis</dt><dd>{Math.round(selectedTreeProcessed.x)}, {Math.round(selectedTreeProcessed.y)}</dd></div>
+            {selectedTreeProcessed.lng != null && <div><dt>Coordenada Mapbox</dt><dd>{selectedTreeProcessed.lng.toFixed(6)}, {selectedTreeProcessed.lat.toFixed(6)}</dd></div>}
+            <div><dt>Total de esta especie</dt><dd>{speciesCounts[selectedTreeProcessed.species] ?? 0}</dd></div>
           </dl>
+
+          <TreeStatusEditor
+            treeId={selectedTreeProcessed.id}
+            currentHealth={selectedTreeProcessed._healthStatus}
+            currentProduccion={selectedTreeProcessed._produccion}
+            currentNotas={selectedTreeProcessed._notas}
+            onUpdate={updateTree}
+            onReset={resetTree}
+          />
 
           <div className="zapote-wiki-content" style={{ marginTop: '0.75rem' }}>
             {loadingWiki ? (
@@ -546,11 +562,11 @@ export default function PredioGuadalito() {
 
           <div className="guadalito-next">
             <button type="button"
-              onClick={() => setSelectedTreeId(selectedTree.id === 1 ? trees.length : selectedTree.id - 1)}>
+              onClick={() => setSelectedTreeId(selectedTreeProcessed.id === 1 ? trees.length : selectedTreeProcessed.id - 1)}>
               Anterior
             </button>
             <button type="button"
-              onClick={() => setSelectedTreeId(selectedTree.id === trees.length ? 1 : selectedTree.id + 1)}>
+              onClick={() => setSelectedTreeId(selectedTreeProcessed.id === trees.length ? 1 : selectedTreeProcessed.id + 1)}>
               Siguiente
             </button>
           </div>
@@ -558,6 +574,38 @@ export default function PredioGuadalito() {
         ) : (
           <aside className="guadalito-panel guadalito-panel--detail guadalito-panel--empty">
             <div className="zapote-empty-panel">
+              <div className="zp-monitor-bar">
+                <div className="zp-monitor-item"><span className="zp-monitor-dot" style={{ background: '#4CAF50' }} /><span className="zp-monitor-label">Óptimas</span><span className="zp-monitor-count">{statusStats.counts.optima}</span></div>
+                <div className="zp-monitor-item"><span className="zp-monitor-dot" style={{ background: '#66BB6A' }} /><span className="zp-monitor-label">Buenas</span><span className="zp-monitor-count">{statusStats.counts.buena}</span></div>
+                <div className="zp-monitor-item"><span className="zp-monitor-dot" style={{ background: '#fb8c00' }} /><span className="zp-monitor-label">Regulares</span><span className="zp-monitor-count">{statusStats.counts.regular}</span></div>
+                <div className="zp-monitor-item"><span className="zp-monitor-dot" style={{ background: '#F44335' }} /><span className="zp-monitor-label">Críticas</span><span className="zp-monitor-count">{statusStats.counts.critica}</span></div>
+              </div>
+              <div style={{ display: 'flex', gap: '0.3rem', justifyContent: 'center', marginTop: '0.5rem' }}>
+                <button className="zp-tool-btn" onClick={() => {
+                  const blob = new Blob([exportData()], { type: 'application/json' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a'); a.href = url; a.download = 'guadalito_estado_arboles.json';
+                  a.click(); URL.revokeObjectURL(url);
+                }} title="Exportar estado">📤</button>
+                <button className="zp-tool-btn" onClick={() => {
+                  const input = document.createElement('input');
+                  input.type = 'file'; input.accept = '.json';
+                  input.onchange = (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = (ev) => {
+                      try {
+                        const data = JSON.parse(ev.target.result);
+                        Object.entries(data).forEach(([id, val]) => updateTree(Number(id), val));
+                        alert('Estado restaurado exitosamente');
+                      } catch { alert('Error: archivo inválido'); }
+                    };
+                    reader.readAsText(file);
+                  };
+                  input.click();
+                }} title="Importar estado">📂</button>
+              </div>
               <p className="zapote-empty-hint">Activa "Editar puntos" para colocar árboles</p>
               <p className="zapote-empty-sub">{placedTreeIds.size} / {trees.length} árboles colocados</p>
             </div>
