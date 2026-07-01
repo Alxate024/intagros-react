@@ -1,11 +1,14 @@
 import { lazy, Suspense } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { ThemeProvider } from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline'
 import AgroVerse from './components/AgroVerse'
 import Header from './components/Header'
 import ExperienceLayer from './components/ExperienceLayer'
 import ErrorBoundary from './components/common/ErrorBoundary'
 import { UIProvider } from './context'
 import { contact, crops, units } from './data/siteContent'
+import theme from './assets/theme'
 import './styles/global.css'
 import './App.css'
 
@@ -43,6 +46,8 @@ const LoadingFallback = () => (
 function App() {
   return (
     <ErrorBoundary>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
         <UIProvider>
           <BrowserRouter>
             <div className="app">
@@ -136,6 +141,7 @@ function App() {
           </div>
           </BrowserRouter>
         </UIProvider>
+      </ThemeProvider>
     </ErrorBoundary>
   )
 }

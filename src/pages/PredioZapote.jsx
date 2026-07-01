@@ -1,6 +1,10 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import Card from '@mui/material/Card';
+import Box from '@mui/material/Box';
 import MapboxOrchard3D from '../components/MapboxOrchard3D';
+import PredioDashboard from '../components/dashboard/PredioDashboard';
+import MDTypography from '../components/md/MDTypography';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './PredioZapote.css';
 
@@ -601,20 +605,22 @@ export default function PredioZapote() {
               </p>
             </div>
 
-            <aside className="zapote-hero-cards">
-              <article className="zapote-hero-card">
-                <span>Árboles registrados</span>
-                <strong>{stats.total}</strong>
-              </article>
-              <article className="zapote-hero-card">
-                <span>Variedades</span>
-                <strong>{stats.species}</strong>
-              </article>
-              <article className="zapote-hero-card">
-                <span>Grupos botánicos</span>
-                <strong>{stats.groups}</strong>
-              </article>
-            </aside>
+            <Box className="zapote-hero-cards" sx={{ display: 'flex', gap: 2 }}>
+              {[
+                { label: 'Árboles registrados', value: stats.total, color: 'success' },
+                { label: 'Variedades', value: stats.species, color: 'info' },
+                { label: 'Grupos botánicos', value: stats.groups, color: 'warning' },
+              ].map((item) => (
+                <Card key={item.label} sx={{ p: 2, minWidth: 140, textAlign: 'center' }}>
+                  <MDTypography variant="h3" fontWeight="bold" color={item.color}>
+                    {item.value}
+                  </MDTypography>
+                  <MDTypography variant="button" color="text" fontWeight="light">
+                    {item.label}
+                  </MDTypography>
+                </Card>
+              ))}
+            </Box>
           </div>
         </div>
       </header>
@@ -854,345 +860,16 @@ export default function PredioZapote() {
           </div>
         </section>
 
-        {viewMode === 'dashboard' && (
-        <section className="zp-dashboard-section">
-          <div className="zapote-hero-container">
-            <div className="zp-dash-header">
-              <div className="zp-dash-header__left">
-                <div className="zp-dash-header__icon">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="1" y="2" width="10" height="8" rx="1"/><path d="M4 2V1a1 1 0 011-1h2a1 1 0 011 1v1"/></svg>
-                </div>
-                <div>
-                  <div className="zp-dash-header__label">PANEL DE CONTROL · DASHBOARD</div>
-                  <h3 className="zp-dash-header__title">Métricas del predio en tiempo real</h3>
-                </div>
-              </div>
-              <div className="zp-dash-header__live">
-                <span className="zp-dash-header__dot" />
-                <span>EN VIVO</span>
-              </div>
-            </div>
+        <PredioDashboard
+          predioName="El Zapote"
+          trees={zapoteTrees}
+          dashboardStats={dashboardStats}
+          envData={envData}
+          getTreeHealth={getTreeHealth}
+          downloadCSV={downloadCSV}
+        />
 
-            <div className="zp-dash-kpis">
-              {[
-                { label: 'Árboles', value: String(dashboardStats.total), accent: '#7fb069' },
-                { label: 'Variedades', value: String(dashboardStats.speciesCount), accent: '#f4d35e' },
-                { label: 'Grupos', value: String(dashboardStats.groupCount), accent: '#e48b24' },
-                { label: 'Más común', value: dashboardStats.mostCommonSpecies[0]?.[0]?.slice(0, 10) ?? '—', accent: '#cbd84a' },
-              ].map((kpi, i) => (
-                <div key={i} className="zp-dash-kpi">
-                  <div className="zp-dash-kpi__value">{kpi.value}</div>
-                  <div className="zp-dash-kpi__label">{kpi.label}</div>
-                  <span className="zp-dash-kpi__accent" style={{ background: kpi.accent }} />
-                </div>
-              ))}
-            </div>
-
-            <div className="zp-dash-tools">
-              {/* ── Environmental widget ── */}
-              <div className="zp-env-widget">
-                <div className="zp-env-header">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.2"><circle cx="7" cy="7" r="5"/><path d="M7 2v2M7 10v2M2 7h2M10 7h2"/></svg>
-                  <span>ESTACIÓN AMBIENTAL</span>
-                  <span className="zp-env-update">— Actualizado en vivo</span>
-                </div>
-                <div className="zp-env-grid">
-                  <div className="zp-env-item zp-env-item--main">
-                    <span className="zp-env-item__icon">{envData.icon}</span>
-                    <span className="zp-env-item__value">{envData.temp}°</span>
-                    <span className="zp-env-item__label">{envData.condition}</span>
-                  </div>
-                  <div className="zp-env-item">
-                    <span className="zp-env-item__value">{envData.humidity}%</span>
-                    <span className="zp-env-item__label">Humedad</span>
-                  </div>
-                  <div className="zp-env-item">
-                    <span className="zp-env-item__value">{envData.rainfall}mm</span>
-                    <span className="zp-env-item__label">Lluvia</span>
-                  </div>
-                  <div className="zp-env-item">
-                    <span className="zp-env-item__value">{envData.uv}</span>
-                    <span className="zp-env-item__label">UV</span>
-                  </div>
-                  <div className="zp-env-item">
-                    <span className="zp-env-item__value">{envData.wind}km</span>
-                    <span className="zp-env-item__label">Viento</span>
-                  </div>
-                  <div className="zp-env-item">
-                    <span className="zp-env-item__value">{envData.pressure}hPa</span>
-                    <span className="zp-env-item__label">Presión</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* ── Health summary ── */}
-              <div className="zp-health-card">
-                <div className="zp-env-header">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.2"><path d="M7 1v12M1 7h12"/><circle cx="7" cy="7" r="3"/></svg>
-                  <span>SALUD DEL PREDIO</span>
-                </div>
-                {(() => {
-                  const allHealth = zapoteTrees.map(t => getTreeHealth(t));
-                  const opt = allHealth.filter(h => h.label === 'Óptima' || h.status === 'good').length;
-                  const warn = allHealth.filter(h => h.label === 'Regular' || h.status === 'warning').length;
-                  const crit = allHealth.filter(h => h.label === 'Crítica' || h.status === 'critical').length;
-                  const avg = Math.round(allHealth.reduce((a, h) => a + h.score, 0) / allHealth.length);
-                  const pct = Math.round((opt / allHealth.length) * 100);
-                  return (<>
-                  <div className="zp-health-score">
-                    <div className="zp-health-gauge">
-                      <svg width="60" height="60" viewBox="0 0 60 60">
-                        <circle cx="30" cy="30" r="26" fill="none" stroke="rgba(74,124,58,0.1)" strokeWidth="5"/>
-                        <circle cx="30" cy="30" r="26" fill="none" stroke="#7fb069" strokeWidth="5"
-                          strokeDasharray={`${(pct/100)*163} 163`} transform="rotate(-90 30 30)"
-                          strokeLinecap="round"/>
-                        <text x="30" y="30" textAnchor="middle" dominantBaseline="central"
-                          fill="#eef3df" fontSize="16" fontWeight="700" fontFamily="'Courier New',monospace">{avg}</text>
-                      </svg>
-                    </div>
-                    <div className="zp-health-stats">
-                      <div className="zp-health-stat"><span className="zp-health-dot" style={{background:'#7fb069'}}/>{opt} óptimos</div>
-                      <div className="zp-health-stat"><span className="zp-health-dot" style={{background:'#f4d35e'}}/>{warn} regulares</div>
-                      <div className="zp-health-stat"><span className="zp-health-dot" style={{background:'#c94835'}}/>{crit} críticos</div>
-                    </div>
-                  </div>
-                  </>);
-                })()}
-              </div>
-
-              {/* ── CSV export ── */}
-              <div className="zp-export-card">
-                <div className="zp-env-header">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.2"><path d="M3 2h8v10H3z"/><path d="M5 5h4M5 8h4"/></svg>
-                  <span>EXPORTAR DATOS</span>
-                </div>
-                <p className="zp-export-desc">Descarga el inventario completo en formato CSV para análisis en Excel, Python o Google Sheets.</p>
-                <button className="zp-export-btn" onClick={() => downloadCSV(zapoteTrees)}>
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M7 1v8M3 6l4 4 4-4M2 11v2h10v-2"/></svg>
-                  Descargar CSV
-                </button>
-              </div>
-            </div>
-
-            <div className="zp-dash-section-label">
-              <span className="zp-dash-section-label__line" />
-              <span className="zp-dash-section-label__text">GRÁFICAS Y ESTADÍSTICAS</span>
-              <span className="zp-dash-section-label__line" />
-            </div>
-
-            <div className="zp-dash-charts">
-              <div className="zp-dash-chart-card zp-dash-chart-card--wide">
-                <img src="/media/dashboard/group_bars.png" alt="Distribución por grupo" className="zp-dash-chart-img" loading="lazy" />
-              </div>
-              <div className="zp-dash-chart-card">
-                <img src="/media/dashboard/group_donut.png" alt="Composición por grupo" className="zp-dash-chart-img" loading="lazy" />
-              </div>
-              <div className="zp-dash-chart-card">
-                <img src="/media/dashboard/top_species.png" alt="Especies más representadas" className="zp-dash-chart-img" loading="lazy" />
-              </div>
-              <div className="zp-dash-chart-card zp-dash-chart-card--wide">
-                <img src="/media/dashboard/species_per_group.png" alt="Árboles por grupo" className="zp-dash-chart-img" loading="lazy" />
-              </div>
-              <div className="zp-dash-chart-card">
-                <img src="/media/dashboard/health_distribution.png" alt="Salud del predio" className="zp-dash-chart-img" loading="lazy" />
-              </div>
-              <div className="zp-dash-chart-card">
-                <img src="/media/dashboard/citricos_breakdown.png" alt="Desglose de cítricos" className="zp-dash-chart-img" loading="lazy" />
-              </div>
-              <div className="zp-dash-chart-card zp-dash-chart-card--kpi">
-                <img src="/media/dashboard/summary_stats.png" alt="Resumen" className="zp-dash-chart-img" loading="lazy" />
-              </div>
-            </div>
-          </div>
-        </section>
-        )}
-
-        <section className="zp-data-panel">
-          <div className="zapote-hero-container">
-
-            {/* ── Panel header ── */}
-            <div className="zp-data-header">
-              <div className="zp-data-header__left">
-                <span className="zp-data-header__label">DATA PANEL // v2.1</span>
-                <h2 className="zp-data-header__title">Predio El Zapote</h2>
-              </div>
-              <div className="zp-data-header__status">
-                <span className="zp-data-status__dot" />
-                <span className="zp-data-status__text">SISTEMA ACTIVO</span>
-              </div>
-            </div>
-
-            {/* ── Main grid ── */}
-            <div className="zp-data-grid">
-
-              {/* Column 1: Sobre el predio */}
-              <div className="zp-data-col">
-                <div className="zp-data-col__header">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.2">
-                    <circle cx="8" cy="8" r="6"/><path d="M8 2v12M2 8h12"/>
-                  </svg>
-                  <span>INVENTARIO DIGITAL</span>
-                </div>
-
-                <div className="zp-data-metrics">
-                  <div className="zp-data-metric">
-                    <span className="zp-data-metric__value" style={{ color: '#7fb069' }}>{stats.total}</span>
-                    <span className="zp-data-metric__label">Árboles</span>
-                  </div>
-                  <div className="zp-data-metric">
-                    <span className="zp-data-metric__value" style={{ color: '#f4d35e' }}>{stats.species}</span>
-                    <span className="zp-data-metric__label">Variedades</span>
-                  </div>
-                  <div className="zp-data-metric">
-                    <span className="zp-data-metric__value" style={{ color: '#e48b24' }}>{stats.groups}</span>
-                    <span className="zp-data-metric__label">Grupos</span>
-                  </div>
-                </div>
-
-                <p className="zp-data-text">
-                  Sistema integral de monitoreo frutícola que combina imagery satelital con un croquis
-                  georreferenciado del predio. Cada árbol registrado cuenta con un perfil botánico
-                  enriquecido con datos de Wikipedia, permitiendo consultar especie, grupo, características
-                  y usos directamente desde el mapa interactivo.
-                </p>
-
-                <div className="zp-data-features">
-                  <div className="zp-data-feature">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#7fb069" strokeWidth="1.5"><path d="M2 6l3 3 5-5"/></svg>
-                    Geolocalización satelital
-                  </div>
-                  <div className="zp-data-feature">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#7fb069" strokeWidth="1.5"><path d="M2 6l3 3 5-5"/></svg>
-                    Perfil botánico por árbol con Wikipedia
-                  </div>
-                  <div className="zp-data-feature">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#7fb069" strokeWidth="1.5"><path d="M2 6l3 3 5-5"/></svg>
-                    Siluetas PNG por especie en mapa y listado
-                  </div>
-                  <div className="zp-data-feature">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#7fb069" strokeWidth="1.5"><path d="M2 6l3 3 5-5"/></svg>
-                    Dashboard con KPIs y charts estadísticos
-                  </div>
-                </div>
-              </div>
-
-              {/* Column 2: Arquitectura */}
-              <div className="zp-data-col">
-                <div className="zp-data-col__header">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.2">
-                    <rect x="1" y="3" width="14" height="10" rx="1"/><path d="M5 3V2a1 1 0 011-1h4a1 1 0 011 1v1"/>
-                  </svg>
-                  <span>ARQUITECTURA DEL SISTEMA</span>
-                </div>
-
-                <p className="zp-data-text">
-                  Interfaz diseñada para técnicos agrícolas e ingenieros agrónomos que necesitan
-                  visualizar, calibrar y analizar el predio en tiempo real. Plataforma que integra
-                  mapa satelital con superposición de croquis georreferenciado y marcadores inteligentes.
-                </p>
-
-                <div className="zp-data-specs">
-                  <div className="zp-data-spec">
-                    <div className="zp-data-spec__icon">
-                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#d4a62f" strokeWidth="1.2"><path d="M7 1v12M1 7h12"/></svg>
-                    </div>
-                    <div>
-                      <div className="zp-data-spec__title">Croquis calibrable</div>
-                      <div className="zp-data-spec__desc">Rotación, escala y posición con anclaje persistente</div>
-                    </div>
-                  </div>
-                  <div className="zp-data-spec">
-                    <div className="zp-data-spec__icon">
-                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#77a95f" strokeWidth="1.2"><circle cx="7" cy="7" r="5"/><circle cx="7" cy="7" r="2"/></svg>
-                    </div>
-                    <div>
-                      <div className="zp-data-spec__title">Marcadores 3D</div>
-                      <div className="zp-data-spec__desc">117 árboles con íconos por especie y badge numerado</div>
-                    </div>
-                  </div>
-                  <div className="zp-data-spec">
-                    <div className="zp-data-spec__icon">
-                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#f07b21" strokeWidth="1.2"><path d="M2 12L5 3l3 7 2-5 2 7"/></svg>
-                    </div>
-                    <div>
-                      <div className="zp-data-spec__title">Dos modos de vista</div>
-                      <div className="zp-data-spec__desc">Explorar (filtros + lista) y Dashboard (gráficas + KPIs)</div>
-                    </div>
-                  </div>
-                  <div className="zp-data-spec">
-                    <div className="zp-data-spec__icon">
-                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#5a4a73" strokeWidth="1.2"><rect x="2" y="4" width="10" height="8" rx="1"/><path d="M4 4V3a1 1 0 011-1h4a1 1 0 011 1v1"/></svg>
-                    </div>
-                    <div>
-                      <div className="zp-data-spec__title">Reportes técnicos</div>
-                      <div className="zp-data-spec__desc">Base para generación de informes de campo</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
-            {/* ── Bottom bar ── */}
-            <div className="zp-data-footer">
-              <span>INTAGROS · Inteligencia Agropecuaria Sostenible</span>
-              <span>Datos generados con Python + Pandas + Matplotlib</span>
-            </div>
-
-          </div>
-        </section>
       </main>
-
-      <section className="zapote-instructions-section">
-        <div className="zapote-instructions-container">
-          <h2>Cómo usar el mapa</h2>
-          <div className="zapote-instructions-grid">
-            <article>
-              <span className="zapote-instruction-icon">
-                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="14" cy="14" r="10"/>
-                  <path d="M14 4v3M14 21v3M4 14h3M21 14h3"/>
-                  <circle cx="14" cy="14" r="3"/>
-                </svg>
-              </span>
-              <h3>Navega el mapa</h3>
-              <p>Usa los controles de navegación o arrastra para moverte por el predio. El croquis se superpone automáticamente sobre la imagen satelital.</p>
-            </article>
-            <article>
-              <span className="zapote-instruction-icon">
-                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="14" cy="14" r="6"/>
-                  <path d="M14 2v4M14 22v4M2 14h4M22 14h4"/>
-                </svg>
-              </span>
-              <h3>Selecciona árboles</h3>
-              <p>Haz clic en cualquier marcador numerado del mapa para ver su perfil botánico: nombre, grupo, descripción de Wikipedia e imagen de la especie.</p>
-            </article>
-            <article>
-              <span className="zapote-instruction-icon">
-                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="4" y="8" width="20" height="14" rx="2"/>
-                  <circle cx="14" cy="15" r="2"/>
-                  <path d="M8 8V6a2 2 0 012-2h8a2 2 0 012 2v2"/>
-                </svg>
-              </span>
-              <h3>Ajusta la vista</h3>
-              <p>Usa los controles de calibración para ajustar rotación, escala y posición del croquis. Modifica la opacidad para comparar con la imagen satelital.</p>
-            </article>
-            <article>
-              <span className="zapote-instruction-icon">
-                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="7" y="12" width="14" height="12" rx="2"/>
-                  <path d="M10 12V9a4 4 0 018 0v3"/>
-                  <circle cx="14" cy="19" r="1.5" fill="currentColor"/>
-                </svg>
-              </span>
-              <h3>Ancla la posición</h3>
-              <p>Guarda tu calibración preferida para futuras visitas. El anclaje persiste en el navegador y mantiene la vista ajustada a tu referencia.</p>
-            </article>
-          </div>
-          </div>
-        </section>
     </div>
   );
 }
